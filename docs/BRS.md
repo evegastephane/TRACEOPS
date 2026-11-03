@@ -45,20 +45,20 @@ Aucune valeur ci-dessous n’est une promesse contractuelle ni une donnée déj�
 | BR-07 | Afficher avancement, retards, validations et anomalies avec filtres | [S] §5 | Indispensable |
 | BR-08 | Sauvegarder les données et conserver l’auteur, l’heure et l’historique des actions importantes | [S] §§5,7 | Indispensable |
 | BR-09 | Garder un socle configurable, d’abord testé sur nettoyage et maintenance | [S] §2 | Indispensable |
-| BR-10 | Faciliter éventuellement l’identification d’une zone par QR | [S] §5, à étudier | Option ultérieure |
+| BR-10 | Identifier une zone ou salle par QR, avec contrôle d’accès | [S] PIL-13 | Première version |
 
 **BR-11 [S, demande complémentaire]** Fournir un espace prestataire et un espace administrateur global capable de superviser l’ensemble de la plateforme. [P] Le contrôle global inclut la gestion des organisations, utilisateurs, habilitations et opérations. Il ne permet pas de falsifier un compte rendu soumis ou l’historique ; une correction doit rester explicite et traçable.
 
 ## 5. Périmètre et limites
 [S] Inclus au cadrage : organisations, utilisateurs et droits, sites et zones, prestations et listes de tâches, interventions et affectations, comptes rendus et justificatifs, contrôles, reprises, anomalies, tableaux de bord et historique.
-[P] Pilote : application web responsive, saisie en ligne, affectation à un agent responsable, contrôle unique par un utilisateur client habilité. Une équipe pourra être référencée, mais la responsabilité de soumission reste individuelle.
+[P] Pilote : application web responsive, saisie en ligne, affectation à un ou plusieurs agents, contrôle unique par un utilisateur client habilité. La responsabilité de soumission du compte rendu collectif reste à confirmer.
 [S] Hors priorité initiale : marketplace, facturation complète, applications natives. [P] Hors MVP : paie, optimisation automatique des tournées, stocks, intégration ERP, géolocalisation et signature à valeur probante.
-[O] Synchronisation hors ligne, QR et fréquence des interventions : à arbitrer explicitement. Le document source ne les garantit pas.
+[O] Synchronisation hors ligne et fréquence des interventions : à arbitrer explicitement. Le QR est confirmé par PIL-13. Le document source ne les garantit pas.
 
 ## 6. Processus cible proposé
 1. Le client habilite un prestataire pour un site et convient des prestations.
 2. Le client définit les attentes et crée les interventions ; le responsable prestataire prépare leur exécution.
-3. Le responsable affecte un agent dans la relation client–prestataire autorisée.
+3. Le responsable affecte un ou plusieurs agents dans la relation client–prestataire autorisée.
 4. L’agent exécute et documente ; un blocage est signalé avec motif.
 5. L’agent soumet un compte rendu versionné ; les données soumises deviennent non modifiables.
 6. Le contrôleur client valide ou motive une demande de reprise.
@@ -117,3 +117,9 @@ Cette décision clôt la question du contrôle intermédiaire prestataire. L’i
 - **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
 - **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
 Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
+
+
+## Consolidation des réponses du pilote
+Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
+
+Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
