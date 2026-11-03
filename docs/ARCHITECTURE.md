@@ -1,6 +1,6 @@
 # TRACEOPS — Software Architecture Document
 
-> Version 0.1 — 3 novembre 2026 — Projet de travail, non approuvé.
+> Version 0.2 — 3 novembre 2026 — Projet de travail, non approuvé.
 > Source : « TRACEOPS — Présentation du projet et cadrage fonctionnel initial », v0.1, fichier fourni par le porteur du projet.
 > Convention : **[S]** = explicitement décrit dans la source ; **[P]** = proposition à valider ; **[O]** = question ouverte. Une proposition ne constitue pas une décision approuvée.
 
@@ -173,3 +173,14 @@ Conséquence : après perte réseau, sauvegarde signalée comme échouée ou en 
 | ADR-004 | Versions immuables des attendus et comptes rendus | Aucun assouplissement sans maintenir l’audit |
 | ADR-005 | Objets privés, dépôt vérifié et accès temporaire | Révocation immédiate ou exigences de preuve plus fortes |
 [P] Chaque ADR final devra nommer son décideur, sa date d’acceptation, les alternatives et les conséquences retenues.
+
+## 15. Référentiel détaillé intégré — v0.2
+Le [Référentiel détaillé de conception et d’architecture](REFERENTIEL_ARCHITECTURE.md) fait partie intégrante de ce document. Ses 18 chapitres explicitent les notions de la roadmap et leurs conséquences pour TRACEOPS : niveaux d’architecture, responsabilités, conception, langages, données, sécurité, intégrations, interfaces, réseaux, exploitation, outils, gouvernance, agilité et systèmes d’entreprise.
+
+La [matrice de couverture](COUVERTURE_CONCEPTS.md) permet de retrouver chaque notion. Les alternatives étudiées et différées restent documentées ; leur présence n’en fait pas des dépendances du système.
+
+### Processus de décision proposé
+Relier chaque ADR à une exigence BRS/SRS ; comparer options et contraintes ; définir prototype ou preuve ; enregistrer décideur et statut ; réexaminer selon un événement mesurable. Les cibles de performance, volumes et coûts doivent être confirmées par le pilote et des mesures avant engagement.
+
+### Scénarios structurants
+Les séquences détaillées du chapitre 17 couvrent réponse perdue après soumission, contrôle concurrent, suspension globale et fraîcheur des tableaux de bord. Elles relient principes théoriques, règles métier et tests attendus. Le chapitre 18 définit les preuves à réunir avant réalisation, pilote et généralisation.
