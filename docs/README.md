@@ -26,3 +26,9 @@ Le référentiel traite les concepts de la roadmap Software Architect et leur ap
 - [Permissions et modifications](PERMISSIONS.md) : actions confirmées, périmètres et propositions pour les exceptions.
 
 Les permissions initialement proposées de l’administrateur ne constituent pas une décision finale sur la création ou validation pour un client. L’annulation et la replanification restent à arbitrer ; PERMISSIONS.md expose les options en attente. Les règles confirmées DEC-001 à DEC-004 priment sur les anciennes hypothèses.
+
+
+## Consolidation des réponses du pilote
+Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
+
+Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
