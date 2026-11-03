@@ -184,3 +184,13 @@ Cette décision clôt la question du contrôle intermédiaire prestataire. Les m
 **DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
 
 **AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
+
+
+## Approfondissement du modèle et des permissions
+
+**DEC-004 — Circuit confirmé :** le client crée, le responsable prestataire affecte, l’agent réalise et soumet, le client valide directement ou demande une reprise.
+
+- [Modèle de données détaillé](MODELE_DONNEES.md) : entités, contraintes, historique, transactions et recette.
+- [Permissions et modifications](PERMISSIONS.md) : actions confirmées, périmètres et propositions pour les exceptions.
+
+Les permissions initialement proposées de l’administrateur ne constituent pas une décision finale sur la création ou validation pour un client. L’annulation et la replanification restent à arbitrer ; PERMISSIONS.md expose les options en attente. Les règles confirmées DEC-001 à DEC-004 priment sur les anciennes hypothèses.
