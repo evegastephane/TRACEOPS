@@ -1,6 +1,6 @@
 # TRACEOPS — Business Requirements Specification
 
-> Version 0.1 — 3 novembre 2026 — Projet de travail, non approuvé.
+> Version 0.2 — 3 novembre 2026 — Projet de travail, non approuvé.
 > Source : « TRACEOPS — Présentation du projet et cadrage fonctionnel initial », v0.1, fichier fourni par le porteur du projet.
 > Convention : **[S]** = explicitement décrit dans la source ; **[P]** = proposition à valider ; **[O]** = question ouverte. Une proposition ne constitue pas une décision approuvée.
 
@@ -82,3 +82,13 @@ Aucune valeur ci-dessous n’est une promesse contractuelle ni une donnée déj�
 [P] Recette : un client, un prestataire, un site, deux agents et un contrôleur ; un cas validé, un cas repris, un blocage résolu et un refus d’accès inter-client. Vérifier l’historique après reconnexion.
 [P] Accord métier requis sur périmètre, permissions, validation, conservation et connectivité. Le porteur produit valide le BRS ; le responsable technique vérifie la faisabilité ; les utilisateurs pilotes valident les parcours.
 [P] Tout changement accepté met à jour les exigences concernées, leurs tests et la décision associée. Les questions ouvertes sont consignées dans CADRAGE.md.
+
+## 9. Approfondissement de la démarche métier — v0.2
+Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md), chapitres 1–2 et 13–14, complète ce BRS avec responsabilités, recueil du besoin, arbitrages et cadres de gouvernance. La [matrice de couverture](COUVERTURE_CONCEPTS.md) indique où chaque notion est traitée.
+
+[P] **BR-12 — Traçabilité des décisions :** toute règle métier retenue doit préciser sa source, son décideur, ses critères de succès et les exigences affectées. Une demande de changement comprend bénéfice, utilisateurs concernés, effet sur données historiques et impact estimé.
+[P] **BR-13 — Continuité de service :** définir les conséquences métier d’une indisponibilité ou d’une perte de données avant de valider RPO, RTO et disponibilité. Le responsable du pilote identifie les opérations qui peuvent attendre et celles nécessitant une procédure manuelle.
+[P] **BR-14 — Gouvernance des informations :** identifier le propriétaire des référentiels et comptes rendus, les règles de consultation après fin de contrat, les durées de conservation et les systèmes externes autoritatifs.
+
+### Atelier métier proposé
+Pour chaque acteur, examiner une journée normale et une situation dégradée. Conserver un exemple concret de création, affectation, blocage, reprise, validation, suspension et consultation historique. Faire apparaître désaccords et exceptions dans CADRAGE. Le résultat attendu est un ensemble de règles compréhensibles et vérifiables, pas une sélection prématurée de technologies.
