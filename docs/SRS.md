@@ -20,7 +20,7 @@ Cette spécification traduit les besoins du BRS et les parcours du PRD en exigen
 | FR-05 | Gérer sites, fuseau IANA et zones hiérarchiques sans cycle | Cycle rejeté ; zone d’un autre site rejetée |
 | FR-06 | Définir prestations, consignes et tâches versionnées, avec justificatifs configurables | Modifier un modèle ne modifie pas l’attendu historique |
 | FR-07 | Réserver au client habilité la création d’une intervention datée dans son périmètre, avec instantané de l’attendu — DEC-003 | Création prestataire/agent refusée ; début ≥ fin rejeté ; historique inchangé après édition du modèle |
-| FR-08 | Affecter un agent actif du prestataire et tracer toute réaffectation | Agent externe refusé ; conflit horaire signalé |
+| FR-08 | Affecter un ou plusieurs agents actifs du prestataire ; tracer les remplacements | Agent externe refusé ; chevauchement horaire interdit pour chacun ; auteurs conservés |
 | FR-09 | Lister les missions de l’agent et enregistrer réponses, observations et pièces | Seules les missions autorisées sont accessibles |
 | FR-10 | Signaler un blocage motivé puis une levée motivée | Statut précédent restauré et événements conservés |
 | FR-11 | Soumettre une version complète et la figer atomiquement | Double clic sans doublon ; soumission incomplète refusée |
@@ -64,15 +64,15 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 | A_CONTROLER | Valider | VALIDEE | Contrôleur habilité distinct du soumetteur |
 | A_CONTROLER | Demander reprise | A_REPRENDRE | Contrôleur ; motif requis |
 | BROUILLON / PLANIFIEE / AFFECTEE / BLOQUEE / A_REPRENDRE | Annuler | ANNULEE | Client gestionnaire ; administrateur exceptionnel selon DEC-007 ; motif |
-[P] EN_COURS ne s’annule qu’après blocage motivé ; A_CONTROLER ne s’annule pas dans le MVP. VALIDEE et ANNULEE sont terminales ; une correction exceptionnelle crée un événement correctif autorisé, sans réécrire le passé.
-[P] Réaffectation en AFFECTEE ou BLOQUEE seulement ; toute autre situation exige d’abord un blocage. Une reprise réutilise l’intervention et crée une version de compte rendu.
+[S] Le client peut annuler avant soumission, y compris en cours, avec motif et conservation du travail déclaré (PIL-09). Les cas après une première soumission restent à préciser. VALIDEE et ANNULEE sont terminales ; une correction exceptionnelle crée un événement correctif autorisé, sans réécrire le passé.
+[S] Remplacement autorisé après démarrage avec motif, transmission du brouillon et conservation des auteurs (PIL-10). Une reprise réutilise l’intervention et crée une version de compte rendu.
 [O] Ces choix doivent être éprouvés avec le pilote, notamment annulation pendant contrôle, réouverture et remplacement d’un agent absent.
 [P] Anomalie : OUVERTE → EN_TRAITEMENT → RESOLUE → CLOTUREE ; réouverture de RESOLUE/CLOTUREE vers EN_TRAITEMENT avec motif par client habilité. Responsable prestataire résout ; client ou contrôleur clôture.
 
 ## 5. Règles de gestion
 - **RG-01** Une intervention appartient à un client, un site, un prestataire autorisé et une prestation. La zone appartient au même site.
 - **RG-02** Les membres du prestataire ne voient aucune intervention d’un concurrent. L’agent ne lit que les missions affectées et les éléments nécessaires.
-- **RG-03** L’intervenant attendu est un agent responsable unique dans le MVP. Un conflit horaire affiche un avertissement ; il ne bloque pas tant que la règle n’est pas confirmée.
+- **RG-03** Un ou plusieurs agents sont affectés. Les chevauchements de missions sont interdits pour chaque agent (PIL-05/07). Le responsable de soumission collective reste à confirmer.
 - **RG-04** À la soumission, chaque tâche est EFFECTUEE ou IMPOSSIBLE. IMPOSSIBLE exige un motif, ouvre une anomalie liée et laisse la décision finale au contrôleur. Les preuves requises ne sont exigées que pour les tâches effectuées ; une impossibilité n’est jamais un achèvement.
 - **RG-05** Le compte rendu soumis est immuable. Une reprise produit une nouvelle révision ; le contrôle référence exactement la révision soumise.
 - **RG-06** La validation nécessite une décision explicite et n’est jamais déduite d’une photo, d’un QR, d’un horaire ou d’une checklist.
@@ -90,7 +90,7 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 | ServiceAgreement | client_id, provider_id, site_id, prestation, période, état |
 | TaskTemplateVersion | prestation, version, tâches, consignes, exigences de preuve |
 | Intervention | contexte client/site/prestataire/accord, instantané attendu, début/fin, état, version de concurrence |
-| Assignment | intervention, agent, début/fin de validité, auteur ; un responsable courant |
+| Assignment | intervention, agent, début/fin de validité, auteur ; plusieurs membres courants sans doublon |
 | ReportRevision / TaskResponse | intervention, numéro, auteur, état brouillon/soumis, réponses, dates |
 | Evidence | contexte, révision, clé objet privée, type, taille, empreinte, état de sécurité |
 | Review | révision soumise, contrôleur, décision, motif, date ; une décision finale par révision |
@@ -209,3 +209,12 @@ Les états permettant ces actions, les délais de réponse et les modalités de 
 **AT-20 :** demande de replanification sans changement effectif, puis confirmation client et mise à jour unique ; confirmation concurrente périmée refusée.
 **AT-21 :** annulation directe par prestataire refusée ; demande possible ; décision client tracée.
 **AT-22 :** action administrative sans motif refusée ; avec motif, permissions globales et invariants satisfaits, résultat et identité réelle conservés.
+
+
+## Consolidation des réponses du pilote
+Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
+
+Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
+
+**FR-25 :** identifier zones/salles par QR sans contourner les autorisations. **FR-26 :** classer les preuves avant/après avec auteur. **FR-27 :** produire un rapport PDF privé dans la langue choisie. **FR-28 :** traduire interface, erreurs, notifications et modèles PDF en français/anglais. **FR-29 :** présenter les notifications métier dans l’application.
+**AT-23 :** affectation multiple et refus de conflits concurrents. **AT-24 :** scan QR hors périmètre refusé. **AT-25 :** remplacement avec contributions et auteurs préservés. **AT-26 :** parcours bilingue et PDF privé. **AT-27 :** preuves avant/après associées au bon périmètre. Ces scénarios sont à implémenter et exécuter.
