@@ -14,7 +14,7 @@
 | Acteur | Intérêt | Responsabilité proposée |
 |---|---|---|
 | Client / donneur d’ordre [S] | Visibilité sur ses sites et prestations | Définir les attentes et désigner les contrôleurs [P] |
-| Responsable prestataire [S] | Organiser les équipes et traiter les reprises | Planifier et affecter dans les périmètres autorisés [P] |
+| Responsable prestataire [S] | Organiser les équipes et traiter les reprises | Organiser les équipes et affecter les interventions créées par le client [P pour l’affectation] |
 | Agent terrain [S] | Savoir quoi faire et rendre compte sur téléphone | Exécuter, déclarer les difficultés et soumettre le compte rendu |
 | Contrôleur [S, utilisateur habilité] | Accepter ou demander une reprise | Capacité attribuée à un utilisateur client pour le pilote [P] |
 | Administrateur global [S, ajout du porteur le 03/11/2026] | Superviser toutes les organisations et opérations | Gérer les comptes, accès, référentiels et interventions de toute la plateforme ; actions tracées [P] |
@@ -57,7 +57,7 @@ Aucune valeur ci-dessous n’est une promesse contractuelle ni une donnée déj�
 
 ## 6. Processus cible proposé
 1. Le client habilite un prestataire pour un site et convient des prestations.
-2. Le client définit ou approuve les attentes ; le responsable prestataire prépare les interventions.
+2. Le client définit les attentes et crée les interventions ; le responsable prestataire prépare leur exécution.
 3. Le responsable affecte un agent dans la relation client–prestataire autorisée.
 4. L’agent exécute et documente ; un blocage est signalé avec motif.
 5. L’agent soumet un compte rendu versionné ; les données soumises deviennent non modifiables.
@@ -105,3 +105,8 @@ Parcours : agent soumet → À contrôler par le client → Validée ou À repre
 Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
 
 **Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
+
+
+**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
+
+**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
