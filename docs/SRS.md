@@ -19,7 +19,7 @@ Cette spécification traduit les besoins du BRS et les parcours du PRD en exigen
 | FR-04 | Gérer organisations, appartenances et relations client–prestataire actives | Impossible d’affecter hors relation autorisée |
 | FR-05 | Gérer sites, fuseau IANA et zones hiérarchiques sans cycle | Cycle rejeté ; zone d’un autre site rejetée |
 | FR-06 | Définir prestations, consignes et tâches versionnées, avec justificatifs configurables | Modifier un modèle ne modifie pas l’attendu historique |
-| FR-07 | Créer une intervention datée avec instantané de la définition attendue | Début ≥ fin rejeté ; historique inchangé après édition du modèle |
+| FR-07 | Réserver au client habilité la création d’une intervention datée dans son périmètre, avec instantané de l’attendu — DEC-003 | Création prestataire/agent refusée ; début ≥ fin rejeté ; historique inchangé après édition du modèle |
 | FR-08 | Affecter un agent actif du prestataire et tracer toute réaffectation | Agent externe refusé ; conflit horaire signalé |
 | FR-09 | Lister les missions de l’agent et enregistrer réponses, observations et pièces | Seules les missions autorisées sont accessibles |
 | FR-10 | Signaler un blocage motivé puis une levée motivée | Statut précédent restauré et événements conservés |
@@ -41,7 +41,7 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 | Relation client–prestataire | C,L,M | L | L propre relation | — |
 | Membres de son organisation | C,L,M | — | C,L,M propres membres | Profil propre, champs limités |
 | Prestations et attendus | C,L,M | L | L ; proposition de changement ultérieure | L liés aux missions |
-| Interventions | L ; annulation autorisée | L à contrôler | C,L,M avant démarrage | L affectées |
+| Interventions | C,L ; M et annulation selon règles proposées | L à contrôler | L ; affectation séparée, sans création | L affectées |
 | Affectations | L | L | C,L,M | L propre affectation |
 | Compte rendu | L | L | L | C,M brouillon propre ; soumettre |
 | Contrôle | L | D | L | L décision liée à sa mission |
@@ -50,12 +50,12 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 [P] Le rôle contrôleur est une capacité cumulable avec gestionnaire client.
 [S, demande complémentaire] **Administrateur global de plateforme** : rôle supplémentaire transversal. Il dispose de C/L/M sur les référentiels et les accès de tous les clients et prestataires, de la gestion des affectations et anomalies et de la capacité de contrôle D. [P] Il peut consulter tous les comptes rendus, mais ne remplace pas leur auteur pour éditer les versions soumises. Les invariants de séparation déclarant/contrôleur s’appliquent aussi à lui. MFA et journalisation obligatoires ; motif requis pour suspension, changement de rôle et décision de contrôle.
 [P] Ce rôle applicatif est distinct du compte technique de déploiement ou de base de données : aucune attribution implicite du rôle global aux exploitants.
-[O] Création d’interventions par le client et approbation des changements d’attendus restent à arbitrer. Le contrôle direct par le client est confirmé par DEC-002 ; la délégation au prestataire n’est pas retenue dans ce circuit.
+[O] La création par le client est confirmée par DEC-003. L’approbation des changements d’attendus reste à arbitrer. Le contrôle direct par le client est confirmé par DEC-002 ; la délégation au prestataire n’est pas retenue dans ce circuit.
 
 ## 4. Cycle de vie proposé
 | État source | Commande | État cible | Autorisé / conditions |
 |---|---|---|---|
-| BROUILLON | Planifier | PLANIFIEE | Responsable ; lieu, tâches et créneau valides |
+| BROUILLON | Planifier | PLANIFIEE | Client habilité ; lieu, tâches et créneau valides [P pour la planification] |
 | PLANIFIEE | Affecter | AFFECTEE | Responsable ; agent actif et autorisé |
 | AFFECTEE | Démarrer | EN_COURS | Agent affecté |
 | AFFECTEE / EN_COURS / A_REPRENDRE | Bloquer | BLOQUEE | Agent affecté ; motif ; état de retour conservé |
@@ -102,7 +102,7 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 ## 7. Contrats d’interface proposés
 API HTTP JSON sous /api/v1 ; authentification par session sécurisée ; pagination bornée.
 - GET /interventions?site_id=&status=&from=&to=&cursor= : liste autorisée, taille maximale 100.
-- POST /interventions : crée dans un accord autorisé ; 201 et identifiant.
+- POST /interventions : réservé au client habilité dans son périmètre et un accord autorisé ; 201 et identifiant ; rôle prestataire ou agent refusé.
 - POST /interventions/{id}/assignments : affectation contrôlée.
 - PATCH /interventions/{id}/report-draft : sauvegarde serveur avec version attendue.
 - POST /interventions/{id}/submissions : version attendue + clé d’idempotence.
@@ -179,3 +179,8 @@ Parcours : agent soumet → À contrôler par le client → Validée ou À repre
 Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
 
 **Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
+
+
+**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
+
+**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
