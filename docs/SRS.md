@@ -63,7 +63,7 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 | EN_COURS / A_REPRENDRE | Soumettre | A_CONTROLER | Agent ; FR-11 ; version du compte rendu valide |
 | A_CONTROLER | Valider | VALIDEE | Contrôleur habilité distinct du soumetteur |
 | A_CONTROLER | Demander reprise | A_REPRENDRE | Contrôleur ; motif requis |
-| BROUILLON / PLANIFIEE / AFFECTEE / BLOQUEE / A_REPRENDRE | Annuler | ANNULEE | Client gestionnaire ou responsable ; motif |
+| BROUILLON / PLANIFIEE / AFFECTEE / BLOQUEE / A_REPRENDRE | Annuler | ANNULEE | Client gestionnaire ; administrateur exceptionnel selon DEC-007 ; motif |
 [P] EN_COURS ne s’annule qu’après blocage motivé ; A_CONTROLER ne s’annule pas dans le MVP. VALIDEE et ANNULEE sont terminales ; une correction exceptionnelle crée un événement correctif autorisé, sans réécrire le passé.
 [P] Réaffectation en AFFECTEE ou BLOQUEE seulement ; toute autre situation exige d’abord un blocage. Une reprise réutilise l’intervention et crée une version de compte rendu.
 [O] Ces choix doivent être éprouvés avec le pilote, notamment annulation pendant contrôle, réouverture et remplacement d’un agent absent.
@@ -176,14 +176,14 @@ Chaque recette identifie préconditions, données, étapes, résultat attendu, r
 
 Parcours : agent soumet → À contrôler par le client → Validée ou À reprendre → nouvelle soumission si nécessaire.
 
-Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
+Cette décision clôt la question du contrôle intermédiaire prestataire. L’intervention exceptionnelle de l’administrateur global est confirmée par DEC-007, avec motif et historique ; elle ne crée pas une étape obligatoire dans le circuit.
 
 **Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
 
 
-**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
+**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global est autorisée selon DEC-007 et ne constitue pas un droit de création prestataire.
 
-**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
+**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification suit DEC-005 ; les autres modifications après affectation restent à préciser.
 
 
 ## Approfondissement du modèle et des permissions
@@ -193,4 +193,19 @@ Cette décision clôt la question du contrôle intermédiaire prestataire. Les m
 - [Modèle de données détaillé](MODELE_DONNEES.md) : entités, contraintes, historique, transactions et recette.
 - [Permissions et modifications](PERMISSIONS.md) : actions confirmées, périmètres et propositions pour les exceptions.
 
-Les permissions initialement proposées de l’administrateur ne constituent pas une décision finale sur la création ou validation pour un client. L’annulation et la replanification restent à arbitrer ; PERMISSIONS.md expose les options en attente. Les règles confirmées DEC-001 à DEC-004 priment sur les anciennes hypothèses.
+Les décisions DEC-005 à DEC-007 confirment les responsabilités de replanification, annulation et intervention exceptionnelle de l’administrateur. Les règles confirmées DEC-001 à DEC-007 priment sur les anciennes hypothèses.
+
+
+## Décisions DEC-005 à DEC-007 — confirmées par le porteur
+- **DEC-005 — Replanification :** le prestataire demande un changement de créneau ; le client confirme. La demande seule ne modifie pas le planning en vigueur.
+- **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
+- **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
+Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
+
+### Exigences et recette des changements demandés
+**FR-22 :** enregistrer une demande de replanification du prestataire avec créneau proposé et motif ; conserver le créneau courant jusqu’à confirmation client. Proposition technique : décision et modification du planning atomiques, contrôle de version contre demande obsolète.
+**FR-23 :** enregistrer une demande d’annulation ; seule la décision client, ou une action administrative exceptionnelle autorisée, peut annuler. Une demande en attente ne suspend pas automatiquement l’intervention.
+**FR-24 :** toute intervention administrative exceptionnelle exige un motif et écrit acteur réel, client cible, action et résultat dans l’audit.
+**AT-20 :** demande de replanification sans changement effectif, puis confirmation client et mise à jour unique ; confirmation concurrente périmée refusée.
+**AT-21 :** annulation directe par prestataire refusée ; demande possible ; décision client tracée.
+**AT-22 :** action administrative sans motif refusée ; avec motif, permissions globales et invariants satisfaits, résultat et identité réelle conservés.
