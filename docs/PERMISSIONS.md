@@ -14,13 +14,13 @@ Les droits sont évalués côté serveur à chaque requête. Les listes, compteu
 C = confirmé par le porteur ; P = proposition ; — = pas de droit au titre de ce rôle.
 | Action | Client habilité | Responsable prestataire | Agent affecté | Administrateur global |
 |---|---|---|---|---|
-| Créer intervention | C, dans son périmètre | — | — | Intervention exceptionnelle à préciser |
+| Créer intervention | C, dans son périmètre | — | — | C, exceptionnellement avec motif et historique |
 | Définir créneau et attendus | P | Lecture ; demande de changement P | Lecture utile | Pouvoir exceptionnel à préciser |
 | Affecter / réaffecter | Lecture P | C pour affecter ; réaffectation P | Lecture propre | Pouvoir exceptionnel à préciser |
 | Démarrer | Lecture | Lecture | C | Supervision |
 | Renseigner compte rendu | Lecture | Lecture | C, propre brouillon | Lecture globale ; pas de falsification |
 | Soumettre | — | — | C | Pas de soumission sous identité d’un agent |
-| Valider / demander reprise | C, habilitation de contrôle | — | — | Intervention exceptionnelle à préciser |
+| Valider / demander reprise | C, habilitation de contrôle | — | — | C, exceptionnellement avec motif et historique |
 | Signaler blocage | Lecture | Lecture / traitement P | P | Supervision |
 | Consulter historique | P, périmètre | P, périmètre | P, utile à sa mission | Vue globale confirmée ; modalités P |
 | Gérer organisations et accès | P, organisation propre | P, équipe propre | Profil propre limité P | Vue et gestion globales confirmées ; modalités P |
@@ -39,9 +39,9 @@ Le client créateur peut aussi disposer de la capacité de contrôle. Le compte 
 
 Ces propositions ne sont pas des décisions acquises. En attendant arbitrage, l’implémentation ne doit pas autoriser une modification sensible après publication sans règle explicite.
 
-## 5. Annulation et empêchement — propositions
+## 5. Annulation et empêchement — responsabilité confirmée
 Le client décide de l’annulation avec motif. Le prestataire peut signaler son impossibilité d’exécuter et demander une annulation ou un changement ; cette demande ne vaut pas annulation.
-Cette proposition restreint la règle initiale du SRS autorisant l’annulation au prestataire : le point doit être arbitré avant codage.
+DEC-006 remplace la proposition initiale autorisant le prestataire à annuler : seul le client décide dans le circuit normal.
 Les données déjà produites restent conservées. Une annulation n’est ni une validation ni une résolution d’anomalie. Une mission en contrôle ne disparaît pas de la file sans événement explicite.
 
 ## 6. Reprises
@@ -49,7 +49,7 @@ Le client saisit un motif compréhensible. Le responsable prestataire organise l
 Proposition : délai de reprise, nouvelle échéance et éventuel coût restent des champs ou règles à cadrer ; aucune facturation implicite.
 
 ## 7. Administrateur global
-Le porteur a demandé le contrôle global de la plateforme. Les capacités de supervision et de gestion des accès sont explicites. Il reste à décider s’il peut créer ou valider exceptionnellement pour le compte d’un client.
+Le porteur a demandé le contrôle global de la plateforme. Les capacités de supervision et de gestion des accès sont explicites. DEC-007 confirme qu’il peut créer ou valider exceptionnellement pour le compte d’un client, avec motif obligatoire et historique.
 Quelle que soit la décision : identité réelle, contexte cible et motif sont conservés. Une telle opération ne s’exécute jamais sous l’identité fictive d’un utilisateur client.
 Cette distinction évite qu’un droit global encore proposé soit traité comme une règle approuvée dans les matrices initiales.
 
@@ -67,7 +67,14 @@ PERM-10 : administration globale refusée aux rôles métier ordinaires.
 Tests à exécuter dans le futur backend NestJS ; les mêmes règles doivent couvrir toutes les interfaces.
 
 ## 9. Questions regroupées pour la prochaine revue
-- Qui peut replanifier et jusqu’à quel état ?
-- Le prestataire demande-t-il l’annulation au client, ou peut-il annuler dans certains cas ?
-- L’administrateur global peut-il créer/valider exceptionnellement pour un client ?
+- Jusqu’à quel état la replanification confirmée par le client reste-t-elle possible ?
+- Dans quels états l’annulation décidée par le client reste-t-elle possible ?
+- Comment notifier au client une intervention exceptionnelle de l’administrateur autorisée par DEC-007 ?
 - Le fonctionnement sans connexion est-il indispensable au pilote ?
+
+
+## Décisions DEC-005 à DEC-007 — confirmées par le porteur
+- **DEC-005 — Replanification :** le prestataire demande un changement de créneau ; le client confirme. La demande seule ne modifie pas le planning en vigueur.
+- **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
+- **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
+Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
