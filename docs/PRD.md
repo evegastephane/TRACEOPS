@@ -1,6 +1,6 @@
 # TRACEOPS — Product Requirements Document
 
-> Version 0.1 — 3 novembre 2026 — Projet de travail, non approuvé.
+> Version 0.2 — 3 novembre 2026 — Projet de travail, non approuvé.
 > Source : « TRACEOPS — Présentation du projet et cadrage fonctionnel initial », v0.1, fichier fourni par le porteur du projet.
 > Convention : **[S]** = explicitement décrit dans la source ; **[P]** = proposition à valider ; **[O]** = question ouverte. Une proposition ne constitue pas une décision approuvée.
 
@@ -111,3 +111,13 @@ En tant que client ou responsable, je filtre les interventions et anomalies dans
 ## 8. Conditions de lancement
 [P] Parcours de référence et exceptions testés ; aucun défaut critique d’isolation ; restauration d’une sauvegarde démontrée ; supervision et procédure de support disponibles ; responsables métier formés.
 [O] Le pilote, l’hébergement et la politique de conservation sont à confirmer. Hors ligne indispensable ou contrôle à plusieurs niveaux entraîneraient une révision du MVP et de son estimation.
+
+## 9. Approfondissement produit — v0.2
+Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md), chapitres 9 et 17, complète les parcours et la gestion des situations dégradées. La [couverture des concepts](COUVERTURE_CONCEPTS.md) relie ces choix à l’ensemble du dossier.
+
+[P] **US-10 — Comprendre l’état d’une action :** après une sauvegarde ou soumission, l’utilisateur distingue enregistrement confirmé, résultat inconnu et échec. Une réponse perdue n’entraîne pas un second compte rendu ; le réessai réutilise l’opération initiale. Critère : couper le réseau après commit puis réessayer produit un seul effet.
+[P] **US-11 — Administrer avec visibilité des conséquences :** avant suspension d’une organisation, l’administrateur voit les missions actives concernées et saisit un motif. La politique de traitement de ces missions reste une décision métier ; aucune annulation automatique implicite.
+[P] **US-12 — Consulter un indicateur compréhensible :** afficher population, période et fraîcheur ; distinguer absence de données et zéro. Une éventuelle projection différée ne doit pas servir à autoriser les transitions métier.
+
+### Critères de revue des quatre espaces
+Client : visibilité et décision de contrôle. Prestataire : organisation des équipes et traitement des exceptions. Agent : clarté des tâches et confirmation de sauvegarde sur téléphone. Administrateur : périmètre global, pouvoirs explicites et audit. La même règle métier s’applique à toutes les interfaces qui peuvent l’invoquer.
