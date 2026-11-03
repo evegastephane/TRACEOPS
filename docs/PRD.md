@@ -121,3 +121,16 @@ Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md), chapitres 9 et 17, c
 
 ### Critères de revue des quatre espaces
 Client : visibilité et décision de contrôle. Prestataire : organisation des équipes et traitement des exceptions. Agent : clarté des tâches et confirmation de sauvegarde sur téléphone. Administrateur : périmètre global, pouvoirs explicites et audit. La même règle métier s’applique à toutes les interfaces qui peuvent l’invoquer.
+
+
+## Décisions confirmées par le porteur
+
+**DEC-001 — Backend NestJS — accepté.** Le backend sera construit avec NestJS. Le choix ne confirme pas automatiquement les autres outils proposés, le fournisseur d’identité ou l’hébergement.
+
+**DEC-002 — Validation directe par le client — accepté.** Dès la soumission de l’agent, l’intervention est disponible pour le contrôle d’un utilisateur client habilité. Celui-ci valide directement ou demande une reprise motivée. Aucune prévalidation ni approbation du responsable prestataire n’est requise. Le responsable prestataire consulte le résultat et organise les reprises. Après une nouvelle soumission, le client contrôle à nouveau.
+
+Parcours : agent soumet → À contrôler par le client → Validée ou À reprendre → nouvelle soumission si nécessaire.
+
+Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
+
+**Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
