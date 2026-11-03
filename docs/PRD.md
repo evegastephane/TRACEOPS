@@ -41,7 +41,7 @@ En tant que client habilité, je crée un site et ses zones, puis j’y autorise
 - L’ajout d’un prestataire concurrent ou d’une relation non autorisée est refusé.
 - Un prestataire ne voit que les informations des sites nécessaires à ses prestations.
 ### US-02 — Planifier et affecter (EP-03)
-En tant que responsable prestataire, je crée une intervention dans mon périmètre et l’affecte.
+[S, DEC-003] En tant que client habilité, je crée une intervention dans mon périmètre. [P] Le responsable prestataire affecte ensuite l’intervention à un agent de son entreprise.
 - La mission précise site, zone, prestation, début, fin, consignes et tâches.
 - Un agent d’une autre entreprise ne peut pas être affecté.
 - Une affectation ou replanification produit un événement d’historique.
@@ -134,3 +134,8 @@ Parcours : agent soumet → À contrôler par le client → Validée ou À repre
 Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
 
 **Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
+
+
+**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
+
+**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
