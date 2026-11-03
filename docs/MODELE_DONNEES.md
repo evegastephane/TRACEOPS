@@ -140,4 +140,15 @@ MD-08 : restauration permet de détecter chaque référence de pièce sans objet
 Ces cas sont des spécifications de tests futurs ; aucun n’a encore été exécuté.
 
 ## 8. Décisions encore ouvertes
-Modifications après publication, replanification, annulation en cours, accès historique de l’ancien agent, pouvoir opérationnel exceptionnel de l’administrateur, conservation et hors ligne. Les choix proposés ci-dessus pourront évoluer sans remettre en cause le circuit métier confirmé.
+Modifications après publication, états autorisant replanification/annulation, accès historique de l’ancien agent, conservation et hors ligne. Les responsables de replanification/annulation et le pouvoir exceptionnel de l’administrateur sont confirmés par DEC-005 à DEC-007. Les choix proposés ci-dessus pourront évoluer sans remettre en cause le circuit métier confirmé.
+
+
+## Décisions DEC-005 à DEC-007 — confirmées par le porteur
+- **DEC-005 — Replanification :** le prestataire demande un changement de créneau ; le client confirme. La demande seule ne modifie pas le planning en vigueur.
+- **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
+- **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
+Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
+
+### ChangeRequest — demande de changement proposée
+Champs : id, intervention_id, requested_by_membership_id, type (RESCHEDULE ou CANCEL), reason, proposed_start/proposed_end pour replanification, base_intervention_version, status, decided_by_user_id éventuel, decision_reason éventuel, created_at, decided_at.
+États proposés : PENDING, ACCEPTED, REJECTED, WITHDRAWN. L’état de demande est distinct de celui de l’intervention. Une demande ne modifie ni créneau ni état métier ; acceptation et effet s’enregistrent atomiquement, avec vérification du périmètre et de la version. Le rejet conserve le planning initial. Une demande obsolète doit être revue au lieu d’écraser une modification plus récente.
