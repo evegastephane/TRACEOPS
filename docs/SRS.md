@@ -50,7 +50,7 @@ C = créer, L = lire, M = modifier, D = décider ; « périmètre » reste oblig
 [P] Le rôle contrôleur est une capacité cumulable avec gestionnaire client.
 [S, demande complémentaire] **Administrateur global de plateforme** : rôle supplémentaire transversal. Il dispose de C/L/M sur les référentiels et les accès de tous les clients et prestataires, de la gestion des affectations et anomalies et de la capacité de contrôle D. [P] Il peut consulter tous les comptes rendus, mais ne remplace pas leur auteur pour éditer les versions soumises. Les invariants de séparation déclarant/contrôleur s’appliquent aussi à lui. MFA et journalisation obligatoires ; motif requis pour suspension, changement de rôle et décision de contrôle.
 [P] Ce rôle applicatif est distinct du compte technique de déploiement ou de base de données : aucune attribution implicite du rôle global aux exploitants.
-[O] Création d’interventions par le client, approbation des changements d’attendus et délégation de contrôle à un prestataire doivent être arbitrées.
+[O] Création d’interventions par le client et approbation des changements d’attendus restent à arbitrer. Le contrôle direct par le client est confirmé par DEC-002 ; la délégation au prestataire n’est pas retenue dans ce circuit.
 
 ## 4. Cycle de vie proposé
 | État source | Commande | État cible | Autorisé / conditions |
@@ -166,3 +166,16 @@ AT-14 : réponse perdue, même clé, puis corps différent — FR-19. AT-15 : su
 
 ### Dossier de preuve
 Chaque recette identifie préconditions, données, étapes, résultat attendu, résultat observé et anomalies. Les méthodes sont définies ici ; aucun résultat d’exécution n’est encore revendiqué.
+
+
+## Décisions confirmées par le porteur
+
+**DEC-001 — Backend NestJS — accepté.** Le backend sera construit avec NestJS. Le choix ne confirme pas automatiquement les autres outils proposés, le fournisseur d’identité ou l’hébergement.
+
+**DEC-002 — Validation directe par le client — accepté.** Dès la soumission de l’agent, l’intervention est disponible pour le contrôle d’un utilisateur client habilité. Celui-ci valide directement ou demande une reprise motivée. Aucune prévalidation ni approbation du responsable prestataire n’est requise. Le responsable prestataire consulte le résultat et organise les reprises. Après une nouvelle soumission, le client contrôle à nouveau.
+
+Parcours : agent soumet → À contrôler par le client → Validée ou À reprendre → nouvelle soumission si nécessaire.
+
+Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
+
+**Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
