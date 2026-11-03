@@ -64,7 +64,7 @@ Aucune valeur ci-dessous n’est une promesse contractuelle ni une donnée déj�
 6. Le contrôleur client valide ou motive une demande de reprise.
 7. En reprise, l’agent complète une nouvelle version puis soumet à nouveau ; les versions précédentes restent consultables.
 8. Les tableaux de bord reflètent l’état et les anomalies ; la validation ne ferme pas automatiquement toute anomalie.
-[P] Détails opérationnels et exceptions dans SRS.md. [O] Le pilote doit confirmer les étapes 2 et 6.
+[P] Détails opérationnels et exceptions dans SRS.md. [O] Le pilote doit confirmer l’étape 2. [S] L’étape 6 est confirmée : le client valide directement.
 
 ## 7. Contraintes, hypothèses et risques
 | Sujet | Statut / impact | Réponse proposée |
@@ -92,3 +92,16 @@ Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md), chapitres 1–2 et 1
 
 ### Atelier métier proposé
 Pour chaque acteur, examiner une journée normale et une situation dégradée. Conserver un exemple concret de création, affectation, blocage, reprise, validation, suspension et consultation historique. Faire apparaître désaccords et exceptions dans CADRAGE. Le résultat attendu est un ensemble de règles compréhensibles et vérifiables, pas une sélection prématurée de technologies.
+
+
+## Décisions confirmées par le porteur
+
+**DEC-001 — Backend NestJS — accepté.** Le backend sera construit avec NestJS. Le choix ne confirme pas automatiquement les autres outils proposés, le fournisseur d’identité ou l’hébergement.
+
+**DEC-002 — Validation directe par le client — accepté.** Dès la soumission de l’agent, l’intervention est disponible pour le contrôle d’un utilisateur client habilité. Celui-ci valide directement ou demande une reprise motivée. Aucune prévalidation ni approbation du responsable prestataire n’est requise. Le responsable prestataire consulte le résultat et organise les reprises. Après une nouvelle soumission, le client contrôle à nouveau.
+
+Parcours : agent soumet → À contrôler par le client → Validée ou À reprendre → nouvelle soumission si nécessaire.
+
+Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
+
+**Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
