@@ -1,6 +1,6 @@
 # TRACEOPS — Software Requirements Specification
 
-> Version 0.1 — 3 novembre 2026 — Projet de travail, non approuvé.
+> Version 0.2 — 3 novembre 2026 — Projet de travail, non approuvé.
 > Source : « TRACEOPS — Présentation du projet et cadrage fonctionnel initial », v0.1, fichier fourni par le porteur du projet.
 > Convention : **[S]** = explicitement décrit dans la source ; **[P]** = proposition à valider ; **[O]** = question ouverte. Une proposition ne constitue pas une décision approuvée.
 
@@ -147,3 +147,22 @@ API HTTP JSON sous /api/v1 ; authentification par session sécurisée ; paginati
 | AT-13 | Administrateur global : accès multi-client autorisé, gestion et décision tracées ; utilisateur normal refusé sur tous les endpoints admin ; compte rendu soumis toujours immuable |
 | AT-12 | Charger une pièce interdite ou récupérer une URL objet sans droit ; refus |
 [P] Chaque exigence FR possède sa vérification dans le tableau ; la traçabilité consolidée figure dans CADRAGE.md.
+
+## 10. Complément de spécification — v0.2
+Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md) précise les concepts soutenant ces exigences. Les nouveaux éléments ci-dessous restent proposés [P].
+
+| ID | Exigence complémentaire | Recette attendue |
+|---|---|---|
+| FR-19 | Conserver le résultat d’une commande idempotente et refuser la même clé avec un autre corps | Réponse perdue après commit puis réessai : un seul effet ; corps différent : 409 |
+| FR-20 | Afficher les opérations actives concernées lors d’une suspension globale | Administrateur informé ; accès retirés et historique conservé ; aucun traitement implicite des missions |
+| FR-21 | Associer chaque indicateur à population, période, fuseau et date de rafraîchissement | Cas nul, vide, tardif, annulé et repris correctement distingués |
+| NFR-11 | Borner délais et répétitions des appels externes | Dépendance indisponible : réponse maîtrisée, pas de boucle infinie ni duplication |
+| NFR-12 | Maintenir la cohérence des migrations et déploiements | Ancienne/nouvelle version compatibles pendant transition ou interruption explicitement planifiée |
+| NFR-13 | Revérifier le contexte sur les tâches différées et les connexions réutilisées | Travail rejoué après révocation et connexion A→B sans fuite |
+| NFR-14 | Mettre en place une preuve de restauration incluant base, pièces, droits et travaux différés | Exercice chronométré, objets manquants détectés et aucune duplication d’effet |
+
+### Scénarios complémentaires
+AT-14 : réponse perdue, même clé, puis corps différent — FR-19. AT-15 : suspension d’un prestataire avec missions actives — FR-20. AT-16 : réutilisation de connexion et rejeu de tâche après retrait d’accès — NFR-13. AT-17 : dépendance lente et essais bornés — NFR-11. AT-18 : migration compatible et retour applicatif — NFR-12. AT-11 couvre FR-21 et AT-10 est étendu par NFR-14.
+
+### Dossier de preuve
+Chaque recette identifie préconditions, données, étapes, résultat attendu, résultat observé et anomalies. Les méthodes sont définies ici ; aucun résultat d’exécution n’est encore revendiqué.
