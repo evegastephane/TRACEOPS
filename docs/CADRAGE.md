@@ -24,7 +24,7 @@ La note source est un cadrage initial, pas un cahier des charges définitif. Les
 |---|---|---|---|
 | Q-01 | Quel client pilote, secteur et pays ? | Un site, nettoyage et maintenance | Règles, hébergement, photos et obligations |
 | Q-02 | Qui crée les interventions et les attendus ? | Client définit attendus ; prestataire planifie | Permissions et responsabilités |
-| Q-03 | Qui contrôle et valide ? Combien de niveaux ? | Un contrôleur client, distinct du déclarant | Workflow, délais et modèle |
+| Q-03 — résolue | Qui contrôle et valide ? | Client habilité directement, sans prévalidation prestataire — DEC-002 | Circuit à un niveau confirmé |
 | Q-04 | Le terrain exige-t-il le hors ligne ? | En ligne uniquement tant que non confirmé | Architecture et effort majeurs |
 | Q-05 | Quelle équipe, quel budget, quel délai ? | Aucun engagement chiffré | Choix stack, lots et planning |
 | Q-06 | Quels volumes et quelle conservation ? | Hypothèses de test seulement | Coût, performance et sauvegardes |
@@ -79,3 +79,16 @@ Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md) et sa [matrice de cou
 | BR-07 Pilotage | US-12, FR-21 | AT-11 |
 
 La couverture des concepts est une revue de contenu, pas une recette logicielle. Les notions supplémentaires propres à TRACEOPS sont identifiées dans la matrice. Les questions structurantes de la section 2 restent ouvertes.
+
+
+## Décisions confirmées par le porteur
+
+**DEC-001 — Backend NestJS — accepté.** Le backend sera construit avec NestJS. Le choix ne confirme pas automatiquement les autres outils proposés, le fournisseur d’identité ou l’hébergement.
+
+**DEC-002 — Validation directe par le client — accepté.** Dès la soumission de l’agent, l’intervention est disponible pour le contrôle d’un utilisateur client habilité. Celui-ci valide directement ou demande une reprise motivée. Aucune prévalidation ni approbation du responsable prestataire n’est requise. Le responsable prestataire consulte le résultat et organise les reprises. Après une nouvelle soumission, le client contrôle à nouveau.
+
+Parcours : agent soumet → À contrôler par le client → Validée ou À reprendre → nouvelle soumission si nécessaire.
+
+Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
+
+**Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
