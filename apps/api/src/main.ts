@@ -1,15 +1,8 @@
-import 'reflect-metadata';
-import { NestFactory } from '@nestjs/core';
-import helmet from 'helmet';
-import { AppModule } from './app.module.js';
+import { createApplication } from './application.js';
 import { configuration } from './config.js';
-
 async function bootstrap() {
   const config = configuration();
-  const app = await NestFactory.create(AppModule);
-  app.use(helmet());
-  app.setGlobalPrefix('api/v1');
-  app.enableShutdownHooks();
+  const app = await createApplication();
   await app.listen(config.port);
 }
 bootstrap().catch(() => {
