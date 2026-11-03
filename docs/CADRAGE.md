@@ -23,7 +23,7 @@ La note source est un cadrage initial, pas un cahier des charges définitif. Les
 | ID | Question | Proposition de travail | Impact |
 |---|---|---|---|
 | Q-01 | Quel client pilote, secteur et pays ? | Un site, nettoyage et maintenance | Règles, hébergement, photos et obligations |
-| Q-02 | Qui crée les interventions et les attendus ? | Client définit attendus ; prestataire planifie | Permissions et responsabilités |
+| Q-02 — création résolue | Qui crée les interventions ? | Client habilité — DEC-003 ; modalités de modification et replanification à préciser | Permissions et responsabilités |
 | Q-03 — résolue | Qui contrôle et valide ? | Client habilité directement, sans prévalidation prestataire — DEC-002 | Circuit à un niveau confirmé |
 | Q-04 | Le terrain exige-t-il le hors ligne ? | En ligne uniquement tant que non confirmé | Architecture et effort majeurs |
 | Q-05 | Quelle équipe, quel budget, quel délai ? | Aucun engagement chiffré | Choix stack, lots et planning |
@@ -92,3 +92,8 @@ Parcours : agent soumet → À contrôler par le client → Validée ou À repre
 Cette décision clôt la question du contrôle intermédiaire prestataire. Les modalités d’une intervention exceptionnelle de l’administrateur global restent à préciser ; son pouvoir de supervision ne crée pas une étape obligatoire dans le circuit.
 
 **Recette :** une soumission devient immédiatement visible dans la file du client habilité ; la validation client réussit sans action préalable du prestataire ; un responsable prestataire ne peut pas valider via ses droits de prestataire. Une demande de reprise conserve les versions et exige une nouvelle décision client.
+
+
+**DEC-003 — Création des interventions par le client — accepté.** Le client habilité crée les interventions dans son périmètre. Le responsable prestataire ne dispose pas du droit de création dans le circuit métier ; son rôle proposé est d’organiser et d’affecter les interventions reçues. L’agent réalise et soumet ; le client contrôle directement selon DEC-002. La gestion exceptionnelle par l’administrateur global reste à préciser et ne doit pas être assimilée à un droit de création prestataire.
+
+**AT-19 — Recette de création :** création par client habilité sur son site autorisée ; création par prestataire ou agent refusée ; création sur un site d’un autre client refusée ; auteur réel et contexte conservés dans l’historique. La replanification et les modifications après affectation restent à arbitrer.
