@@ -65,3 +65,17 @@ La note source est un cadrage initial, pas un cahier des charges définitif. Les
 ## 5. Source et méthode
 Source principale : fichier utilisateur « TRACEOPS_Presentation_Projet_Cadrage_Fonctionnel (1).docx », note v0.1. Les références de section dans le BRS renvoient à ce document.
 Repère demandé par le porteur : [roadmap.sh — Software Architect](https://roadmap.sh/software-architect), consulté le 3 novembre 2026. Les choix techniques décrits sont nos propositions contextualisées, pas des prescriptions attribuées à cette page.
+
+## 6. Extension documentaire v0.2
+Le [référentiel détaillé](REFERENTIEL_ARCHITECTURE.md) et sa [matrice de couverture](COUVERTURE_CONCEPTS.md) répondent à la demande d’expliciter les concepts d’architecture. Ils sont intégrés au document d’architecture ; aucun outil étudié n’est adopté implicitement.
+
+| Besoin / objectif | Complément | Vérification |
+|---|---|---|
+| BR-12 Décisions traçables | ADR et dossier de preuve, référentiel 2 et 18 | Revue documentaire des décisions et exigences liées |
+| BR-13 Continuité | NFR-11/12/14 ; référentiel 11 | AT-10, AT-17, AT-18 |
+| BR-14 Gouvernance des informations | Référentiel 6, 8 et 15 | Politique de conservation, propriétaires et contrats d’intégration à compléter |
+| BR-04/08 Confirmation fiable | US-10, FR-19 | AT-14 |
+| BR-11 Administration globale | US-11, FR-20, NFR-13 | AT-15, AT-16 |
+| BR-07 Pilotage | US-12, FR-21 | AT-11 |
+
+La couverture des concepts est une revue de contenu, pas une recette logicielle. Les notions supplémentaires propres à TRACEOPS sont identifiées dans la matrice. Les questions structurantes de la section 2 restent ouvertes.
