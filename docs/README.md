@@ -16,3 +16,13 @@ Le référentiel traite les concepts de la roadmap Software Architect et leur ap
 
 ## Conventions
 [S] besoin issu du cadrage ou d’une demande explicite ; [P] proposition ; [O] question ouverte. Les résultats de tests ne sont pas encore disponibles. Les choix de stack, volumes, budget, calendrier, conservation et hors ligne restent à confirmer.
+
+
+## Approfondissement du modèle et des permissions
+
+**DEC-004 — Circuit confirmé :** le client crée, le responsable prestataire affecte, l’agent réalise et soumet, le client valide directement ou demande une reprise.
+
+- [Modèle de données détaillé](MODELE_DONNEES.md) : entités, contraintes, historique, transactions et recette.
+- [Permissions et modifications](PERMISSIONS.md) : actions confirmées, périmètres et propositions pour les exceptions.
+
+Les permissions initialement proposées de l’administrateur ne constituent pas une décision finale sur la création ou validation pour un client. L’annulation et la replanification restent à arbitrer ; PERMISSIONS.md expose les options en attente. Les règles confirmées DEC-001 à DEC-004 priment sur les anciennes hypothèses.
