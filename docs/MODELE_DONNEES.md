@@ -75,7 +75,7 @@ Une seule colonne de statut n’explique pas toutes les dimensions : retard calc
 
 ### Assignment — affectation et historique
 Champs : id, intervention_id, agent_membership_id, assigned_by, active_from, active_until éventuel, reason éventuel.
-Le responsable prestataire affecte un agent actif de son organisation. Proposition MVP : un agent responsable courant ; index unique partiel sur intervention_id quand active_until est nul.
+Le responsable prestataire affecte un ou plusieurs agents actifs de son organisation. Unicité proposée sur (intervention_id, agent_membership_id) pour les affectations actives ; aucun index unique sur intervention_id seul. Le responsable de soumission collective reste à confirmer.
 Réaffectation : clôturer l’affectation courante et créer la nouvelle dans la même transaction. Conserver l’auteur des rapports existants ; ne jamais attribuer leur travail au nouvel agent.
 L’accès historique de l’ancien agent reste ouvert à arbitrage ; refus par défaut après retrait d’affectation, sauf droit explicitement accordé.
 
@@ -118,7 +118,7 @@ Une outbox n’autorise pas un export après retrait de droits : revérifier l�
 | Commande | Écritures atomiques | Protection |
 |---|---|---|
 | Créer | Intervention, instantané, audit | Client habilité, cohérence accord/site, clé idempotente si utilisée |
-| Affecter | Ancienne affectation clôturée, nouvelle créée, état/version, audit | Un responsable courant ; membre actif du bon prestataire |
+| Affecter | Ancienne affectation clôturée, nouvelle créée, état/version, audit | Plusieurs membres actifs sans doublon ; bon prestataire ; aucun chevauchement |
 | Soumettre | Révision figée, état/version, anomalies nécessaires, audit, outbox éventuelle | Version attendue, complétude, pièces READY, idempotence |
 | Contrôler | Décision, état/version, audit, outbox éventuelle | Client habilité, unicité décision/révision, version attendue |
 | Demander reprise | Décision motivée, état/version, audit | La révision soumise reste immuable |
@@ -130,7 +130,7 @@ Ne pas indexer chaque champ : mesurer les plans de requête et le coût des écr
 
 ## 7. Recette du modèle
 MD-01 : insertion d’une zone d’un autre site rejetée.
-MD-02 : affectation simultanée de deux responsables ne laisse qu’une affectation active.
+MD-02 : plusieurs agents sont permis, sans doublon agent/intervention ni chevauchement pour un même agent.
 MD-03 : modification d’un modèle ne modifie pas l’attendu historique.
 MD-04 : deux contrôles concurrents produisent une seule décision.
 MD-05 : réaffectation ne change pas l’auteur d’un rapport.
@@ -152,3 +152,9 @@ Les états permettant ces actions, les délais de réponse et les modalités de 
 ### ChangeRequest — demande de changement proposée
 Champs : id, intervention_id, requested_by_membership_id, type (RESCHEDULE ou CANCEL), reason, proposed_start/proposed_end pour replanification, base_intervention_version, status, decided_by_user_id éventuel, decision_reason éventuel, created_at, decided_at.
 États proposés : PENDING, ACCEPTED, REJECTED, WITHDRAWN. L’état de demande est distinct de celui de l’intervention. Une demande ne modifie ni créneau ni état métier ; acceptation et effet s’enregistrent atomiquement, avec vérification du périmètre et de la version. Le rejet conserve le planning initial. Une demande obsolète doit être revue au lieu d’écraser une modification plus récente.
+
+
+## Consolidation des réponses du pilote
+Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
+
+Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
