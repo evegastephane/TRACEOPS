@@ -25,12 +25,12 @@
 |---|---|---|
 | EP-01 Accès et périmètres | Invitations, connexion, rôles, relations client–prestataire et accès par site | Must |
 | EP-02 Référentiels | Organisations, sites, zones, prestations, modèles de tâches | Must |
-| EP-03 Planification | Création manuelle datée, affectation à un agent, replanification tracée | Must |
+| EP-03 Planification | Création datée, affectation à un ou plusieurs agents, replanification tracée | Must |
 | EP-04 Terrain | Missions, tâches, observations, photos si exigées, blocage et soumission | Must |
 | EP-05 Qualité | Contrôle, validation, reprise, anomalies et résolution | Must |
 | EP-06 Pilotage | Listes filtrées, indicateurs calculés et historique | Must |
 | EP-07 Récurrence | Génération d’interventions récurrentes avec exceptions | Should, hors MVP proposé |
-| EP-08 QR | Ouverture d’une zone puis des missions autorisées | Could, après pilote |
+| EP-08 QR | Identification d’une zone ou salle puis ouverture des missions autorisées | Must — PIL-13 |
 | EP-09 Hors ligne | Stockage local et synchronisation gérant les conflits | À décider avant engagement |
 [P] Un calendrier graphique avancé, les exports et les notifications push sont différés. Le MVP utilise des listes et des alertes dans l’application ; un canal d’invitation sécurisé reste nécessaire.
 
@@ -41,7 +41,7 @@ En tant que client habilité, je crée un site et ses zones, puis j’y autorise
 - L’ajout d’un prestataire concurrent ou d’une relation non autorisée est refusé.
 - Un prestataire ne voit que les informations des sites nécessaires à ses prestations.
 ### US-02 — Planifier et affecter (EP-03)
-[S, DEC-003] En tant que client habilité, je crée une intervention dans mon périmètre. [P] Le responsable prestataire affecte ensuite l’intervention à un agent de son entreprise.
+[S, DEC-003] En tant que client habilité, je crée une intervention dans mon périmètre. [P] Le responsable prestataire affecte ensuite l’intervention à un ou plusieurs agents de son entreprise.
 - La mission précise site, zone, prestation, début, fin, consignes et tâches.
 - Un agent d’une autre entreprise ne peut pas être affecté.
 - Une affectation ou replanification produit un événement d’historique.
@@ -146,3 +146,9 @@ Cette décision clôt la question du contrôle intermédiaire prestataire. L’i
 - **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
 - **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
 Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
+
+
+## Consolidation des réponses du pilote
+Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
+
+Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
