@@ -114,7 +114,7 @@ export class AccountsService {
   }
   async members(user: Identity, org: string) {
     await this.context(user,org,true);
-    return (await this.db.query(`SELECT u.id,u.display_name,u.login,m.active,array_agg(r.role ORDER BY r.role) AS roles
+    return (await this.db.query(`SELECT u.id,m.id AS membership_id,u.display_name,u.login,m.active,array_agg(r.role ORDER BY r.role) AS roles
       FROM membership m JOIN app_user u ON u.id=m.user_id JOIN membership_role r ON r.membership_id=m.id
       WHERE m.organization_id=$1 GROUP BY u.id,m.id ORDER BY u.display_name`,[org])).rows;
   }

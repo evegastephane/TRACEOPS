@@ -50,6 +50,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   assert.equal((await provider('organization/agents',{login:'AGENT01',displayName:'Duplicate'},org)).status,409);
   const members=await provider('organization/members',undefined,org);
   assert.equal(members.data.length,2);
+  assert.ok(members.data.every((m: {id:string;membership_id:string})=>m.membership_id && m.membership_id!==m.id));
   assert.ok(!JSON.stringify(members.data).includes('password'));
   assert.equal((await agent('auth/login',{login:'agent01',password:created.data.temporaryPassword})).status,201);
   assert.equal((await agent('auth/me')).data.must_change_password,true);

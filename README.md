@@ -1,6 +1,6 @@
 # TRACEOPS
 
-Application web de suivi d’interventions. Ce premier parcours implémente la gestion des accès, avec interface React en français et anglais et backend NestJS/PostgreSQL.
+Application web de suivi d’interventions. Les parcours disponibles couvrent la gestion des accès et des sites, avec interface React en français et anglais et backend NestJS/PostgreSQL.
 
 ## Disponible
 - Connexion par mot de passe, session en cookie HttpOnly, déconnexion et changement de mot de passe.
@@ -10,8 +10,10 @@ Application web de suivi d’interventions. Ce premier parcours implémente la g
 - Acceptation d’une invitation par un nouveau compte ou un compte existant ; plusieurs organisations par personne.
 - Ajout direct d’agents par le responsable prestataire, mot de passe temporaire affiché une seule fois et changement obligatoire.
 - Consultation des membres dans le périmètre autorisé et historique des actions d’accès.
+- Rubrique Sites et salles : création des sites et lieux, rattachement hiérarchique, recherche et consultation selon les habilitations.
+- Motif obligatoire et audité pour les écritures administratives sur les sites et lieux.
 
-Les sites/salles possèdent leur schéma de base, mais pas encore leurs écrans. Interventions persistantes, photos, QR, récurrence, PDF, notifications opérationnelles et traitement des anomalies restent à développer. La politique des interventions est testée mais n’est pas encore exposée par API.
+Interventions persistantes, photos, QR, récurrence, PDF, notifications opérationnelles et traitement des anomalies restent à développer. La politique des interventions est testée mais n’est pas encore exposée par API.
 
 ## Démarrer en local
 Prérequis : Node.js 24, npm et PostgreSQL 17 accessible.
@@ -59,4 +61,13 @@ Aucun compte ni mot de passe de production n’est fourni. Aucun déploiement de
 Voir les [documents du projet](docs/README.md) et le [rapport de validation](docs/VALIDATION_ACCES.md).
 
 ## API des sites et salles
-La création et la lecture des sites, lieux hiérarchiques, rattachements prestataires et habilitations des contrôleurs sont désormais développées côté API. Voir docs/API_SITES.md. Les écrans correspondants ne sont pas encore implémentés. Le contrôle des permissions et le motif des interventions administratives sont testés sur PostgreSQL.
+La création et la lecture des sites, lieux hiérarchiques, rattachements prestataires et habilitations des contrôleurs sont désormais développées côté API. Voir docs/API_SITES.md. Les écrans de création et consultation des sites et lieux sont disponibles. Les rattachements prestataires et habilitations des contrôleurs restent accessibles uniquement par API. Le contrôle des permissions et le motif des interventions administratives sont testés sur PostgreSQL.
+
+### Vérification navigateur des sites
+Sur une base de test et avec un serveur lancé :
+
+```sh
+UI_BASE_URL=http://127.0.0.1:3001 UI_SMOKE_CREDENTIALS=/chemin/prive/comptes-test.json node scripts/sites-smoke.mjs
+```
+
+Le scénario crée ses organisations de test, vérifie les profils administrateur, responsable client, prestataire et contrôleur, la hiérarchie des lieux, les codes en doublon, la recherche, la reprise après erreur, les langues et les largeurs mobiles. Le fichier privé contient uniquement les clés `login` et `password` de l’administrateur de test ; ne pas le versionner. Les captures emploient uniquement les données synthétiques du scénario.
