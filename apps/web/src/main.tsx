@@ -6,7 +6,7 @@ import { api, ApiError } from './api';
 import { Sites } from './sites';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Cloth, SampleStrip, Selvedge, orgStyle } from './motif';
-import { ChevronDownIcon, CopyIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon } from './icons';
+import { BackIcon, CopyIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon } from './icons';
 
 type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: string[] };
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
@@ -44,9 +44,14 @@ function App() {
   const orgRef = useRef(orgId); orgRef.current = orgId;
   const [form, setForm] = useState<'org' | 'agent' | 'invite' | null>(null), [secret, setSecret] = useState<Secret | null>(null), [copied, setCopied] = useState(false);
   const [section, setSection] = useState<Section>('team');
+  // Phone only: with several organisations, the list of organisations is its own screen.
+  const [mobileView, setMobileView] = useState<'orgs' | 'org'>('orgs');
+  const detailHeading = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState(() => new URLSearchParams(location.hash.slice(1)).get('invite') ?? '');
 
   useEffect(() => { document.documentElement.lang = lang; localStorage.setItem('traceops-language', lang); }, [lang]);
+  // An opened form or secret takes the reading focus (on a phone it replaces the list).
+  useEffect(() => { if (form || secret) detailHeading.current?.focus(); }, [form, secret]);
 
   async function refresh() {
     setLoading(true); setError('');
@@ -137,75 +142,33 @@ function App() {
 
   const kindLabel = (o: Org) => o.kind === 'CLIENT' ? t.client : t.provider;
   const roleLabel = (r: string) => r === 'FIELD_AGENT' ? t.agent : r === 'CLIENT_CONTROLLER' ? t.controller : t.manager;
+  const orgMeta = (o: Org) => [kindLabel(o), ...(o.roles?.length ? [o.roles.map(roleLabel).join(', ')] : [])].join(' · ');
   const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); });
+  const multiOrg = orgs.length > 1;
+  // Phone screen: the organisations list, or the active organisation. An admin without any organisation starts on the list, where it can create one.
+  const phoneView = multiOrg ? mobileView : orgs.length ? 'org' : user.admin && form !== 'org' ? 'orgs' : 'org';
+  const chooseOrg = (id: string) => { setOrgId(id); setMobileView('org'); };
+  const membersCounted = manager && !membersLoading && !membersError;
 
-  return <div className="app" style={orgStyle(org)}>
-    <aside className="rail">{org && <Selvedge org={org} vertical />}<div className="rail-inner">
-      <div className="rail-brand"><Brand /></div>
-      <div className="rail-context">
-        {/* The organisation plate is the visible face of the native select laid over it. */}
-        <label className={org ? 'org-plate' : 'org-plate org-plate-empty'}>
-          {org && <Cloth key={org.id} org={org} className="org-plate-cloth" />}
-          <span className="org-plate-body">
-            <span className="org-plate-caption">{t.choose}</span>
-            <span className="org-plate-name">{org?.name ?? '—'}</span>
-            <ChevronDownIcon />
-          </span>
-          <select aria-label={t.choose} value={orgId} onChange={e => setOrgId(e.target.value)} disabled={busy || !orgs.length}>
-            {!orgs.length && <option value="">—</option>}
-            {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
-          </select>
-        </label>
-        {user.admin && <button className="rail-button" disabled={busy} onClick={() => { setSection('team'); setForm('org'); setSecret(null); }}><PlusIcon />{t.createOrg}</button>}
-      </div>
-      {canSeeSections && <nav className="section-nav" aria-label={t.sections}>
-        {(['team', 'sites'] as const).map(item => <button key={item} aria-current={section === item ? 'page' : undefined} disabled={busy}
-          onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); }}>
-          {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'team' ? t.team : t.sites}
-        </button>)}
-      </nav>}
-      <div className="rail-account">
-        <p className="identity"><span className="identity-name">{user.display_name}</span><span className="identity-role">{user.admin ? t.admin : user.login}</span></p>
-        <div className="account-controls">
-          {language}
-          <button className="logout" onClick={signOut} disabled={busy}><LogoutIcon /><span>{t.logout}</span></button>
+  // Right-hand pane of the team workspace: a one-time secret, an open form, or the team actions.
+  const teamDetail = secret
+    ? <div className="detail-card detail-secret" aria-live="polite">
+        <h2 ref={detailHeading} tabIndex={-1}>{secret.kind === 'invite' ? t.inviteReady : t.agentReady}</h2>
+        <p>{secret.kind === 'invite' ? t.inviteHelp : t.agentHelp}</p>
+        {secret.login && <p className="result-login">{t.login} <code>{secret.login}</code></p>}
+        <label>{secret.kind === 'invite' ? t.inviteLink : t.temporary}<textarea readOnly rows={secret.kind === 'invite' ? 3 : 1} value={secret.value} /></label>
+        <div className="actions">
+          <button className="secondary" onClick={() => void act(async () => { await navigator.clipboard.writeText(secret.value); setCopied(true); })}><CopyIcon />{copied ? t.copied : t.copy}</button>
+          <button className="primary" onClick={() => { setSecret(null); setCopied(false); }}>{t.done}</button>
         </div>
       </div>
-    </div></aside>
-
-    <main className="content">
-      {org && <Selvedge org={org} />}
-      <div className="content-inner">
-        <header className="page-heading">
-          <div className="page-title">
-            <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
-            <p>{org ? <span className="kind-chip">{kindLabel(org)}</span> : user.admin ? t.emptyOrgText : t.noContextText}</p>
-          </div>
-          {section === 'team' && org && manager && <div className="actions">
-            {/* One saffron action per screen: while a form or a one-time secret is open, these step back. */}
-            <button className={org.kind === 'CLIENT' && !form && !secret ? 'primary' : 'secondary'} aria-expanded={form === 'invite'} disabled={busy} onClick={() => { setForm('invite'); setSecret(null); }}>{org.kind === 'CLIENT' && <PlusIcon />}{t.invite}</button>
-            {org.kind === 'PROVIDER' && <button className={!form && !secret ? 'primary' : 'secondary'} aria-expanded={form === 'agent'} disabled={busy} onClick={() => { setForm('agent'); setSecret(null); }}><PlusIcon />{t.addAgent}</button>}
-          </div>}
-        </header>
-        {errorBox}
-
-        {secret && <section className="result" aria-live="polite">
-          <h2>{secret.kind === 'invite' ? t.inviteReady : t.agentReady}</h2>
-          <p>{secret.kind === 'invite' ? t.inviteHelp : t.agentHelp}</p>
-          {secret.login && <p className="result-login">{t.login} <code>{secret.login}</code></p>}
-          <label>{secret.kind === 'invite' ? t.inviteLink : t.temporary}<textarea readOnly rows={secret.kind === 'invite' ? 2 : 1} value={secret.value} /></label>
-          <div className="actions">
-            <button className="secondary" onClick={() => void act(async () => { await navigator.clipboard.writeText(secret.value); setCopied(true); })}><CopyIcon />{copied ? t.copied : t.copy}</button>
-            <button className="primary" onClick={() => { setSecret(null); setCopied(false); }}>{t.done}</button>
-          </div>
-        </section>}
-
-        {form && <section className="form-panel">
-          <h2>{form === 'org' ? t.createOrg : form === 'agent' ? t.addAgent : t.invite}</h2>
+    : form
+      ? <div className="detail-card">
+          <h2 ref={detailHeading} tabIndex={-1}>{form === 'org' ? t.createOrg : form === 'agent' ? t.addAgent : t.invite}</h2>
           <form key={form + orgId} onSubmit={event => {
             const data = fields(event);
             void act(async () => {
-              if (form === 'org') { const result = await api('admin/organizations', data); await refresh(); setOrgId(result.id); }
+              if (form === 'org') { const result = await api('admin/organizations', data); await refresh(); setOrgId(result.id); setMobileView('org'); }
               else if (form === 'agent') { const r = await api('organization/agents', data, orgId); setSecret({ kind: 'agent', value: r.temporaryPassword, login: r.login }); await reloadMembers(); }
               else { const r = await api('organization/invitations', data, orgId); setSecret({ kind: 'invite', value: location.origin + '/#invite=' + r.token }); }
               setCopied(false); setForm(null);
@@ -224,34 +187,91 @@ function App() {
               <button type="button" className="secondary" disabled={busy} onClick={() => setForm(null)}>{t.cancel}</button>
             </div>
           </form>
-        </section>}
+        </div>
+      : org && manager && section === 'team'
+        ? <div className="detail-card detail-idle">
+            <h2>{t.addPeople}</h2>
+            <ul className="action-list">
+              {org.kind === 'PROVIDER' && <li>
+                <button className="primary" disabled={busy} onClick={() => { setForm('agent'); setSecret(null); }}><PlusIcon />{t.addAgent}</button>
+                <p>{t.addAgentHelp}</p>
+              </li>}
+              <li>
+                <button className={org.kind === 'CLIENT' ? 'primary' : 'secondary'} disabled={busy} onClick={() => { setForm('invite'); setSecret(null); }}>{org.kind === 'CLIENT' && <PlusIcon />}{t.invite}</button>
+                <p>{org.kind === 'CLIENT' ? t.inviteHelpClient : t.inviteHelpProvider}</p>
+              </li>
+            </ul>
+          </div>
+        : null;
+
+  return <div className="app" style={orgStyle(org)} data-view={phoneView}>
+    <div className="orgs-pane">{org && <Selvedge org={org} vertical />}<div className="orgs-inner">
+      <div className="pane-brand"><Brand /></div>
+      <nav className="org-nav" aria-labelledby="org-nav-title">
+        <p className="org-nav-title" id="org-nav-title">{t.orgs}</p>
+        {orgs.length
+          ? <ul className="org-list">{orgs.map(o => <li key={o.id}>
+              <button className="org-item" aria-current={o.id === orgId ? 'true' : undefined} disabled={busy} onClick={() => chooseOrg(o.id)}>
+                <Cloth org={o} className="org-swatch" />
+                <span className="org-item-text"><span className="org-item-name">{o.name}</span><span className="org-item-meta">{orgMeta(o)}</span></span>
+              </button>
+            </li>)}</ul>
+          : <p className="org-nav-empty">{user.admin ? t.emptyOrg : t.noContext}</p>}
+        {user.admin && <button className="rail-button" disabled={busy} onClick={() => { setSection('team'); setForm('org'); setSecret(null); setMobileView('org'); }}><PlusIcon />{t.createOrg}</button>}
+      </nav>
+      <div className="pane-account">
+        <p className="identity"><span className="identity-name">{user.display_name}</span><span className="identity-role">{user.admin ? t.admin : user.login}</span></p>
+        <div className="account-controls">
+          {language}
+          <button className="logout" onClick={signOut} disabled={busy}><LogoutIcon /><span>{t.logout}</span></button>
+        </div>
+      </div>
+    </div></div>
+
+    <main className="content">
+      {org && <Selvedge org={org} />}
+      <div className="content-inner">
+        {multiOrg && <button className="back-button orgs-back" disabled={busy} onClick={() => setMobileView('orgs')}><BackIcon />{t.orgs}</button>}
+        <header className="page-heading">
+          <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
+          <p>{org ? <span className="kind-chip">{kindLabel(org)}</span> : user.admin ? t.emptyOrgText : t.noContextText}</p>
+        </header>
+        {canSeeSections && <nav className="section-tabs" aria-label={t.sections}>
+          {(['team', 'sites'] as const).map(item => <button key={item} aria-current={section === item ? 'page' : undefined} disabled={busy}
+            onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); }}>
+            {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'team' ? t.team : t.sites}
+            {item === 'team' && membersCounted && <span className="count" aria-hidden="true">{members.length}</span>}
+          </button>)}
+        </nav>}
+        {errorBox}
 
         {section === 'sites' && org && canSeeSections
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
-          : org && manager
-            ? <section className="team" aria-labelledby="team-title">
-                <h2 id="team-title">{t.team}{!membersLoading && !membersError && <span className="count">{members.length}</span>}</h2>
-                {membersLoading
-                  ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>
-                  : membersError
-                    ? <div className="error" role="alert"><p>{messageFor(t, membersError)}</p><button className="secondary" onClick={() => void reloadMembers()}>{t.retry}</button></div>
-                    : members.length
-                      ? <div className="table-wrap">
-                          <table className="members" role="table">
-                            <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th><th role="columnheader" scope="col">{t.access}</th></tr></thead>
-                            <tbody role="rowgroup">{members.map(m => <tr role="row" key={m.id}>
-                              <td role="cell" className="member-name"><span className="member-id"><span className="avatar" aria-hidden="true">{initials(m.display_name)}</span><strong>{m.display_name}</strong></span></td>
-                              <td role="cell" data-label={t.login} className="member-login">{m.login}</td>
-                              <td role="cell" data-label={t.role} className="member-role">{m.roles.map(roleLabel).join(', ')}</td>
-                              <td role="cell" data-label={t.access} className="member-access"><span className={m.active ? 'status status-on' : 'status status-off'}>{m.active ? t.active : t.disabled}</span></td>
-                            </tr>)}</tbody>
-                          </table>
-                        </div>
-                      : <div className="empty"><h3>{t.emptyTeam}</h3><p>{org.kind === 'PROVIDER' ? t.emptyTeamProvider : t.emptyTeamClient}</p></div>}
-              </section>
-            : org
-              ? <section className="empty"><h2>{t.agentView}</h2><p>{t.agentViewText}</p></section>
-              : null}
+          : <div className={teamDetail ? 'workspace workspace-team has-detail' : 'workspace workspace-team'} data-detail={form || secret ? 'open' : 'closed'}>
+              {org && (manager
+                ? <section className="pane-list" aria-labelledby="team-title">
+                    <h2 id="team-title" className="sr-only">{t.team}{membersCounted ? ` (${members.length})` : ''}</h2>
+                    {membersLoading
+                      ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>
+                      : membersError
+                        ? <div className="error" role="alert"><p>{messageFor(t, membersError)}</p><button className="secondary" onClick={() => void reloadMembers()}>{t.retry}</button></div>
+                        : members.length
+                          ? <div className="table-wrap">
+                              <table className="members" role="table">
+                                <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th><th role="columnheader" scope="col">{t.access}</th></tr></thead>
+                                <tbody role="rowgroup">{members.map(m => <tr role="row" key={m.id}>
+                                  <td role="cell" className="member-name"><span className="member-id"><span className="avatar" aria-hidden="true">{initials(m.display_name)}</span><strong>{m.display_name}</strong></span></td>
+                                  <td role="cell" data-label={t.login} className="member-login">{m.login}</td>
+                                  <td role="cell" data-label={t.role} className="member-role">{m.roles.map(roleLabel).join(', ')}</td>
+                                  <td role="cell" data-label={t.access} className="member-access"><span className={m.active ? 'status status-on' : 'status status-off'}>{m.active ? t.active : t.disabled}</span></td>
+                                </tr>)}</tbody>
+                              </table>
+                            </div>
+                          : <div className="empty"><h3>{t.emptyTeam}</h3><p>{t.emptyTeamText}</p></div>}
+                  </section>
+                : <section className="pane-list empty"><h2>{t.agentView}</h2><p>{t.agentViewText}</p></section>)}
+              {teamDetail && <aside className="pane-detail">{teamDetail}</aside>}
+            </div>}
       </div>
     </main>
   </div>;

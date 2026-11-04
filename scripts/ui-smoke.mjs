@@ -48,7 +48,7 @@ try {
  let release;const held=new Promise(resolve=>{release=resolve});
  await provider.route('**/api/v1/organization/agents',async route=>{await held;await route.continue()});
  await provider.getByRole('button',{name:'Créer',exact:true}).click();
- assert.equal(await provider.getByLabel('Organisation active',{exact:true}).isDisabled(),true);
+ assert.equal(await provider.getByRole('navigation',{name:'Organisations',exact:true}).getByRole('button',{name:'Services terrain — test'}).isDisabled(),true);
  release();
  await provider.getByRole('heading',{name:'Agent créé'}).waitFor();
  await provider.unroute('**/api/v1/organization/agents');

@@ -23,7 +23,8 @@ try {
  const provider = await api(admin, 'admin/organizations', {name:`Prestataire sites test ${stamp}`,kind:'PROVIDER'});
  const page = await admin.newPage(); page.on('pageerror', e=>errors.push(e.message));
  await page.goto(base);
- await page.getByLabel('Organisation active',{exact:true}).selectOption(client.id);
+ const orgButton = (pg, name) => pg.getByRole('navigation',{name:'Organisations',exact:true}).getByRole('button',{name});
+ await orgButton(page,`Client sites test ${stamp}`).click();
  await page.getByRole('button',{name:'Sites et salles',exact:true}).click();
  await page.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
  await page.getByRole('button',{name:'Créer un site',exact:true}).click();
@@ -36,7 +37,7 @@ try {
  await page.route('**/api/v1/sites', async route=>{ if(route.request().method()==='POST') await held; await route.continue(); });
  await page.getByRole('button',{name:'Enregistrer',exact:true}).click();
  await page.waitForFunction(()=>document.querySelector('fieldset')?.disabled);
- assert.equal(await page.getByLabel('Organisation active',{exact:true}).isDisabled(),true);
+ assert.equal(await orgButton(page,`Client sites test ${stamp}`).isDisabled(),true);
  assert.equal(await page.getByRole('button',{name:'Équipe',exact:true}).isDisabled(),true);
  release();
  await page.getByText('Site créé.',{exact:true}).waitFor();
@@ -111,7 +112,7 @@ try {
  await cp.getByText('Salle de consultation 101',{exact:true}).waitFor();
  assert.equal(await cp.getByRole('button',{name:'Ajouter un lieu',exact:true}).count(),0);
  // Changing organization must not retain another client's site details.
- await page.getByLabel('Organisation active',{exact:true}).selectOption(provider.id);
+ await orgButton(page,`Prestataire sites test ${stamp}`).click();
  await page.getByRole('button',{name:'Sites et salles',exact:true}).click();
  await page.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
  assert.equal(await page.getByText('Salle de consultation 101',{exact:true}).count(),0);
