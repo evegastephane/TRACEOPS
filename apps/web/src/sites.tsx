@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from './api';
+import { BackIcon, ChevronIcon, PlusIcon, SearchIcon } from './icons';
 
 type Site = { id: string; name: string; sector: string; timezone: string };
 type Kind = 'BUILDING' | 'FLOOR' | 'AREA' | 'ROOM' | 'EQUIPMENT';
@@ -95,9 +96,10 @@ export function Sites({ org, admin, lang, setBusy }: {
  const parents = zones.filter(z => kinds.indexOf(z.kind) < kinds.indexOf(kind));
  const sectorName = (value: string) => ['company','hospital','hotel','property','other'].includes(value) ? (t as Record<string,string>)[value] : value;
  return <section className="sites-surface" aria-label={t.title}>
-  {selected && <button className="secondary back-button" disabled={saving} onClick={() => open(null)}>{t.back}</button>}
-  <div className="page-heading"><div><h2 tabIndex={-1} ref={heading}>{selected?.name ?? t.title}</h2><p>{selected ? `${sectorName(selected.sector)} · ${selected.timezone}` : writable ? t.intro : t.readOnly}</p></div>
-   {writable && !form && (!selected || (!loading && !loadError)) && <button disabled={saving} onClick={() => showForm(selected ? 'zone' : 'site')}>{selected ? t.createZone : t.createSite}</button>}
+  {selected && <button className="back-button" disabled={saving} onClick={() => open(null)}><BackIcon />{t.back}</button>}
+  <div className="section-heading">
+   <div><h2 tabIndex={-1} ref={heading}>{selected?.name ?? t.title}</h2><p>{selected ? `${sectorName(selected.sector)} · ${selected.timezone}` : writable ? t.intro : t.readOnly}</p></div>
+   {writable && !form && (!selected || (!loading && !loadError)) && <button className="primary" disabled={saving} onClick={() => showForm(selected ? 'zone' : 'site')}><PlusIcon />{selected ? t.createZone : t.createSite}</button>}
   </div>
   {notice && <p className="save-notice" role="status">{t[notice]}</p>}
   {form && <section className="form-panel"><h3 ref={formHeading} tabIndex={-1}>{form === 'site' ? t.createSite : t.createZone}</h3>
@@ -108,21 +110,22 @@ export function Sites({ org, admin, lang, setBusy }: {
      {sector === 'other' && <label>{t.otherSector}<input name="otherSector" required maxLength={120}/></label>}
      <label>{t.timezone}<input name="timezone" required defaultValue="Africa/Douala" maxLength={120}/></label>
     </> : <>
-     <label>{t.code}<input aria-label={t.code} name="code" required maxLength={120} aria-describedby="zone-code-help"/><small id="zone-code-help">{t.codeHelp}</small></label>
+     <label>{t.code}<input aria-label={t.code} name="code" required maxLength={120} aria-describedby="zone-code-help" className="code-input"/><small id="zone-code-help">{t.codeHelp}</small></label>
      <label>{t.kind}<select aria-label={t.kind} value={kind} onChange={e => setKind(e.target.value as Kind)}>{kinds.map(k => <option key={k} value={k}>{t[k]}</option>)}</select></label>
      <label>{t.parent}<select aria-label={t.parent} name="parentId" key={kind} defaultValue=""><option value="">{t.root}</option>{parents.map(z => <option key={z.id} value={z.id}>{[...ancestors(z), `${z.name} (${z.code})`].join(' / ')}</option>)}</select></label>
     </>}
     {reason}
    </fieldset>
    {saveError && <div className="error" role="alert">{message(saveError, t.saveError)}</div>}
-   <div className="actions"><button disabled={saving}>{saving ? t.loading : t.save}</button><button type="button" className="secondary" disabled={saving} onClick={() => { setForm(null); setSaveError(''); heading.current?.focus(); }}>{t.cancel}</button></div>
+   <div className="actions"><button className="primary" disabled={saving}>{saving ? t.loading : t.save}</button><button type="button" className="secondary" disabled={saving} onClick={() => { setForm(null); setSaveError(''); heading.current?.focus(); }}>{t.cancel}</button></div>
    </form>
   </section>}
-  {loading ? <p role="status">{t.loading}</p> : loadError ? <div className="error" role="alert"><p>{message(loadError, t.error)}</p><button className="secondary" onClick={() => setReload(n => n + 1)}>{t.retry}</button></div>
-   : !selected ? sites.length ? <ul className="site-list">{sites.map(site => <li key={site.id}><button className="site-link" onClick={() => open(site)} disabled={saving}><strong>{site.name}</strong><span>{sectorName(site.sector)} · {site.timezone}</span></button></li>)}</ul>
+  {loading ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>
+   : loadError ? <div className="error" role="alert"><p>{message(loadError, t.error)}</p><button className="secondary" onClick={() => setReload(n => n + 1)}>{t.retry}</button></div>
+   : !selected ? sites.length ? <ul className="site-list">{sites.map(site => <li key={site.id}><button className="site-link" onClick={() => open(site)} disabled={saving}><span className="site-text"><strong>{site.name}</strong><span>{sectorName(site.sector)} · {site.timezone}</span></span><ChevronIcon /></button></li>)}</ul>
    : <div className="empty"><h3>{t.empty}</h3><p>{writable ? t.emptyHelp : t.emptyRead}</p></div>
-   : zones.length ? <section aria-label={t.places}><label className="location-search">{t.search}<input type="search" value={query} onChange={e => setQuery(e.target.value)}/></label>
-    {visible.length ? <ul className="zone-list">{visible.map(zone => <li key={zone.id}><div><strong>{zone.name}</strong><span className="zone-path">{[selected.name, ...ancestors(zone)].join(' / ')}</span></div><div className="zone-meta"><span>{t[zone.kind]}</span><span>{zone.code}</span></div></li>)}</ul> : <div className="empty"><p>{t.noMatch}</p><button className="secondary" onClick={() => setQuery('')}>{t.clear}</button></div>}
+   : zones.length ? <section aria-label={t.places}><label className="location-search"><span>{t.search}</span><span className="search-field"><SearchIcon /><input type="search" value={query} onChange={e => setQuery(e.target.value)}/></span></label>
+    {visible.length ? <ul className="zone-list">{visible.map(zone => <li key={zone.id}><div><strong>{zone.name}</strong><span className="zone-path">{ancestors(zone).join(' › ') || t.root}</span></div><div className="zone-meta"><span className="zone-kind">{t[zone.kind]}</span><span className="zone-code">{zone.code}</span></div></li>)}</ul> : <div className="empty"><p>{t.noMatch}</p><button className="secondary" onClick={() => setQuery('')}>{t.clear}</button></div>}
    </section> : <div className="empty"><h3>{t.noZones}</h3><p>{writable ? t.noZonesHelp : t.noZonesRead}</p></div>}
  </section>;
 }
