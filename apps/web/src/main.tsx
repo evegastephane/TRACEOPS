@@ -5,8 +5,8 @@ import './style.css';
 import { api, ApiError } from './api';
 import { Sites } from './sites';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
-import { OrgSwatch, SampleStrip, Selvedge, orgStyle } from './motif';
-import { CopyIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon } from './icons';
+import { Cloth, SampleStrip, Selvedge, orgStyle } from './motif';
+import { ChevronDownIcon, CopyIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon } from './icons';
 
 type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: string[] };
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
@@ -104,7 +104,7 @@ function App() {
       <header className="auth-top"><Brand />{language}</header>
       <main className="auth-body">
         <section className="auth-intro">
-          <p className="auth-claim">{t.brandText}</p>
+          <p className="auth-claim">{t.brandText.split(/(?<=\.)\s+/).map(sentence => <span key={sentence}>{sentence}</span>)}</p>
           <p className="auth-sub">{t.brandSub}</p>
           <SampleStrip />
         </section>
@@ -140,11 +140,17 @@ function App() {
   const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); });
 
   return <div className="app" style={orgStyle(org)}>
-    <aside className="rail"><div className="rail-inner">
+    <aside className="rail">{org && <Selvedge org={org} vertical />}<div className="rail-inner">
       <div className="rail-brand"><Brand /></div>
       <div className="rail-context">
-        <label className="context-picker">
-          <span className="context-label">{org ? <OrgSwatch org={org} /> : <span className="swatch swatch-empty" aria-hidden="true" />}{t.choose}</span>
+        {/* The organisation plate is the visible face of the native select laid over it. */}
+        <label className={org ? 'org-plate' : 'org-plate org-plate-empty'}>
+          {org && <Cloth key={org.id} org={org} className="org-plate-cloth" />}
+          <span className="org-plate-body">
+            <span className="org-plate-caption">{t.choose}</span>
+            <span className="org-plate-name">{org?.name ?? '—'}</span>
+            <ChevronDownIcon />
+          </span>
           <select aria-label={t.choose} value={orgId} onChange={e => setOrgId(e.target.value)} disabled={busy || !orgs.length}>
             {!orgs.length && <option value="">—</option>}
             {orgs.map(o => <option key={o.id} value={o.id}>{o.name}</option>)}
@@ -173,13 +179,12 @@ function App() {
         <header className="page-heading">
           <div className="page-title">
             <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
-            <p>{org
-              ? <><span className="kind-chip">{kindLabel(org)}</span>{section === 'sites' ? t.sites : t.accountsOnly}</>
-              : user.admin ? t.emptyOrgText : t.noContextText}</p>
+            <p>{org ? <span className="kind-chip">{kindLabel(org)}</span> : user.admin ? t.emptyOrgText : t.noContextText}</p>
           </div>
           {section === 'team' && org && manager && <div className="actions">
-            <button className={org.kind === 'PROVIDER' ? 'secondary' : 'primary'} disabled={busy} onClick={() => { setForm('invite'); setSecret(null); }}>{org.kind === 'CLIENT' && <PlusIcon />}{t.invite}</button>
-            {org.kind === 'PROVIDER' && <button className="primary" disabled={busy} onClick={() => { setForm('agent'); setSecret(null); }}><PlusIcon />{t.addAgent}</button>}
+            {/* One saffron action per screen: while a form or a one-time secret is open, these step back. */}
+            <button className={org.kind === 'CLIENT' && !form && !secret ? 'primary' : 'secondary'} aria-expanded={form === 'invite'} disabled={busy} onClick={() => { setForm('invite'); setSecret(null); }}>{org.kind === 'CLIENT' && <PlusIcon />}{t.invite}</button>
+            {org.kind === 'PROVIDER' && <button className={!form && !secret ? 'primary' : 'secondary'} aria-expanded={form === 'agent'} disabled={busy} onClick={() => { setForm('agent'); setSecret(null); }}><PlusIcon />{t.addAgent}</button>}
           </div>}
         </header>
         {errorBox}
@@ -188,7 +193,7 @@ function App() {
           <h2>{secret.kind === 'invite' ? t.inviteReady : t.agentReady}</h2>
           <p>{secret.kind === 'invite' ? t.inviteHelp : t.agentHelp}</p>
           {secret.login && <p className="result-login">{t.login} <code>{secret.login}</code></p>}
-          <label>{secret.kind === 'invite' ? t.inviteLink : t.temporary}<textarea readOnly value={secret.value} /></label>
+          <label>{secret.kind === 'invite' ? t.inviteLink : t.temporary}<textarea readOnly rows={secret.kind === 'invite' ? 2 : 1} value={secret.value} /></label>
           <div className="actions">
             <button className="secondary" onClick={() => void act(async () => { await navigator.clipboard.writeText(secret.value); setCopied(true); })}><CopyIcon />{copied ? t.copied : t.copy}</button>
             <button className="primary" onClick={() => { setSecret(null); setCopied(false); }}>{t.done}</button>
@@ -225,7 +230,7 @@ function App() {
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
           : org && manager
             ? <section className="team" aria-labelledby="team-title">
-                <h2 id="team-title">{t.team}<span className="count">{members.length}</span></h2>
+                <h2 id="team-title">{t.team}{!membersLoading && !membersError && <span className="count">{members.length}</span>}</h2>
                 {membersLoading
                   ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>
                   : membersError
@@ -235,7 +240,7 @@ function App() {
                           <table className="members" role="table">
                             <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th><th role="columnheader" scope="col">{t.access}</th></tr></thead>
                             <tbody role="rowgroup">{members.map(m => <tr role="row" key={m.id}>
-                              <td role="cell" className="member-name"><span className="avatar" aria-hidden="true">{initials(m.display_name)}</span><strong>{m.display_name}</strong></td>
+                              <td role="cell" className="member-name"><span className="member-id"><span className="avatar" aria-hidden="true">{initials(m.display_name)}</span><strong>{m.display_name}</strong></span></td>
                               <td role="cell" data-label={t.login} className="member-login">{m.login}</td>
                               <td role="cell" data-label={t.role} className="member-role">{m.roles.map(roleLabel).join(', ')}</td>
                               <td role="cell" data-label={t.access} className="member-access"><span className={m.active ? 'status status-on' : 'status status-off'}>{m.active ? t.active : t.disabled}</span></td>

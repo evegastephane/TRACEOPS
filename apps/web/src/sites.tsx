@@ -110,7 +110,7 @@ export function Sites({ org, admin, lang, setBusy }: {
      {sector === 'other' && <label>{t.otherSector}<input name="otherSector" required maxLength={120}/></label>}
      <label>{t.timezone}<input name="timezone" required defaultValue="Africa/Douala" maxLength={120}/></label>
     </> : <>
-     <label>{t.code}<input aria-label={t.code} name="code" required maxLength={120} aria-describedby="zone-code-help" className="code-input"/><small id="zone-code-help">{t.codeHelp}</small></label>
+     <label>{t.code}<input aria-label={t.code} name="code" required maxLength={120} aria-describedby="zone-code-help"/><small id="zone-code-help">{t.codeHelp}</small></label>
      <label>{t.kind}<select aria-label={t.kind} value={kind} onChange={e => setKind(e.target.value as Kind)}>{kinds.map(k => <option key={k} value={k}>{t[k]}</option>)}</select></label>
      <label>{t.parent}<select aria-label={t.parent} name="parentId" key={kind} defaultValue=""><option value="">{t.root}</option>{parents.map(z => <option key={z.id} value={z.id}>{[...ancestors(z), `${z.name} (${z.code})`].join(' / ')}</option>)}</select></label>
     </>}

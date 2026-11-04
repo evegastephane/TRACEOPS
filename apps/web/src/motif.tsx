@@ -54,24 +54,22 @@ function Pattern({ id, motif, scale = 1 }: { id: string; motif: Motif; scale?: n
   return <pattern id={id} width={16 * scale} height={16 * scale} patternUnits="userSpaceOnUse" viewBox="0 0 16 16"><Tile motif={motif} /></pattern>;
 }
 
-/** A small cloth swatch identifying an organisation. Decorative: the name is always written beside it. */
-export function OrgSwatch({ org, className = 'swatch' }: { org: MotifOrg; className?: string }) {
+/** A piece of the organisation's cloth filling its box. Decorative: the name is always written nearby. */
+export function Cloth({ org, className, scale = 1 }: { org: MotifOrg; className: string; scale?: number }) {
   const id = useId().replace(/:/g, '');
-  const motif = motifFor(org);
-  return <svg className={className} viewBox="0 0 40 40" aria-hidden="true" focusable="false">
-    <defs><Pattern id={id} motif={motif} scale={0.75} /></defs>
-    <rect width="40" height="40" rx="6" fill={`url(#${id})`} />
+  return <svg className={className} aria-hidden="true" focusable="false">
+    <defs><Pattern id={id} motif={motifFor(org)} scale={scale} /></defs>
+    <rect width="100%" height="100%" fill={`url(#${id})`} />
   </svg>;
 }
 
-/** The selvedge: a band of the active organisation's motif along the top of the workspace. */
-export function Selvedge({ org }: { org: MotifOrg }) {
-  const id = useId().replace(/:/g, '');
-  const motif = motifFor(org);
-  return <svg key={org.id} className="selvedge" aria-hidden="true" focusable="false" preserveAspectRatio="none">
-    <defs><Pattern id={id} motif={motif} /></defs>
-    <rect width="100%" height="100%" fill={`url(#${id})`} />
-  </svg>;
+/**
+ * The selvedge: the cloth's edge, 12px wide (one row of 12px tiles), along the top of the
+ * workspace and down the inner edge of the rail. Keyed on the organisation so it re-prints
+ * (unrolls) whenever the active organisation changes.
+ */
+export function Selvedge({ org, vertical = false }: { org: MotifOrg; vertical?: boolean }) {
+  return <Cloth key={org.id} org={org} scale={0.75} className={vertical ? 'selvedge selvedge-v' : 'selvedge'} />;
 }
 
 /** Sample book of the motif families, shown on the sign-in screen. */
