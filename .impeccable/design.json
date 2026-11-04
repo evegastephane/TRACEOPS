@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-04T11:26:47.636359+00:00",
+  "generatedAt": "2026-11-04T13:20:55.513708+00:00",
   "title": "Design System: TRACEOPS",
   "extensions": {
     "colorMeta": {
@@ -66,7 +66,7 @@
       },
       "indigo-active": {
         "role": "primary",
-        "displayName": "Indigo de rubrique active",
+        "displayName": "Indigo actif (sans usage actuel)",
         "canonical": "#2c357f",
         "tonalRamp": [
           "#050722",
@@ -668,27 +668,27 @@
     "typographyMeta": {
       "display": {
         "displayName": "Revendication",
-        "purpose": "Revendication de l'écran de connexion, sur indigo."
+        "purpose": "Revendication de l'écran de connexion, sur indigo ; 1.375rem sur téléphone."
       },
       "headline": {
         "displayName": "Nom de page",
-        "purpose": "Nom de l'organisation en tête de page ; 1.625rem sur téléphone."
+        "purpose": "Nom de l'organisation en tête du contenu, puce de type dessous ; 1.75rem sur téléphone."
       },
       "headline-auth": {
         "displayName": "Titre de connexion",
-        "purpose": "Titre de la carte de connexion, d'invitation et de changement de mot de passe."
+        "purpose": "Titre de la carte de connexion, d'invitation et de changement de mot de passe ; 1.375rem sur téléphone."
       },
       "title": {
-        "displayName": "Titre de section",
-        "purpose": "Équipe, Sites ; suivi du compteur."
+        "displayName": "Titre de détail",
+        "purpose": "Nom du site choisi dans le volet de détail."
       },
       "title-panel": {
-        "displayName": "Titre de panneau",
-        "purpose": "Formulaires et résultats dans le flux."
+        "displayName": "Titre de carte",
+        "purpose": "Cartes de détail et formulaires des volets."
       },
       "org-name": {
-        "displayName": "Nom sur la plaque",
-        "purpose": "Nom de l'organisation active sur la plaque du rail."
+        "displayName": "Nom d'organisation",
+        "purpose": "Nom de chaque organisation dans la colonne et sur la plaque."
       },
       "body": {
         "displayName": "Texte courant",
@@ -696,7 +696,7 @@
       },
       "body-dense": {
         "displayName": "Texte dense",
-        "purpose": "Boutons, tableau, messages."
+        "purpose": "Boutons, tableau, onglets, messages."
       },
       "label": {
         "displayName": "Libellé",
@@ -704,7 +704,7 @@
       },
       "caption": {
         "displayName": "Légende",
-        "purpose": "En-têtes de tableau, statuts, compteurs."
+        "purpose": "En-têtes de tableau, statuts, compteurs, légende et type/rôle des organisations."
       },
       "kind-chip": {
         "displayName": "Puce de type",
@@ -725,12 +725,12 @@
       {
         "name": "unroll",
         "value": "clip-path inset(0 100% 0 0) → inset(0) 240ms ease-out",
-        "purpose": "Liseré horizontal et coupon de la plaque, rejoués à chaque changement d'organisation."
+        "purpose": "Liseré horizontal et pastille de l'organisation active, rejoués à chaque changement d'organisation."
       },
       {
         "name": "unroll-down",
         "value": "clip-path inset(0 0 100% 0) → inset(0) 240ms ease-out",
-        "purpose": "Liseré vertical du rail."
+        "purpose": "Liseré vertical de la colonne des organisations."
       },
       {
         "name": "control-color",
@@ -750,12 +750,24 @@
     ],
     "breakpoints": [
       {
+        "name": "split",
+        "value": "1240px",
+        "purpose": "Liste et détail côte à côte à partir de cette largeur ; en dessous, ils alternent (data-detail)."
+      },
+      {
+        "name": "split-narrow",
+        "value": "1240px–1439px",
+        "purpose": "Détail d'équipe ramené à 280–320px, cellules à 12px."
+      },
+      {
         "name": "compact",
-        "value": "1100px"
+        "value": "1100px",
+        "purpose": "Marges du contenu réduites."
       },
       {
         "name": "phone",
-        "value": "760px"
+        "value": "760px",
+        "purpose": "Écrans successifs (data-view orgs | org), bandeau indigo, équipe en cartes."
       }
     ],
     "motifs": {
@@ -773,9 +785,12 @@
       ],
       "tileSizes": {
         "selvedge": "12px",
+        "card-cloth-edge": "12px",
+        "org-swatch": "16px",
         "org-plate-cloth": "16px",
         "sign-in-sample-strip": "20px"
-      }
+      },
+      "cssVariable": "--org-cloth : la tuile seule en URI de données, posée sur la coquille avec --org-ink et --org-tint."
     }
   },
   "components": [
@@ -791,7 +806,7 @@
       "name": "Bouton secondaire",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Toutes les autres actions ; les actions d'en-tête y repassent quand un panneau est ouvert.",
+      "description": "Toutes les autres actions ; elles y repassent quand un formulaire ou un secret est ouvert.",
       "html": "<button class=\"ds-btn-secondary\">Créer une invitation</button>",
       "css": ".ds-btn-secondary { display:inline-flex; align-items:center; gap:8px; padding:9px 16px; border:1px solid #c5c9dc; border-radius:6px; background:#ffffff; color:#161a33; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; font-size:.9375rem; font-weight:600; line-height:1.4; cursor:pointer; transition:background-color .15s; } .ds-btn-secondary:hover { background:#eef0f8; } .ds-btn-secondary:focus-visible { outline:2px solid #2f4fc4; outline-offset:2px; }"
     },
@@ -804,27 +819,43 @@
       "css": ".ds-field { display:grid; gap:6px; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; font-size:.875rem; font-weight:600; color:#161a33; } .ds-input { width:100%; box-sizing:border-box; padding:10px 12px; font:inherit; font-size:1rem; font-weight:400; background:#fff; color:#161a33; border:1px solid #8a90b0; border-radius:6px; } .ds-input:focus-visible { outline:2px solid #2f4fc4; outline-offset:1px; border-color:#2f4fc4; }"
     },
     {
+      "name": "Liste des organisations",
+      "kind": "nav",
+      "refersTo": "org-item-active",
+      "description": "Navigation « Organisations » de la colonne indigo : pastille de tissu de 32px, nom en semi-condensé gras, type et rôle ; l'organisation active sur sa teinte.",
+      "html": "<div class=\"ds-orgs\"><nav class=\"ds-org-nav\" aria-labelledby=\"ds-org-nav-title\"><p class=\"ds-org-nav-title\" id=\"ds-org-nav-title\">Organisations</p><ul class=\"ds-org-list\"><li><button class=\"ds-org-item\"><span class=\"ds-org-swatch ds-cloth-t\" aria-hidden=\"true\"></span><span class=\"ds-org-text\"><span class=\"ds-org-name\">NetPro Services Douala</span><span class=\"ds-org-meta\">Prestataire · Responsable</span></span></button></li><li><button class=\"ds-org-item\" aria-current=\"true\"><span class=\"ds-org-swatch ds-cloth-e\" aria-hidden=\"true\"></span><span class=\"ds-org-text\"><span class=\"ds-org-name\">Clinique Les Palmiers</span><span class=\"ds-org-meta\">Client · Responsable</span></span></button></li></ul></nav></div>",
+      "css": ".ds-orgs { width:232px; padding:18px; background:#1d2457; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; } .ds-org-nav { display:flex; flex-direction:column; gap:10px; } .ds-org-nav-title { margin:0; padding:0 6px; color:#b3b9df; font-size:.8125rem; font-weight:600; } .ds-org-list { list-style:none; margin:0; padding:0; display:grid; gap:4px; } .ds-org-item { display:flex; align-items:center; gap:12px; width:100%; padding:8px; border:0; border-radius:8px; background:transparent; color:#eef0fb; font:inherit; font-weight:400; text-align:left; cursor:pointer; transition:background-color .15s, color .15s; } .ds-org-item:hover { background:#283071; } .ds-org-item[aria-current=true] { background:#d7f0e4; color:#161a33; } .ds-org-item:focus-visible { outline:2px solid #f2b134; outline-offset:2px; } .ds-org-swatch { flex:none; width:32px; height:32px; border-radius:6px; } .ds-cloth-t { background:#d5eef1 url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d5eef1'/%3E%3Cpath d='M8 1 15 8 8 15 1 8Z' fill='%230e7c8a'/%3E%3Cpath d='M8 5.5 10.5 8 8 10.5 5.5 8Z' fill='%23d5eef1'/%3E%3C/svg%3E\") 0 0 / 16px 16px round; } .ds-cloth-e { background:#d7f0e4 url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d7f0e4'/%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%2312805a' stroke-width='1.8'/%3E%3Ccircle cx='8' cy='8' r='1.8' fill='%2312805a'/%3E%3C/svg%3E\") 0 0 / 16px 16px round; } .ds-org-text { display:grid; gap:1px; min-width:0; } .ds-org-name { font-size:1.0625rem; line-height:1.2; font-weight:700; font-stretch:88%; } .ds-org-meta { color:#b3b9df; font-size:.8125rem; } .ds-org-item[aria-current=true] .ds-org-meta { color:#4d5373; }"
+    },
+    {
       "name": "Plaque d'organisation",
       "kind": "custom",
       "refersTo": "org-plate",
-      "description": "Coupon de tissu et nom de l'organisation active ; face visible du sélecteur natif.",
-      "html": "<div class=\"ds-rail\"><label class=\"ds-plate\"><span class=\"ds-plate-cloth\"></span><span class=\"ds-plate-body\"><span class=\"ds-plate-caption\">Organisation active</span><span class=\"ds-plate-name\">NetPro Services Douala</span></span><select class=\"ds-plate-select\" aria-label=\"Organisation active\"><option>NetPro Services Douala</option></select></label></div>",
-      "css": ".ds-rail { padding:18px; background:#1d2457; width:228px; } .ds-plate { position:relative; display:block; overflow:hidden; border-radius:8px; background:#d5eef1; color:#161a33; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; } .ds-plate-cloth { display:block; height:32px; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d5eef1'/%3E%3Cpath d='M8 1 15 8 8 15 1 8Z' fill='%230e7c8a'/%3E%3Cpath d='M8 5.5 10.5 8 8 10.5 5.5 8Z' fill='%23d5eef1'/%3E%3C/svg%3E\"); background-size:16px 16px; background-repeat:round; } .ds-plate-body { display:grid; padding:10px 12px 12px; } .ds-plate-caption { color:#4d5373; font-size:.75rem; font-weight:600; } .ds-plate-name { font-size:1.0625rem; line-height:1.2; font-weight:700; font-stretch:88%; } .ds-plate-select { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; } .ds-plate:has(select:focus-visible) { outline:2px solid #f2b134; outline-offset:3px; }"
+      "description": "Entrée unique de la liste quand l'utilisateur n'a qu'une organisation : bande de tissu de 32px au-dessus du nom.",
+      "html": "<div class=\"ds-orgs1\"><button class=\"ds-plate\" aria-current=\"true\"><span class=\"ds-plate-cloth\" aria-hidden=\"true\"></span><span class=\"ds-plate-body\"><span class=\"ds-plate-name\">NetPro Services Douala</span><span class=\"ds-plate-meta\">Prestataire · Responsable</span></span></button></div>",
+      "css": ".ds-orgs1 { width:232px; padding:18px; background:#1d2457; } .ds-plate { display:flex; flex-direction:column; width:100%; padding:0; border:0; border-radius:8px; overflow:hidden; background:#d5eef1; color:#161a33; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; text-align:left; cursor:pointer; } .ds-plate:focus-visible { outline:2px solid #f2b134; outline-offset:2px; } .ds-plate-cloth { display:block; height:32px; background:#d5eef1 url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23d5eef1'/%3E%3Cpath d='M8 1 15 8 8 15 1 8Z' fill='%230e7c8a'/%3E%3Cpath d='M8 5.5 10.5 8 8 10.5 5.5 8Z' fill='%23d5eef1'/%3E%3C/svg%3E\") 0 0 / 16px 16px round; } .ds-plate-body { display:grid; gap:1px; padding:10px 12px 12px; } .ds-plate-name { font-size:1.0625rem; line-height:1.2; font-weight:700; font-stretch:88%; } .ds-plate-meta { color:#4d5373; font-size:.8125rem; }"
     },
     {
       "name": "Liseré",
       "kind": "custom",
-      "description": "Bande de 12px du tissu de l'organisation, déroulée en 240ms au changement de contexte.",
+      "description": "Bande de 12px du tissu de l'organisation, en haut du contenu et le long de la colonne, déroulée en 240ms au changement de contexte.",
       "html": "<span class=\"ds-selvedge\" aria-hidden=\"true\"></span>",
       "css": ".ds-selvedge { display:block; width:100%; height:12px; background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23fbe1da'/%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%23d2452a' stroke-width='1.8'/%3E%3Ccircle cx='8' cy='8' r='1.8' fill='%23d2452a'/%3E%3C/svg%3E\"); background-size:12px 12px; background-repeat:round; animation:ds-unroll .24s cubic-bezier(.16,1,.3,1); } @keyframes ds-unroll { from { clip-path:inset(0 100% 0 0); } to { clip-path:inset(0 0 0 0); } } @media (prefers-reduced-motion: reduce) { .ds-selvedge { animation:none; } }"
     },
     {
-      "name": "Navigation du rail",
+      "name": "Onglets de rubrique",
       "kind": "nav",
-      "refersTo": "nav-item-active",
-      "description": "Rubriques sur indigo ; rubrique courante sur indigo actif, icône safran.",
-      "html": "<nav class=\"ds-nav\"><button class=\"ds-nav-item\" aria-current=\"page\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5\"/></svg>Équipe</button><button class=\"ds-nav-item\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 21h18M5 21V6l7-3v18M12 8h7v13\"/></svg>Sites et salles</button></nav>",
-      "css": ".ds-nav { display:grid; gap:4px; width:228px; padding:18px; background:#1d2457; } .ds-nav-item { display:flex; align-items:center; gap:12px; padding:10px 12px; border:1px solid transparent; border-radius:6px; background:transparent; color:#b3b9df; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; font-size:.9375rem; font-weight:600; cursor:pointer; text-align:left; } .ds-nav-item:hover { background:#283071; color:#fff; } .ds-nav-item[aria-current=page] { background:#2c357f; color:#fff; } .ds-nav-item[aria-current=page] svg { color:#f2b134; } .ds-nav-item:focus-visible { outline:2px solid #f2b134; outline-offset:2px; }"
+      "refersTo": "section-tab-active",
+      "description": "Équipe / Sites et salles sous le nom de l'organisation ; onglet courant souligné de 3px indigo, compteur masqué aux technologies d'assistance.",
+      "html": "<nav class=\"ds-tabs\" aria-label=\"Rubriques\"><button aria-current=\"page\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"9\" cy=\"8\" r=\"3.5\"/><path d=\"M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5\"/></svg>Équipe<span class=\"ds-count\" aria-hidden=\"true\">6</span></button><button><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 21h18M5 21V6l7-3v18M12 8h7v13\"/></svg>Sites et salles</button></nav>",
+      "css": ".ds-tabs { display:flex; gap:28px; border-bottom:1px solid #dde0ec; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; } .ds-tabs button { display:inline-flex; align-items:center; gap:8px; padding:10px 2px 12px; border:0; border-radius:0; background:transparent; color:#4d5373; font:inherit; font-size:.9375rem; font-weight:600; cursor:pointer; transition:color .15s; } .ds-tabs button:hover { color:#161a33; } .ds-tabs button[aria-current=page] { color:#161a33; box-shadow:inset 0 -3px 0 #1d2457; } .ds-tabs button[aria-current=page] .ds-icon { color:#1d2457; } .ds-tabs button:focus-visible { outline:2px solid #2f4fc4; outline-offset:2px; } .ds-icon { width:18px; height:18px; } .ds-count { padding:1px 9px; border-radius:999px; background:#e6e8f3; color:#161a33; font-size:.8125rem; font-variant-numeric:tabular-nums; }"
+    },
+    {
+      "name": "Carte de détail bordée de tissu",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Volet de détail : carte blanche bordée en tête d'une bande de 12px du tissu de l'organisation active (--org-cloth) ; une seule action safran.",
+      "html": "<div class=\"ds-detail\"><h2>Ajouter à l'équipe</h2><ul class=\"ds-action-list\"><li><button class=\"ds-primary\">Ajouter un agent</button><p>Crée un compte avec un mot de passe provisoire.</p></li><li><button class=\"ds-secondary\">Créer une invitation</button><p>Envoie un lien à un responsable.</p></li></ul></div>",
+      "css": ".ds-detail { --org-cloth:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23f8dcea'/%3E%3Ccircle cx='8' cy='8' r='5' fill='none' stroke='%23b8306f' stroke-width='1.8'/%3E%3Ccircle cx='8' cy='8' r='1.8' fill='%23b8306f'/%3E%3C/svg%3E\"); width:340px; overflow:hidden; padding:22px 24px 24px; background:#fff; border:1px solid #dde0ec; border-radius:8px; color:#161a33; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; } .ds-detail::before { content:''; display:block; height:12px; margin:-22px -24px 20px; background:#f8dcea var(--org-cloth) 0 0 / 12px 12px round; } .ds-detail h2 { margin:0 0 8px; font-size:1.25rem; line-height:1.25; font-weight:700; font-stretch:92%; } .ds-action-list { list-style:none; margin:16px 0 0; padding:0; display:grid; gap:20px; } .ds-action-list li { display:grid; justify-items:start; gap:8px; } .ds-action-list p { margin:0; color:#4d5373; font-size:.875rem; } .ds-primary, .ds-secondary { padding:9px 16px; border-radius:6px; font:inherit; font-size:.9375rem; font-weight:600; cursor:pointer; transition:background-color .15s; } .ds-primary { background:#f2b134; border:1px solid #f2b134; color:#1d2457; } .ds-primary:hover { background:#e5a11c; } .ds-secondary { background:#fff; border:1px solid #c5c9dc; color:#161a33; } .ds-secondary:hover { background:#eef0f8; } .ds-primary:focus-visible, .ds-secondary:focus-visible { outline:2px solid #2f4fc4; outline-offset:2px; }"
     },
     {
       "name": "Statuts d'accès",
@@ -843,20 +874,21 @@
       "css": ".ds-kind { padding:2px 8px; border-radius:6px; background:#d5eef1; border:1px solid color-mix(in srgb, #0e7c8a 40%, transparent); color:#161a33; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; font-size:.75rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; }"
     },
     {
-      "name": "Panneau de secret à usage unique",
+      "name": "Carte de secret à usage unique",
       "kind": "card",
       "refersTo": "result-panel",
-      "description": "Résultat de création sur safran pâle ; effacé à la fermeture.",
+      "description": "Résultat de création sur safran pâle dans le volet de détail, sans bord de tissu ; effacé à la fermeture.",
       "html": "<section class=\"ds-result\"><h2>Agent créé</h2><p class=\"ds-result-login\">Identifiant <code>j.mbarga</code></p></section>",
-      "css": ".ds-result { max-width:640px; padding:24px 28px 28px; background:#fff6e2; border:1px solid #edc976; border-radius:8px; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; color:#161a33; } .ds-result h2 { margin:0 0 8px; font-size:1.25rem; font-weight:700; font-stretch:92%; } .ds-result-login { display:flex; align-items:center; gap:10px; font-weight:600; margin:0; } .ds-result code { padding:2px 8px; background:#fff; border:1px solid #edc976; border-radius:6px; font-family:ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size:.9375rem; }"
+      "css": ".ds-result { width:340px; padding:22px 24px 24px; background:#fff6e2; border:1px solid #edc976; border-radius:8px; font-family:'Archivo Variable', ui-sans-serif, system-ui, sans-serif; color:#161a33; } .ds-result h2 { margin:0 0 8px; font-size:1.25rem; font-weight:700; font-stretch:92%; } .ds-result-login { display:flex; align-items:center; gap:10px; font-weight:600; margin:0; } .ds-result code { padding:2px 8px; background:#fff; border:1px solid #edc976; border-radius:6px; font-family:ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace; font-size:.9375rem; }"
     }
   ],
   "narrative": {
     "northStar": "Le pagne d'entreprise",
-    "overview": "**Creative North Star: \"Le pagne d'entreprise\"**\n\nOn agit toujours au nom d'une organisation précise, et l'interface le montre comme une entreprise montre ses couleurs : par un tissu imprimé à son motif. Chaque organisation reçoit, à partir de son identifiant, une couleur de wax et un motif géométrique ; ce tissu borde l'espace de travail (le liseré), habille la plaque d'organisation du rail et teinte discrètement la page (puce de type, avatars, états vides). Changer d'organisation ré-imprime visiblement le liseré.\n\nAutour du tissu, la console reste calme et dense : un rail indigo profond porte l'identité, le contexte et les rubriques ; le contenu est posé sur un fond clair teinté d'indigo, en surfaces blanches à filets fins, sans aucune ombre. Une seule action safran est visible à la fois. Le vermillon et l'émeraude ne parlent que d'état. Archivo variable donne aux noms d'organisation et aux titres une coupe semi-condensée grasse ; le texte courant reste en largeur normale.\n\nLe système refuse la console SaaS grise où le contexte actif n'est qu'une petite liste déroulante : le contexte est ici la pièce la plus visible de l'écran.",
+    "overview": "**Creative North Star: \"Le pagne d'entreprise\"**\n\nOn agit toujours au nom d'une organisation précise, et l'interface le montre comme une entreprise montre ses couleurs : par un tissu imprimé à son motif. Chaque organisation reçoit, à partir de son identifiant, une couleur de wax et un motif géométrique ; ce tissu borde l'espace de travail (le liseré), marque chaque organisation de la colonne par une pastille, borde les cartes de détail et teinte discrètement la page (puce de type, avatars, états vides). Changer d'organisation ré-imprime visiblement le liseré.\n\nAutour du tissu, la console reste calme et dense, organisée en maître-détail : une colonne indigo profonde porte la marque, la liste des organisations et le compte ; le contenu, posé sur un fond clair teinté d'indigo, nomme l'organisation, ouvre ses rubriques en onglets, puis place la liste à gauche et le détail à droite, en surfaces blanches à filets fins, sans aucune ombre. Une seule action safran est visible à la fois. Le vermillon et l'émeraude ne parlent que d'état. Archivo variable donne aux noms d'organisation et aux titres une coupe semi-condensée grasse ; le texte courant reste en largeur normale.\n\nLe système refuse la console SaaS grise où le contexte actif n'est qu'une petite liste déroulante : le contexte est ici la pièce la plus visible de l'écran.",
     "keyCharacteristics": [
-      "Rail indigo de 264px, liseré de 12px au motif de l'organisation active, en haut du contenu et le long du rail.",
-      "Plaque d'organisation : coupon de tissu de 32px, nom en semi-condensé gras, qui est la face visible du sélecteur natif.",
+      "Colonne indigo de 280px listant les organisations, chacune avec sa pastille de tissu de 32px ; l'organisation active posée sur sa propre teinte.",
+      "Liseré de 12px au motif de l'organisation active, en haut du contenu et le long de la colonne ; la même bande de 12px borde les cartes de détail, les formulaires et la liste des lieux.",
+      "Maître-détail : liste à gauche, détail collant à droite à partir de 1240px ; liste et détail alternent en dessous.",
       "Une seule action principale safran par écran, texte indigo.",
       "Vermillon pour suspendu et erreurs, émeraude pour actif et succès ; couleurs de wax réservées à l'identité.",
       "Surfaces plates, filets de 1px, coins de 6 à 8px, statuts et compteurs en capsule."
@@ -864,7 +896,7 @@
     "rules": [
       {
         "name": "The One Saffron Rule",
-        "body": "Une seule action safran est visible à la fois. Dès qu'un formulaire ou un secret est ouvert, les actions de l'en-tête repassent en secondaire ; la seule action safran est alors celle du panneau.",
+        "body": "Une seule action safran est visible à la fois. Dès qu'un formulaire ou un secret est ouvert, les autres actions repassent en secondaire ou s'effacent ; la seule action safran est alors celle du panneau.",
         "section": "colors"
       },
       {
@@ -874,7 +906,7 @@
       },
       {
         "name": "The Royal Blue Is Focus Rule",
-        "body": "Dans l'interface, le bleu roi ne sert qu'à l'anneau de focus. Il reste une couleur de tissu légitime (wax « roi ») sur le liseré et la plaque, qui ne reçoivent jamais le focus eux-mêmes.",
+        "body": "Dans l'interface, le bleu roi ne sert qu'à l'anneau de focus. Il reste une couleur de tissu légitime (wax « roi ») sur le liseré, les pastilles et les bords de cartes, qui ne reçoivent jamais le focus eux-mêmes.",
         "section": "colors"
       },
       {
@@ -895,24 +927,27 @@
     ],
     "dos": [
       "**Do** conserver des libellés visibles et les traductions françaises et anglaises.",
-      "**Do** garder les messages de chargement, d'erreur et de résultat dans le flux de la page.",
+      "**Do** garder les messages de chargement, d'erreur et de résultat dans les volets de l'espace de travail, jamais en fenêtre flottante.",
+      "**Do** nommer dans un message d'erreur de chargement ce qui n'a pas pu être chargé.",
       "**Do** dériver couleur et motif de l'identifiant de l'organisation (FNV-1a sur sept paires de wax) et poser le tissu avec `background-repeat: round` et des tailles de tuile entières (12, 16 ou 20px).",
       "**Do** écrire le nom de l'organisation à côté de tout tissu ; le motif reste décoratif.",
-      "**Do** ré-imprimer le liseré et le coupon de la plaque à chaque changement d'organisation (240ms), et les laisser fixes en mouvement réduit.",
+      "**Do** ré-imprimer le liseré et la pastille active à chaque changement d'organisation (240ms), et les laisser fixes en mouvement réduit.",
       "**Do** placer la puce de type sous le nom de l'organisation.",
       "**Do** utiliser l'anneau bleu roi (`focus`) sur fond clair et l'anneau safran sur indigo.",
-      "**Do** passer le rail en bandeau à onglets et le tableau d'équipe en cartes à 760px."
+      "**Do** border de 12px de tissu les cartes de détail et les formulaires des volets, jamais la carte de secret.",
+      "**Do** garder liste et détail côte à côte à partir de 1240px, les faire alterner en dessous, et passer en écrans successifs avec le tableau d'équipe en cartes à 760px."
     ],
     "donts": [
       "**Don't** présenter des opérations futures comme disponibles.",
       "**Don't** remplacer les données absentes par des indicateurs fictifs.",
-      "**Don't** conserver à l'écran les secrets après fermeture de leur panneau.",
+      "**Don't** conserver à l'écran les secrets après fermeture de leur carte.",
       "**Don't** afficher plus d'une action safran à la fois.",
       "**Don't** utiliser une couleur de wax pour un état, une action ou un lien.",
       "**Don't** utiliser le bleu roi dans l'interface ailleurs que pour le focus.",
       "**Don't** ajouter d'ombre portée ni de surface flottante.",
       "**Don't** couper un motif au bord ni réduire le liseré sous 12px.",
-      "**Don't** employer la chasse fixe ailleurs que pour les identifiants et liens à copier."
+      "**Don't** employer la chasse fixe ailleurs que pour les identifiants et liens à copier.",
+      "**Don't** réduire le choix de l'organisation à une liste déroulante : chaque organisation reste visible avec son tissu."
     ]
   }
 }
