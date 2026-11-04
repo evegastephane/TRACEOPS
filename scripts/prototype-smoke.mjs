@@ -1,0 +1,38 @@
+import { chromium } from '@playwright/test';
+import assert from 'node:assert/strict';
+import { createServer } from 'node:http';
+import express from 'express';
+import helmet from 'helmet';
+const app=express();app.use(helmet());app.use(express.static('web-dist'));
+const server=createServer(app);
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const browser=await chromium.launch({executablePath:'/usr/bin/chromium',args:['--no-sandbox']});
+const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+page.setDefaultTimeout(15000);
+await page.addInitScript(()=>{window.cspViolations=[];document.addEventListener('securitypolicyviolation',e=>window.cspViolations.push(e.violatedDirective));});
+try{
+ await page.goto(process.env.PROTOTYPE_URL??`http://127.0.0.1:${server.address().port}/prototype.html`);
+ const role=async r=>page.getByLabel('Tester la vue').selectOption(r);
+ const click=async name=>page.getByRole('button',{name,exact:true}).click();
+ await page.screenshot({path:'.impeccable/review/prototype-desktop.png',fullPage:true});
+ await role('provider');await click('Affecter les agents');
+ await page.getByLabel('Agent A',{exact:false}).first().check();await page.getByLabel('Agent B',{exact:false}).check();
+ await click('Confirmer l’affectation');await page.getByText('Un agent est déjà occupé',{exact:false}).waitFor();
+ await page.getByLabel('Agent B',{exact:false}).uncheck();await click('Confirmer l’affectation');
+ await role('agent');await click('Ouvrir ma mission');await click('Démarrer l’intervention');
+ await click('Vérifier et soumettre');await page.getByText('Le compte rendu est incomplet',{exact:true}).waitFor();await click('Revenir aux tâches');
+ for(const box of await page.getByLabel('Tâche réalisée',{exact:true}).all())await box.check();
+ while(await page.getByRole('button',{name:'Ajouter une preuve avant',exact:true}).count())await page.getByRole('button',{name:'Ajouter une preuve avant',exact:true}).first().click();
+ while(await page.getByRole('button',{name:'Ajouter une preuve après',exact:true}).count())await page.getByRole('button',{name:'Ajouter une preuve après',exact:true}).first().click();
+ await page.getByLabel('Décrivez le problème').fill('Trace persistante sur la surface');await click('Enregistrer le signalement');
+ await page.setViewportSize({width:390,height:844});await page.screenshot({path:'.impeccable/review/prototype-mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+ await click('Vérifier et soumettre');await click('Soumettre le compte rendu');
+ await role('controller');await click('Contrôler');await click('Demander une reprise');await page.getByLabel('Nettoyer les surfaces',{exact:true}).check();await page.getByLabel('Motif de reprise').fill('Reprendre les traces restantes');await click('Envoyer la demande de reprise');
+ await role('agent');await click('Ouvrir ma mission');await page.getByLabel('Tâche réalisée',{exact:true}).check();await click('Ajouter une preuve après');await click('Vérifier et soumettre');await click('Soumettre le compte rendu');
+ await role('controller');await click('Contrôler');await page.setViewportSize({width:1440,height:1000});await page.screenshot({path:'.impeccable/review/prototype-review.png',fullPage:true});
+ await click('Valider l’intervention');await page.getByLabel('Motif de validation avec réserve').fill('Travail accepté, anomalie à suivre');await click('Confirmer la validation');await page.getByRole('heading',{name:'Anomalie ouverte',exact:true}).waitFor();await click('Examiner la clôture');await page.getByLabel('Constat de résolution').fill('Résolution vérifiée sur place');await click('Confirmer la clôture');await page.getByRole('heading',{name:'Anomalie clôturée',exact:true}).waitFor();
+ await role('client');await click('Créer une intervention');await page.getByLabel('Titre de l’intervention').fill('Essai salle 204');await page.getByLabel('Salle',{exact:true}).selectOption('Salle 204');await click('Continuer');await click('Continuer');await click('Transmettre au prestataire');await page.getByRole('heading',{name:'Essai salle 204',exact:true}).waitFor();
+ await role('admin');await click('Journal d’audit');await page.getByText('Anomalie clôturée : Résolution vérifiée sur place',{exact:false}).waitFor();
+ await page.setViewportSize({width:360,height:800});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);assert.deepEqual(errors,[]);assert.deepEqual(await page.evaluate(()=>window.cspViolations),[]);
+ console.log('Prototype: creation, conflict, assignment, execution, submission, targeted rework, versions, validation, anomaly closure, audit, mobile passed.');
+}finally{await browser.close();server.close();}
