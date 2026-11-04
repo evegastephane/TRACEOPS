@@ -11,7 +11,7 @@
     "start": "node --env-file=.env dist/src/main.js",
     "start:ci": "node dist/src/main.js",
     "db:migrate": "node --env-file=.env dist/src/migrate.js",
-    "build:web": "tsc -p apps/web/tsconfig.json && vite build --config apps/web/vite.config.ts apps/web",
+    "build:web": "tsc -p apps/web/tsconfig.json && vite build --config apps/web/vite.config.ts apps/web && node scripts/copy-prototype.mjs",
     "dev:web": "vite --config apps/web/vite.config.ts apps/web",
     "admin:bootstrap": "node --env-file=.env dist/src/bootstrap-admin.js"
   },

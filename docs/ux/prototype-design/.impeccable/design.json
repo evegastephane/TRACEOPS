@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-04T14:26:33.817573+00:00",
+  "title": "Design System: TRACEOPS — prototype Operate",
+  "extensions": {
+    "shadows": [],
+    "motion": [
+      {
+        "name": "content-arrival",
+        "value": "arrive .16s ease-out; translateY(4px) → translateY(0)",
+        "purpose": "Seulement sous prefers-reduced-motion: no-preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "stack-content",
+        "value": "1050px"
+      },
+      {
+        "name": "single-column",
+        "value": "700px"
+      }
+    ],
+    "scope": {
+      "artifact": "docs/ux/prototype.html",
+      "authority": "Scoped experimental proposal; no root or production design adoption.",
+      "reviewDisposition": "ship, as supplied by prototype reviewer",
+      "evidence": [
+        ".impeccable/review/prototype-desktop.png",
+        ".impeccable/review/prototype-mobile.png",
+        ".impeccable/review/prototype-review.png"
+      ],
+      "limitations": [
+        "No comp, quality card or launcher available.",
+        "No human usability test or accessibility certification.",
+        "No tonal ramps defined by the source; none treated as implementation tokens."
+      ]
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Action principale.",
+      "html": "<button class=\"ds-button-primary\">Continuer</button>",
+      "css": ".ds-button-primary{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;font-size:1rem;line-height:1.5;border:1px solid var(--line,#dbe2ea);border-radius:8px;padding:10px 16px;font-weight:650;min-height:44px;cursor:pointer;background:var(--blue,#2259d5);color:#fff;border-color:var(--blue,#2259d5);}.ds-button-primary:hover{background:#1948b1}.ds-button-primary:focus-visible{outline:3px solid #d98920;outline-offset:3px;}.ds-button-primary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action secondaire.",
+      "html": "<button class=\"ds-button-secondary\">Continuer</button>",
+      "css": ".ds-button-secondary{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;font-size:1rem;line-height:1.5;border:1px solid var(--line,#dbe2ea);border-radius:8px;padding:10px 16px;font-weight:650;min-height:44px;cursor:pointer;background:#fff;color:var(--ink,#172634);}.ds-button-secondary:hover{background:#edf2fa}.ds-button-secondary:focus-visible{outline:3px solid #d98920;outline-offset:3px;}.ds-button-secondary:disabled{opacity:.55;cursor:not-allowed}"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Libellé persistant et focus visible.",
+      "html": "<label class=\"ds-field\">Titre de l’intervention<input value=\"Nettoyage de la salle 101\"></label>",
+      "css": ".ds-field{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;display:grid;gap:7px;font-size:.9rem;font-weight:650;color:var(--ink,#172634)}.ds-field input{font:inherit;border:1px solid #91a2b5;border-radius:7px;padding:11px;background:white;color:var(--ink,#172634);caret-color:var(--blue,#2259d5)}.ds-field input:focus-visible{outline:3px solid #d98920;outline-offset:3px;}"
+    },
+    {
+      "name": "Role Navigation",
+      "kind": "nav",
+      "refersTo": "navigation-current",
+      "description": "Navigation courante et survol, selon le rôle.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Navigation principale\"><button aria-current=\"page\">À traiter</button><button>Interventions</button></nav>",
+      "css": ".ds-nav{display:grid;gap:5px;background:var(--nav,#152d44);padding:16px}.ds-nav button{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;font-size:1rem;line-height:1.5;border:1px solid var(--line,#dbe2ea);border-radius:8px;padding:10px 16px;font-weight:650;min-height:44px;cursor:pointer;text-align:left;background:transparent;color:#c8d8e6;border:0;font-size:.9rem;padding:12px 16px}.ds-nav button:hover{background:#284359}.ds-nav button[aria-current=page]{background:#e8f0ff;color:#183b81}.ds-nav button:focus-visible{outline:3px solid #d98920;outline-offset:3px;}"
+    },
+    {
+      "name": "Written Status",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "État écrit ; contrôle, validation et reprise gardent un libellé.",
+      "html": "<span class=\"ds-badge\">À affecter</span> <span class=\"ds-badge ds-review\">À contrôler</span> <span class=\"ds-badge ds-validated\">Validée</span> <span class=\"ds-badge ds-rework\">Reprise demandée</span>",
+      "css": ".ds-badge{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;display:inline-block;border-radius:5px;padding:4px 9px;background:#e8effb;color:#244989;font-size:.78rem;font-weight:650;white-space:nowrap}.ds-review{background:#fff0cc;color:#775000}.ds-validated{background:#dff2e7;color:#21613b}.ds-rework{background:#ffebe3;color:#9a3a17}"
+    },
+    {
+      "name": "Work Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Surface de travail plate et bordée.",
+      "html": "<section class=\"ds-panel\"><h2>Travail et preuves</h2><p>Nettoyer le sol</p></section>",
+      "css": ".ds-panel{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:white;color:var(--ink,#172634);border:1px solid var(--line,#dbe2ea);border-radius:12px;padding:24px;margin-bottom:22px}.ds-panel h2{font-size:1.15rem;margin:0 0 16px}.ds-panel p{margin-top:0;max-width:68ch}@media(max-width:700px){.ds-panel{padding:20px}}"
+    },
+    {
+      "name": "Task Check",
+      "kind": "custom",
+      "description": "Contribution à une tâche avec état natif coché.",
+      "html": "<label class=\"ds-check\"><input type=\"checkbox\" checked><span>Tâche réalisée</span></label>",
+      "css": ".ds-check{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;display:flex;align-items:start;gap:12px;padding:14px;border:1px solid var(--line,#dbe2ea);border-radius:8px;font-size:.95rem;font-weight:650;color:var(--ink,#172634)}.ds-check input{width:20px;height:20px;flex:0 0 auto;margin-top:3px;accent-color:var(--blue,#2259d5)}.ds-check input:focus-visible{outline:3px solid #d98920;outline-offset:3px;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Operate",
+    "overview": "Proposition expérimentale extraite de `../prototype.html`. Ce document s’applique uniquement au prototype synthétique des interventions. Il ne remplace ni le DESIGN.md racine ni la direction de l’application livrée.\n\nUne navigation stable encadre une liste de travail lisible. Le titre, l’état et la prochaine action passent avant les informations d’organisation ; les responsabilités client, prestataire, agent et contrôleur restent explicites.",
+    "keyCharacteristics": [
+      "Navigation bleu nuit et action principale cobalt.",
+      "Surfaces claires, panneaux plats, hiérarchie par espacement.",
+      "Statuts écrits et passages de responsabilité visibles."
+    ],
+    "rules": [
+      {
+        "name": "The Written Status Rule",
+        "body": "Chaque statut reste nommé en toutes lettres ; la couleur accompagne le sens.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do conserver le titre métier, le statut écrit et la prochaine responsabilité visibles.",
+      "Do conserver les libellés de simulation et la portée temporaire des données.",
+      "Do adapter les listes et formulaires à une seule colonne sur téléphone."
+    ],
+    "donts": [
+      "Don't promouvoir cette proposition en système de l’application sans décision explicite.",
+      "Don't présenter les preuves fictives ou les changements de rôle comme des fonctions de production."
+    ]
+  }
+}
