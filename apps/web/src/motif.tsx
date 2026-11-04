@@ -58,6 +58,8 @@ function tileSvg({ family, variant, ink, tint }: Motif): string {
 
 function clothStyle(motif: Motif, tile: number): React.CSSProperties {
   return {
+    // The tint behind the tiles hides sub-pixel seams when `round` scales them to a fractional size.
+    backgroundColor: motif.tint,
     backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(tileSvg(motif))}")`,
     backgroundSize: `${tile}px ${tile}px`,
     backgroundRepeat: 'round',

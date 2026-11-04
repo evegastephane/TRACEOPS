@@ -23,8 +23,8 @@ Les sites sont des lignes cliquables sur fond blanc. Les lieux sont des lignes d
 
 Les formulaires réutilisent les panneaux et champs existants. Leur titre reçoit le focus à l’ouverture ; la fermeture ou une création réussie ramène le focus au titre de la surface. Les chargements et confirmations utilisent `role="status"`, les erreurs `role="alert"`. Pendant l’enregistrement, les champs, la navigation de contexte, la déconnexion et les actions concurrentes sont désactivés. Le composant est recréé au changement d’organisation et les réponses de chargement devenues obsolètes sont ignorées. Les libellés et messages sont disponibles en français et en anglais.
 
-## Écart documentaire conservé
-Le DESIGN.md existant décrit encore une console de gestion des accès et indique l’absence de menu de rubriques actif. Le composant de navigation et le récit de .impeccable/design.json restent également centrés sur ce premier lot. Ces descriptions ne couvrent donc pas les rubriques et les listes de lieux livrées ici. Cette extension conserve ces deux fichiers de référence sans les régénérer ; le présent document porte les comportements propres à cette surface. PRODUCT.md décrit le premier parcours livré, sans inventorier cette extension.
+## Documentation de référence
+DESIGN.md et .impeccable/design.json ont été régénérés lors de la refonte « Pagne d'entreprise » : ils décrivent désormais la console complète, rubriques et étiquettes de lieux comprises. Le présent document garde les comportements propres à cette surface. PRODUCT.md décrit le premier parcours livré, sans inventorier cette extension.
 
 ## Preuves
 scripts/sites-smoke.mjs : parcours navigateur sur PostgreSQL, comptes synthétiques. Captures locales non versionnées dans .impeccable/review/sites-desktop.png (1440), sites-mobile.png (390) et sites-form-mobile.png (360). Tests : motif admin, hiérarchie, doublon de code, recherche, erreur/reprise, droits prestataire/contrôleur, changement de contexte, FR/EN et absence de débordement horizontal.
