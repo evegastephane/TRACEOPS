@@ -1,0 +1,47 @@
+name: Application checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: traceops_test
+          POSTGRES_USER: traceops
+          POSTGRES_PASSWORD: local-ci-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U traceops -d traceops_test"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgresql://traceops:local-ci-test-only@127.0.0.1:5432/traceops_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build:web
+      - run: docker compose config --quiet
+  local-demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose build
+      - name: Initialize private disposable demo credentials
+        run: |
+          umask 077
+          docker compose run --rm setup > "$RUNNER_TEMP/traceops-demo.txt"
+      - run: docker compose up -d --wait web
+      - run: curl --fail --silent --show-error http://localhost:3000/api/v1/health/ready
+      - name: Stop disposable services
+        if: always()
+        run: docker compose down --volumes

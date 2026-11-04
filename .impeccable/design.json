@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-03T18:39:37.646580+00:00",
+  "title": "Design System: TRACEOPS",
+  "extensions": {
+    "motion": [
+      {
+        "name": "button-background",
+        "value": "background .15s",
+        "purpose": "Survol des boutons ; désactivé en mouvement réduit."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "1050px"
+      },
+      {
+        "name": "mobile",
+        "value": "700px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Button primary",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "html": "<button class=\"ds-button-primary\">Créer</button>",
+      "css": ".ds-button-primary{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:var(--green, #176448);color:#fff;border:1px solid transparent;border-radius:7px;padding:11px 18px;font-size:16px;font-weight:600;cursor:pointer;transition:background .15s}.ds-button-primary:hover{background:#0d4f37}.ds-button-primary:focus-visible{outline:3px solid #74b799;outline-offset:3px}.ds-button-primary:disabled{opacity:.55;cursor:wait}@media(prefers-reduced-motion:reduce){.ds-button-primary{transition:none}}",
+      "description": "Action dans le flux du formulaire."
+    },
+    {
+      "name": "Button secondary",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "html": "<button class=\"ds-button-secondary\">Créer</button>",
+      "css": ".ds-button-secondary{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:#fff;color:#234f3b;border:1px solid var(--border, #d9e2da);border-radius:7px;padding:11px 18px;font-size:16px;font-weight:600;cursor:pointer;transition:background .15s}.ds-button-secondary:hover{background:#e9f0e9}.ds-button-secondary:focus-visible{outline:3px solid #74b799;outline-offset:3px}.ds-button-secondary:disabled{opacity:.55;cursor:wait}@media(prefers-reduced-motion:reduce){.ds-button-secondary{transition:none}}",
+      "description": "Action dans le flux du formulaire."
+    },
+    {
+      "name": "Labeled input",
+      "kind": "input",
+      "refersTo": "input",
+      "html": "<label class=\"ds-label\">Identifiant<input class=\"ds-input\" autocomplete=\"username\" /></label>",
+      "css": ".ds-label{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;display:grid;gap:7px;font-size:.875rem;font-weight:600;color:#172d26}.ds-input{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;font-size:16px;padding:11px 12px;background:#fff;border:1px solid #a7b8ac;border-radius:6px;color:#172d26;caret-color:var(--green, #176448)}.ds-input:focus{outline:3px solid #a6d1b8;outline-offset:2px}",
+      "description": "Libellé permanent et focus visible."
+    },
+    {
+      "name": "Access status",
+      "kind": "chip",
+      "refersTo": "status",
+      "html": "<span class=\"ds-status\">Actif</span>",
+      "css": ".ds-status{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;color:#175534;background:#e5f1e7;padding:4px 8px;border-radius:4px;font-size:.75rem;white-space:nowrap}",
+      "description": "Le même style sert également au texte Suspendu."
+    },
+    {
+      "name": "Form panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "html": "<section class=\"ds-panel\"><h2>Créer une organisation</h2></section>",
+      "css": ".ds-panel{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;background:#fff;color:#172d26;padding:28px;border:1px solid var(--border, #d9e2da);border-radius:10px;max-width:660px}.ds-panel h2{margin:0 0 22px;font-size:1.3rem;letter-spacing:-.015em}@media(max-width:700px){.ds-panel{padding:20px}}",
+      "description": "Conteneur plat intégré au flux."
+    },
+    {
+      "name": "Organization navigation",
+      "kind": "nav",
+      "html": "<aside class=\"ds-nav\"><p>Mon organisation</p><label>Organisation active<select aria-label=\"Organisation active\"><option>Organisation</option></select></label></aside>",
+      "css": ".ds-nav{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;padding:32px 24px;background:#eaf0e9;color:#172d26;border-right:1px solid var(--border, #d9e2da)}.ds-nav p{font-weight:700;color:#173b2e;margin:0 0 24px}.ds-nav label{display:grid;gap:7px;font-size:.875rem;font-weight:600}.ds-nav select{font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;font-size:16px;padding:11px 12px;background:#fff;border:1px solid #a7b8ac;border-radius:6px;color:#172d26}.ds-nav select:focus{outline:3px solid #a6d1b8;outline-offset:2px}@media(max-width:700px){.ds-nav{padding:20px;border-right:0;border-bottom:1px solid var(--border, #d9e2da)}.ds-nav p{display:none}}",
+      "description": "Sélecteur de contexte, sans rubrique active fictive."
+    }
+  ],
+  "narrative": {
+    "overview": "Mode Operate. La console privilégie des surfaces claires, une navigation vert profond et des tableaux lisibles. La densité sert la gestion des accès ; les formulaires restent dans le flux de la page.\n\nCette documentation décrit le code actuel de connexion et de gestion des comptes, en français et en anglais. Elle actualise la direction existante sans ajouter de nouvelle métaphore de marque ni présumer une approbation créative.",
+    "keyCharacteristics": [
+      "Surfaces plates et contrastes de tons.",
+      "Navigation et actions vertes, contenus sur blanc.",
+      "Champs étiquetés et focus visibles.",
+      "Tableau conservé sur mobile avec défilement horizontal."
+    ],
+    "rules": [],
+    "dos": [
+      "Do conserver des libellés visibles et les traductions françaises et anglaises.",
+      "Do garder les messages de chargement, erreurs et résultats dans le flux.",
+      "Do conserver les en-têtes et le défilement clavier du tableau mobile."
+    ],
+    "donts": [
+      "Don't présenter des opérations futures comme disponibles.",
+      "Don't remplacer les données absentes par des indicateurs fictifs.",
+      "Don't conserver à l’écran les secrets après fermeture de leur panneau."
+    ]
+  }
+}

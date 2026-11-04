@@ -78,3 +78,16 @@ Tests à exécuter dans le futur backend NestJS ; les mêmes règles doivent cou
 - **DEC-006 — Annulation :** le client décide ; le prestataire peut demander l’annulation, sans l’exécuter lui-même.
 - **DEC-007 — Administration exceptionnelle :** l’administrateur global peut intervenir exceptionnellement pour un client, notamment créer ou valider, avec motif obligatoire et historique de l’acteur réel. Les règles d’intégrité, de version et d’interdiction d’autovalidation continuent de s’appliquer.
 Les états permettant ces actions, les délais de réponse et les modalités de notification restent des précisions à finaliser. Ces décisions ne permettent pas de réécrire un compte rendu soumis ou une décision historique.
+
+## Clarifications finales — PIL-26 à PIL-35
+- **PIL-26 :** pilote au Cameroun ; fuseau du site proposé Africa/Douala, instants stockés en UTC.
+- **PIL-27 :** React/TypeScript, NestJS et PostgreSQL confirmés ; aucun S3. Proposition technique : photos binaires dans PostgreSQL, téléchargement protégé par l’API.
+- **PIL-28 :** fonctionnement en ligne ; hors ligne non indispensable au lancement.
+- **PIL-29 :** invitations pour clients et prestataires ; agents ajoutés directement par leur responsable ; connexion par mot de passe. Identifiant agent sans courriel obligatoire et changement du secret initial proposés.
+- **PIL-30 :** appartenance possible à plusieurs organisations, avec contexte et droits séparés.
+- **PIL-31 :** le porteur développe et maintient ; compétences précises non détaillées, aucun calendrier déduit.
+- **PIL-32 :** récurrence dès le lancement.
+- **PIL-33 :** clôture d’anomalie confirmée par le client.
+- **PIL-34 :** un agent responsable soumet le compte rendu collectif, avec contributions et auteurs conservés.
+- **PIL-35 :** lecture des seules interventions du prestataire pendant 9 mois après contrat. Conservation annoncée des données également de 9 mois ; point de départ et articulation des deux durées à définir avant purge.
+Ces décisions remplacent les propositions incompatibles. Les détails techniques figurent dans [ADR-006](ADR-006_SOCLE_PILOTE.md). Aucun stockage S3 ni fournisseur d’identité externe n’est requis.

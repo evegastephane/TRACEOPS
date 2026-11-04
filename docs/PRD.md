@@ -29,9 +29,9 @@
 | EP-04 Terrain | Missions, tâches, observations, photos si exigées, blocage et soumission | Must |
 | EP-05 Qualité | Contrôle, validation, reprise, anomalies et résolution | Must |
 | EP-06 Pilotage | Listes filtrées, indicateurs calculés et historique | Must |
-| EP-07 Récurrence | Génération d’interventions récurrentes avec exceptions | Should, hors MVP proposé |
+| EP-07 Récurrence | Génération d’interventions récurrentes avec exceptions | Must — PIL-32 |
 | EP-08 QR | Identification d’une zone ou salle puis ouverture des missions autorisées | Must — PIL-13 |
-| EP-09 Hors ligne | Stockage local et synchronisation gérant les conflits | À décider avant engagement |
+| EP-09 Hors ligne | Saisie en ligne confirmée, synchronisation différée | Hors MVP — PIL-28 |
 [P] Un calendrier graphique avancé, les exports et les notifications push sont différés. Le MVP utilise des listes et des alertes dans l’application ; un canal d’invitation sécurisé reste nécessaire.
 
 ## 4. Parcours et critères d’acceptation
@@ -152,3 +152,16 @@ Les états permettant ces actions, les délais de réponse et les modalités de 
 Voir [Décisions pilote](DECISIONS_PILOTE.md) : secteurs configurables et salles détaillées ; volumes initiaux de 10 clients, 10 prestataires, 10 sites et 10 agents ; nettoyage et maintenance ; missions à un ou plusieurs agents ; chevauchements interdits ; photos avant/après ; QR dès le lancement ; contrôleurs par site ; reprises ciblées ; notifications dans l’application ; PDF ; français/anglais ; durée de conservation annoncée de 9 mois ; porteur seul administrateur et support.
 
 Les décisions explicites PIL-01 à PIL-25 remplacent les propositions antérieures incompatibles. Le hors ligne, les modalités de connexion, la récurrence, la responsabilité de soumission collective et les détails de conservation restent à clarifier. Les propositions d’annexes antérieures sur un agent unique, le QR différé ou le simple avertissement de conflit horaire sont obsolètes.
+
+## Clarifications finales — PIL-26 à PIL-35
+- **PIL-26 :** pilote au Cameroun ; fuseau du site proposé Africa/Douala, instants stockés en UTC.
+- **PIL-27 :** React/TypeScript, NestJS et PostgreSQL confirmés ; aucun S3. Proposition technique : photos binaires dans PostgreSQL, téléchargement protégé par l’API.
+- **PIL-28 :** fonctionnement en ligne ; hors ligne non indispensable au lancement.
+- **PIL-29 :** invitations pour clients et prestataires ; agents ajoutés directement par leur responsable ; connexion par mot de passe. Identifiant agent sans courriel obligatoire et changement du secret initial proposés.
+- **PIL-30 :** appartenance possible à plusieurs organisations, avec contexte et droits séparés.
+- **PIL-31 :** le porteur développe et maintient ; compétences précises non détaillées, aucun calendrier déduit.
+- **PIL-32 :** récurrence dès le lancement.
+- **PIL-33 :** clôture d’anomalie confirmée par le client.
+- **PIL-34 :** un agent responsable soumet le compte rendu collectif, avec contributions et auteurs conservés.
+- **PIL-35 :** lecture des seules interventions du prestataire pendant 9 mois après contrat. Conservation annoncée des données également de 9 mois ; point de départ et articulation des deux durées à définir avant purge.
+Ces décisions remplacent les propositions incompatibles. Les détails techniques figurent dans [ADR-006](ADR-006_SOCLE_PILOTE.md). Aucun stockage S3 ni fournisseur d’identité externe n’est requis.
