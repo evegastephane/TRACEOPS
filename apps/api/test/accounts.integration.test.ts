@@ -18,7 +18,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
  const app=await createApplication(false);
  try{
   for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
-  const adminId=randomUUID(),password='Test-only secure password 2026';
+  const adminId=randomUUID(),password='Test2345';
   await db.query('INSERT INTO app_user(id,login,password_hash,display_name,must_change_password) VALUES($1,$2,$3,$4,false)',[adminId,'owner',await hashPassword(password),'Owner']);
   await db.query('INSERT INTO platform_admin(user_id) VALUES($1)',[adminId]);
   await app.listen(0,'127.0.0.1');const base=await app.getUrl();
@@ -47,6 +47,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   assert.equal((await provider('organization/members',undefined,other)).status,403);
   const created=await provider('organization/agents',{login:'agent01',displayName:'Agent One'},org);
   assert.equal(created.status,201);
+  assert.equal(created.data.temporaryPassword.length,8);
   assert.equal((await provider('organization/agents',{login:'AGENT01',displayName:'Duplicate'},org)).status,409);
   const members=await provider('organization/members',undefined,org);
   assert.equal(members.data.length,2);

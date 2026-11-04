@@ -22,7 +22,7 @@ docker compose build
 docker compose run --rm setup
 ```
 
-La première commande télécharge les dépendances ; sa durée dépend de votre connexion. La seconde démarre PostgreSQL, applique les migrations et crée cinq comptes avec des mots de passe aléatoires. **Conservez les identifiants affichés dans votre terminal** : ils ne sont pas réaffichés lors des prochains lancements.
+La première commande télécharge les dépendances ; sa durée dépend de votre connexion. La seconde démarre PostgreSQL, applique les migrations et crée cinq comptes avec des mots de passe aléatoires de 8 caractères (lettres et chiffres faciles à recopier). **Conservez les identifiants affichés dans votre terminal** : ils ne sont pas réaffichés lors des prochains lancements.
 
 | Identifiant | Vue à tester |
 | --- | --- |
@@ -77,6 +77,18 @@ docker compose up -d --build --wait web
 ```
 
 Ne pas relancer `setup` après chaque mise à jour. Les migrations nécessaires s’appliquent au démarrage ; le volume PostgreSQL conserve vos essais.
+
+## Mots de passe de 8 caractères
+
+Les nouveaux comptes de démonstration et les nouveaux agents reçoivent un mot de passe aléatoire de 8 caractères. Vous pouvez choisir un mot de passe d’au moins 8 caractères lors de l’acceptation d’une invitation ou du changement obligatoire. Les anciens mots de passe restent valides après mise à jour.
+
+Pour remplacer le mot de passe d’un compte de démonstration déjà créé, après avoir mis à jour et reconstruit l’image :
+
+```sh
+docker compose run --rm setup node dist/src/reset-demo-password.js demo.admin
+```
+
+La commande affiche le nouveau mot de passe de 8 caractères, invalide les sessions de ce compte et conserve les données. Remplacer `demo.admin` par `demo.client`, `demo.controleur`, `demo.prestataire` ou `demo.agent` pour un autre compte. Elle refuse les comptes hors démonstration et le mode production. L’agent doit toujours changer son mot de passe à la prochaine connexion.
 
 ## Dépannage
 

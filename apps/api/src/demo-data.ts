@@ -1,6 +1,6 @@
-import { randomBytes, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { Database } from './database.module.js';
-import { hashPassword } from './domain/password.js';
+import { hashPassword, temporaryPassword } from './domain/password.js';
 
 /** Explicit local demo initializer. Never called by the application startup. */
 export async function initializeDemo(db: Database) {
@@ -10,7 +10,7 @@ export async function initializeDemo(db: Database) {
   { login: 'demo.controleur', name: 'Contrôleur démo', role: 'CLIENT_CONTROLLER', org: 'client' },
   { login: 'demo.prestataire', name: 'Responsable prestataire démo', role: 'PROVIDER_MANAGER', org: 'provider' },
   { login: 'demo.agent', name: 'Agent démo', role: 'FIELD_AGENT', org: 'provider' },
- ].map(a => ({ ...a, id: randomUUID(), password: randomBytes(18).toString('base64url') }));
+ ].map(a => ({ ...a, id: randomUUID(), password: temporaryPassword() }));
  const hashed = await Promise.all(accounts.map(a => hashPassword(a.password)));
  const client = randomUUID(), provider = randomUUID(), site = randomUUID();
  await db.transaction(async tx => {

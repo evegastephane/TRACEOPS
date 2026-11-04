@@ -2,7 +2,7 @@ import { BadRequestException, ConflictException, ForbiddenException, HttpExcepti
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { PoolClient } from 'pg';
 import { Database } from '../database.module.js';
-import { hashPassword, verifyPassword } from '../domain/password.js';
+import { hashPassword, verifyPassword, temporaryPassword as generateTemporaryPassword } from '../domain/password.js';
 
 export const digest = (text: string) => createHash('sha256').update(text).digest();
 export function field(body: unknown, name: string, max = 120): string {
@@ -165,7 +165,7 @@ export class AccountsService {
     if (context.kind!=='PROVIDER') throw new ForbiddenException('FORBIDDEN');
     await this.throttle('agent-create:'+user.id,40);
     const login=loginName(body), name=field(body,'displayName');
-    const temporaryPassword=randomBytes(18).toString('base64url'), hash=await hashPassword(temporaryPassword);
+    const temporaryPassword=generateTemporaryPassword(), hash=await hashPassword(temporaryPassword);
     try {
       return await this.db.transaction(async tx=>{
         const id=randomUUID(), membership=randomUUID();

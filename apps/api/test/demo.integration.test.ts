@@ -29,6 +29,7 @@ test('local demo creates usable scoped accounts once and preserves existing data
   for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const accounts=await initializeDemo(db);
   assert.equal(new Set(accounts.map(a=>a.password)).size,5);
+  assert.ok(accounts.every(a=>a.password.length===8));
   await assert.rejects(initializeDemo(db),/DEMO_REQUIRES_EMPTY_DATABASE/);
   assert.equal((await db.query('SELECT count(*)::int AS count FROM app_user')).rows[0].count,5);
   assert.equal((await db.query('SELECT count(*)::int AS count FROM organization')).rows[0].count,2);
@@ -46,6 +47,15 @@ test('local demo creates usable scoped accounts once and preserves existing data
    const sites=await response.json();assert.equal(sites.length,1);
    const zones=await (await fetch(base+`/api/v1/sites/${sites[0].id}/zones`,{headers:{...headers,'X-Organization-Id':org}})).json();
    assert.equal(zones.length,3);
+   if(account.role==='CLIENT_MANAGER') {
+    const reset=spawnSync(process.execPath,['dist/src/reset-demo-password.js',account.login],{env:{...process.env,NODE_ENV:'development',TRACEOPS_DEMO:'local-only'},encoding:'utf8'});
+    assert.equal(reset.status,0,reset.stderr);
+    const changed=JSON.parse(reset.stdout); assert.equal(changed.password.length,8);
+    assert.equal((await fetch(base+'/api/v1/auth/me',{headers})).status,401);
+    const signIn=(password:string)=>fetch(base+'/api/v1/auth/login',{method:'POST',headers:{'Content-Type':'application/json','X-Traceops':'request'},body:JSON.stringify({login:account.login,password})});
+    assert.equal((await signIn(account.password)).status,401);
+    assert.equal((await signIn(changed.password)).status,201);
+   }
   }
  } finally {await app.close();await db.onApplicationShutdown();await root.query(`DROP SCHEMA ${schema} CASCADE`);await root.end();}
 });

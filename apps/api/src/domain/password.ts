@@ -1,4 +1,4 @@
-import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto';
+import { randomBytes, randomInt, scrypt, timingSafeEqual } from 'node:crypto';
 
 const parameters = { N: 32768, r: 8, p: 1, maxmem: 64 * 1024 * 1024 };
 function derive(password: string, salt: Buffer): Promise<Buffer> {
@@ -6,8 +6,8 @@ function derive(password: string, salt: Buffer): Promise<Buffer> {
     (err, key) => err ? reject(err) : resolve(key)));
 }
 export async function hashPassword(password: string): Promise<string> {
-  if (password.length < 12 || Buffer.byteLength(password, 'utf8') > 1024) {
-    throw new RangeError('Password must have at least 12 characters and at most 1024 UTF-8 bytes');
+  if (password.length < 8 || Buffer.byteLength(password, 'utf8') > 1024) {
+    throw new RangeError('Password must have at least 8 characters and at most 1024 UTF-8 bytes');
   }
   const salt = randomBytes(16);
   const key = await derive(password, salt);
@@ -20,4 +20,10 @@ export async function verifyPassword(password: string, encoded: string): Promise
   if (!match?.[1] || !match[2]) return false;
   const actual = await derive(password, Buffer.from(match[1], 'hex'));
   return timingSafeEqual(actual, Buffer.from(match[2], 'hex'));
+}
+
+/** Eight readable characters; no ambiguous 0/O or 1/l/I, no special symbols. */
+export function temporaryPassword(): string {
+  const alphabet = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  return Array.from({ length: 8 }, () => alphabet[randomInt(alphabet.length)]).join('');
 }
