@@ -18,6 +18,7 @@ const fr = {
  noZones: 'Aucun lieu défini', noZonesHelp: 'Vous pouvez ajouter une salle directement au site, ou commencer par un bâtiment et un étage.', noZonesRead: 'Aucun lieu n’a encore été ajouté à ce site.',
  search: 'Rechercher un lieu', noMatch: 'Aucun lieu ne correspond à cette recherche.', places: 'Lieux du site', clear: 'Effacer la recherche',
  pickSite: 'Les bâtiments, étages et salles du site choisi s’afficheront ici.',
+ sitesLoadError: 'Impossible de charger les sites pour le moment. Réessayez.', zonesLoadError: 'Impossible de charger les lieux de ce site pour le moment. Réessayez.',
  savedSite: 'Site créé.', savedZone: 'Lieu ajouté.', error: 'Chargement impossible. Réessayez.', saveError: 'Enregistrement non confirmé. Vérifiez la liste avant de réessayer.',
  network: 'Connexion au serveur impossible. Vérifiez votre réseau.', FORBIDDEN: 'Vous n’avez pas accès à cette action.', SESSION_REQUIRED: 'Votre session a expiré. Rechargez la page pour vous reconnecter.',
  INVALID_INPUT: 'Vérifiez les champs du formulaire.', INVALID_TIMEZONE: 'Fuseau horaire inconnu. Exemple : Africa/Douala.', ZONE_CODE_EXISTS: 'Ce code existe déjà dans ce site. Choisissez un autre code.', INVALID_ZONE_PARENT: 'Ce rattachement n’est plus valide. Rechargez les lieux du site.', SITE_NOT_FOUND: 'Ce site n’est plus accessible. Revenez à la liste des sites.',
@@ -34,6 +35,7 @@ const en: typeof fr = {
  noZones: 'No locations defined', noZonesHelp: 'Add a room directly under the site, or start with a building and a floor.', noZonesRead: 'No locations have been added to this site yet.',
  search: 'Search locations', noMatch: 'No locations match your search.', places: 'Site locations', clear: 'Clear search',
  pickSite: 'The buildings, floors and rooms of the chosen site will appear here.',
+ sitesLoadError: 'The sites could not be loaded right now. Try again.', zonesLoadError: 'This site’s locations could not be loaded right now. Try again.',
  savedSite: 'Site created.', savedZone: 'Location added.', error: 'Unable to load. Try again.', saveError: 'Save not confirmed. Check the list before trying again.',
  network: 'Cannot reach the server. Check your network.', FORBIDDEN: 'You do not have access to this action.', SESSION_REQUIRED: 'Your session has expired. Reload the page to sign in again.',
  INVALID_INPUT: 'Check the form fields.', INVALID_TIMEZONE: 'Unknown time zone. Example: Africa/Douala.', ZONE_CODE_EXISTS: 'This code already exists in this site. Choose another code.', INVALID_ZONE_PARENT: 'This parent is no longer valid. Reload the site locations.', SITE_NOT_FOUND: 'This site is no longer accessible. Return to the site list.',
@@ -76,6 +78,8 @@ export function Sites({ org, admin, lang, setBusy }: {
  useEffect(() => { if (selected && !zonesLoading && focusDetail.current) { heading.current?.focus(); focusDetail.current = false; } }, [selected?.id, zonesLoading]);
  useEffect(() => { if (!selected && focusList.current) { listHeading.current?.focus(); focusList.current = false; } }, [selected]);
  const message = (code: string, fallback: string) => (t as Record<string, string>)[code] ?? fallback;
+ // A load failure without a more precise code names what could not be loaded.
+ const loadMessage = (code: string, specific: string) => code === 'error' ? specific : message(code, specific);
  const ancestors = (zone: Zone) => {
   const names: string[] = []; let id = zone.parent_id; const visited = new Set<string>();
   while (id && !visited.has(id)) { visited.add(id); const parent = zones.find(z => z.id === id); if (!parent) break; names.unshift(parent.name); id = parent.parent_id; }
@@ -111,6 +115,7 @@ export function Sites({ org, admin, lang, setBusy }: {
  const skeleton = <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>;
  const detailOpen = Boolean(selected) || form === 'site';
  const formPanel = form && <section className="form-panel"><h3 ref={formHeading} tabIndex={-1}>{form === 'site' ? t.createSite : t.createZone}</h3>
+   {form === 'zone' && selected && <p className="form-context">{selected.name}</p>}
    <form onSubmit={event => void submit(event)}><fieldset disabled={saving}>
     <label>{form === 'site' ? t.siteName : t.name}<input name="name" required maxLength={120}/></label>
     {form === 'site' ? <>
@@ -128,7 +133,7 @@ export function Sites({ org, admin, lang, setBusy }: {
    <div className="actions"><button className="primary" disabled={saving}>{saving ? t.loading : t.save}</button><button type="button" className="secondary" disabled={saving} onClick={closeForm}>{t.cancel}</button></div>
    </form>
   </section>;
- return <div className={`workspace workspace-sites has-detail`} data-detail={detailOpen ? 'open' : 'closed'}>
+ return <div className="workspace workspace-sites has-detail" data-detail={detailOpen ? 'open' : 'closed'} data-form={form ?? 'none'}>
   <section className="pane-list" aria-labelledby="sites-title">
    <h2 id="sites-title" className="sr-only" tabIndex={-1} ref={listHeading}>{t.title}</h2>
    <div className="list-toolbar">
@@ -136,7 +141,7 @@ export function Sites({ org, admin, lang, setBusy }: {
     {writable && form !== 'site' && <button className={detailOpen || form ? 'secondary' : 'primary'} disabled={saving} onClick={() => showForm('site')}><PlusIcon />{t.createSite}</button>}
    </div>
    {sitesLoading ? skeleton
-    : sitesError ? <div className="error" role="alert"><p>{message(sitesError, t.error)}</p><button className="secondary" onClick={() => setSitesReload(n => n + 1)}>{t.retry}</button></div>
+    : sitesError ? <div className="error" role="alert"><p>{loadMessage(sitesError, t.sitesLoadError)}</p><button className="secondary" onClick={() => setSitesReload(n => n + 1)}>{t.retry}</button></div>
     : sites.length ? <ul className="site-list">{sites.map(site => <li key={site.id}><button className="site-link" aria-current={selected?.id === site.id ? 'true' : undefined} onClick={() => open(site)} disabled={saving}><span className="site-text"><strong>{site.name}</strong><span>{sectorName(site.sector)} · {site.timezone}</span></span><ChevronIcon /></button></li>)}</ul>
     : <div className="empty"><h3>{t.empty}</h3><p>{writable ? t.emptyHelp : t.emptyRead}</p></div>}
   </section>
@@ -149,9 +154,8 @@ export function Sites({ org, admin, lang, setBusy }: {
        {writable && !form && !zonesLoading && !zonesError && <button className="primary" disabled={saving} onClick={() => showForm('zone')}><PlusIcon />{t.createZone}</button>}
       </div>
       {notice && <p className="save-notice" role="status">{t[notice]}</p>}
-      {form === 'zone' && formPanel}
       {zonesLoading ? skeleton
-       : zonesError ? <div className="error" role="alert"><p>{message(zonesError, t.error)}</p><button className="secondary" onClick={() => setZonesReload(n => n + 1)}>{t.retry}</button></div>
+       : zonesError ? <div className="error" role="alert"><p>{loadMessage(zonesError, t.zonesLoadError)}</p><button className="secondary" onClick={() => setZonesReload(n => n + 1)}>{t.retry}</button></div>
        : zones.length ? <section aria-label={t.places}><label className="location-search"><span>{t.search}</span><span className="search-field"><SearchIcon /><input type="search" value={query} onChange={e => setQuery(e.target.value)}/></span></label>
         {visible.length ? <ul className="zone-list">{visible.map(zone => <li key={zone.id}><div><strong>{zone.name}</strong><span className="zone-path">{ancestors(zone).join(' › ') || t.root}</span></div><div className="zone-meta"><span className="zone-kind">{t[zone.kind]}</span><span className="zone-code">{zone.code}</span></div></li>)}</ul> : <div className="empty"><p>{t.noMatch}</p><button className="secondary" onClick={() => setQuery('')}>{t.clear}</button></div>}
        </section>
@@ -159,5 +163,6 @@ export function Sites({ org, admin, lang, setBusy }: {
      </section>
     : <div className="detail-card detail-hint"><h2>{t.places}</h2><p>{t.pickSite}</p></div>}
   </div>
+  {form === 'zone' && <aside className="pane-form">{formPanel}</aside>}
  </div>;
 }

@@ -254,7 +254,7 @@ function App() {
                     {membersLoading
                       ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>
                       : membersError
-                        ? <div className="error" role="alert"><p>{messageFor(t, membersError)}</p><button className="secondary" onClick={() => void reloadMembers()}>{t.retry}</button></div>
+                        ? <div className="error" role="alert"><p>{membersError === 'error' ? t.membersLoadError : messageFor(t, membersError)}</p><button className="secondary" onClick={() => void reloadMembers()}>{t.retry}</button></div>
                         : members.length
                           ? <div className="table-wrap">
                               <table className="members" role="table">

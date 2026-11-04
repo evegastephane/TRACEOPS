@@ -92,5 +92,10 @@ export function SampleStrip() {
 export function orgStyle(org?: MotifOrg): React.CSSProperties | undefined {
   if (!org) return undefined;
   const motif = motifFor(org);
-  return { ['--org-ink' as string]: motif.ink, ['--org-tint' as string]: motif.tint };
+  return {
+    ['--org-ink' as string]: motif.ink,
+    ['--org-tint' as string]: motif.tint,
+    // The tile alone, for cloth edges drawn in CSS (detail cards).
+    ['--org-cloth' as string]: `url("data:image/svg+xml,${encodeURIComponent(tileSvg(motif))}")`,
+  };
 }
