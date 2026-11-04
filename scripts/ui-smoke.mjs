@@ -2,13 +2,14 @@ import { chromium } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 if (!process.env.UI_SMOKE_CREDENTIALS) throw new Error('UI_SMOKE_CREDENTIALS must point to a private test-account JSON file');
+const base=process.env.UI_BASE_URL??'http://127.0.0.1:3000';
 const credentials=JSON.parse(await readFile(process.env.UI_SMOKE_CREDENTIALS,'utf8'));
 const browser=await chromium.launch({headless:true,executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',args:['--no-sandbox']});
 const context=await browser.newContext({viewport:{width:1440,height:1000}});
 const page=await context.newPage();
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 try {
- await page.goto('http://127.0.0.1:3000');
+ await page.goto(base);
  await page.getByRole('button',{name:'Se connecter',exact:true}).waitFor();
  await page.screenshot({path:'.impeccable/review/login-desktop.png',fullPage:true});
  await page.setViewportSize({width:390,height:844});
@@ -69,7 +70,7 @@ try {
  await provider.setViewportSize({width:360,height:800});
  assert.equal(await provider.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  const ac=await browser.newContext();const agent=await ac.newPage();
- await agent.goto('http://127.0.0.1:3000');
+ await agent.goto(base);
  await agent.getByLabel('Identifiant',{exact:true}).fill(agentLogin);
  await agent.getByLabel('Mot de passe',{exact:true}).fill(temporary);
  await agent.getByRole('button',{name:'Se connecter',exact:true}).click();

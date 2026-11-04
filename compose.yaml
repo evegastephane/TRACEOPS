@@ -1,0 +1,46 @@
+name: traceops-local
+x-app: &app
+  image: traceops-local:dev
+  build: .
+  environment: &app-env
+    NODE_ENV: development
+    DATABASE_URL: postgresql://traceops:traceops-local-only@db:5432/traceops
+    DATABASE_TLS: "false"
+    PORT: "3000"
+    APP_ORIGIN: http://localhost:${TRACEOPS_PORT:-3000}
+  depends_on:
+    db:
+      condition: service_healthy
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: traceops
+      POSTGRES_PASSWORD: traceops-local-only
+      POSTGRES_DB: traceops
+    volumes:
+      - database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U traceops -d traceops"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  web:
+    <<: *app
+    ports:
+      - "127.0.0.1:${TRACEOPS_PORT:-3000}:3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/v1/health/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      start_period: 20s
+      retries: 15
+  setup:
+    <<: *app
+    profiles: ["tools"]
+    environment:
+      <<: *app-env
+      TRACEOPS_DEMO: "local-only"
+    command: ["sh", "-c", "node dist/src/migrate.js && node dist/src/demo-local.js"]
+volumes:
+  database:

@@ -1,0 +1,15 @@
+.git
+node_modules
+dist
+web-dist
+.env
+.env.*
+!.env.example
+.impeccable
+coverage
+*.log
+*.docx
+*.png
+*.jpg
+*.jpeg
+*.pdf

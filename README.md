@@ -2,6 +2,18 @@
 
 Application web de suivi d’interventions. Les parcours disponibles couvrent la gestion des accès et des sites, avec interface React en français et anglais et backend NestJS/PostgreSQL.
 
+## Tester sur votre ordinateur
+
+Le [guide de démarrage avec Docker](docs/TESTER_EN_LOCAL.md) permet de lancer toute l’application et cinq comptes de démonstration. Aucun Node.js ni PostgreSQL à installer séparément.
+
+```sh
+docker compose build
+docker compose run --rm setup
+docker compose up -d --wait web
+```
+
+Conserver les mots de passe affichés par `setup`, puis ouvrir **http://localhost:3000**. Les données restent dans un volume local. Cette initialisation refuse une base déjà remplie.
+
 ## Disponible
 - Connexion par mot de passe, session en cookie HttpOnly, déconnexion et changement de mot de passe.
 - Compte administrateur créé une seule fois par commande locale sécurisée.
@@ -49,7 +61,7 @@ Ouvrir http://localhost:3000 ; APP_ORIGIN doit correspondre exactement à l’or
 - npm run build:web : vérification TypeScript et build React.
 - npm run db:migrate : migrations transactionnelles, verrouillées et vérifiées par empreinte ; un second passage n’applique pas deux fois les migrations.
 
-Les 16 tests ont passé avec PostgreSQL 17. Le scénario navigateur scripts/ui-smoke.mjs a également passé : administrateur, organisations, invitation, responsable, agent, changement de mot de passe, FR/EN et vérification du débordement mobile. Il exige un serveur local déjà lancé et UI_SMOKE_CREDENTIALS désignant un fichier JSON privé contenant login/password d’un administrateur de test. Utiliser une base jetable : le scénario crée des données de test. CHROMIUM_PATH permet de choisir un Chromium installé.
+Les 18 tests ont passé avec PostgreSQL 17, dont la préparation des comptes de démonstration et le refus d’initialisation sur une base existante. Le scénario navigateur scripts/ui-smoke.mjs a également passé : administrateur, organisations, invitation, responsable, agent, changement de mot de passe, FR/EN et vérification du débordement mobile. Il exige un serveur local déjà lancé et UI_SMOKE_CREDENTIALS désignant un fichier JSON privé contenant login/password d’un administrateur de test. Utiliser une base jetable : le scénario crée des données de test. CHROMIUM_PATH permet de choisir un Chromium installé.
 
 ## Sécurité et limites de ce lot
 Les requêtes de mutation nécessitent X-Traceops: request et l’origine autorisée. Les permissions sont vérifiées côté serveur ; le contexte d’organisation fourni par le navigateur n’est pas une autorisation. Les invitations, jetons de session et mots de passe sont conservés sous forme d’empreintes/hachages. Les accès sensibles sont limités en fréquence et audités.
