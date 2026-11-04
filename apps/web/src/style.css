@@ -124,7 +124,8 @@ fieldset { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 1
 .auth-claim { margin-bottom: 16px; max-width: none; color: #fff; font-size: 2.25rem; line-height: 1.1; font-weight: 700; font-stretch: 85%; letter-spacing: -.015em; }
 .auth-claim span { display: block; }
 .auth-sub { margin-bottom: 0; max-width: 40ch; color: var(--rail-muted); font-size: 1.0625rem; }
-.sample-strip { display: block; width: 100%; max-width: 480px; height: auto; margin-top: 40px; }
+.sample-strip { display: flex; width: 100%; max-width: 480px; aspect-ratio: 6 / 1; margin-top: 40px; border-radius: var(--radius); overflow: hidden; }
+.sample-strip span { flex: 1; }
 .auth-card { padding: 36px 36px 32px; background: var(--surface); color: var(--ink); border-radius: var(--radius-lg); }
 .auth-card h1 { margin-bottom: 8px; font-size: 1.75rem; line-height: 1.15; font-weight: 700; font-stretch: 90%; letter-spacing: -.01em; }
 .auth-card > p { margin-bottom: 24px; color: var(--ink-2); }

@@ -1,9 +1,13 @@
-import React, { useId } from 'react';
+import React from 'react';
 
 /**
  * Organisation motifs. Each organisation gets a colour and a repeat pattern
  * derived from its identifier, the way a company has its own printed cloth:
  * dots and rings for clients, lozenges and chevrons for providers.
+ *
+ * The cloth is drawn as a CSS background of one SVG tile with
+ * `background-repeat: round`: the browser fits a whole number of tiles to the
+ * box, so no motif is ever cut at an edge, whatever the width.
  */
 
 type Kind = 'CLIENT' | 'PROVIDER' | string;
@@ -36,31 +40,33 @@ export function motifFor(org: MotifOrg): Motif {
   return { family: org.kind === 'PROVIDER' ? 'provider' : 'client', variant: (h >>> 8) % 3, ink: color.ink, tint: color.tint };
 }
 
-/** One 16×16 tile of the motif, drawn in the organisation's ink on its tint. */
-function Tile({ motif }: { motif: Motif }) {
-  const { ink, tint } = motif;
-  const ground = <rect width="16" height="16" fill={tint} />;
-  if (motif.family === 'client') {
-    if (motif.variant === 0) return <>{ground}<circle cx="4" cy="4" r="2.4" fill={ink} /><circle cx="12" cy="12" r="2.4" fill={ink} /></>;
-    if (motif.variant === 1) return <>{ground}<circle cx="8" cy="8" r="5" fill="none" stroke={ink} strokeWidth="1.8" /><circle cx="8" cy="8" r="1.8" fill={ink} /></>;
-    return <>{ground}<circle cx="4" cy="4" r="2.7" fill="none" stroke={ink} strokeWidth="1.5" /><circle cx="12" cy="12" r="2.2" fill={ink} /></>;
-  }
-  if (motif.variant === 0) return <>{ground}<path d="M8 1 15 8 8 15 1 8Z" fill={ink} /><path d="M8 5.5 10.5 8 8 10.5 5.5 8Z" fill={tint} /></>;
-  if (motif.variant === 1) return <>{ground}<path d="M0 6 4 2 8 6 12 2 16 6M0 14 4 10 8 14 12 10 16 14" fill="none" stroke={ink} strokeWidth="2" /></>;
-  return <>{ground}<path d="M4 1 7 4 4 7 1 4Z M12 9 15 12 12 15 9 12Z" fill={ink} /></>;
+/** One 16×16 tile of the motif, in the organisation's ink on its tint. Every motif stays inside its tile, except the chevron, which joins its neighbours. */
+function tileSvg({ family, variant, ink, tint }: Motif): string {
+  const shapes = family === 'client'
+    ? [
+        `<circle cx="4" cy="4" r="2.4" fill="${ink}"/><circle cx="12" cy="12" r="2.4" fill="${ink}"/>`,
+        `<circle cx="8" cy="8" r="5" fill="none" stroke="${ink}" stroke-width="1.8"/><circle cx="8" cy="8" r="1.8" fill="${ink}"/>`,
+        `<circle cx="4" cy="4" r="2.7" fill="none" stroke="${ink}" stroke-width="1.5"/><circle cx="12" cy="12" r="2.2" fill="${ink}"/>`,
+      ]
+    : [
+        `<path d="M8 1 15 8 8 15 1 8Z" fill="${ink}"/><path d="M8 5.5 10.5 8 8 10.5 5.5 8Z" fill="${tint}"/>`,
+        `<path d="M0 6 4 2 8 6 12 2 16 6M0 14 4 10 8 14 12 10 16 14" fill="none" stroke="${ink}" stroke-width="2"/>`,
+        `<path d="M4 1 7 4 4 7 1 4ZM12 9 15 12 12 15 9 12Z" fill="${ink}"/>`,
+      ];
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><rect width="16" height="16" fill="${tint}"/>${shapes[variant]}</svg>`;
 }
 
-function Pattern({ id, motif, scale = 1 }: { id: string; motif: Motif; scale?: number }) {
-  return <pattern id={id} width={16 * scale} height={16 * scale} patternUnits="userSpaceOnUse" viewBox="0 0 16 16"><Tile motif={motif} /></pattern>;
+function clothStyle(motif: Motif, tile: number): React.CSSProperties {
+  return {
+    backgroundImage: `url("data:image/svg+xml,${encodeURIComponent(tileSvg(motif))}")`,
+    backgroundSize: `${tile}px ${tile}px`,
+    backgroundRepeat: 'round',
+  };
 }
 
 /** A piece of the organisation's cloth filling its box. Decorative: the name is always written nearby. */
-export function Cloth({ org, className, scale = 1 }: { org: MotifOrg; className: string; scale?: number }) {
-  const id = useId().replace(/:/g, '');
-  return <svg className={className} aria-hidden="true" focusable="false">
-    <defs><Pattern id={id} motif={motifFor(org)} scale={scale} /></defs>
-    <rect width="100%" height="100%" fill={`url(#${id})`} />
-  </svg>;
+export function Cloth({ org, className, tile = 16 }: { org: MotifOrg; className: string; tile?: number }) {
+  return <span className={className} aria-hidden="true" style={clothStyle(motifFor(org), tile)} />;
 }
 
 /**
@@ -69,24 +75,15 @@ export function Cloth({ org, className, scale = 1 }: { org: MotifOrg; className:
  * (unrolls) whenever the active organisation changes.
  */
 export function Selvedge({ org, vertical = false }: { org: MotifOrg; vertical?: boolean }) {
-  return <Cloth key={org.id} org={org} scale={0.75} className={vertical ? 'selvedge selvedge-v' : 'selvedge'} />;
+  return <Cloth key={org.id} org={org} tile={12} className={vertical ? 'selvedge selvedge-v' : 'selvedge'} />;
 }
 
-/** Sample book of the motif families, shown on the sign-in screen. */
+/** Sample book of the motif families, shown on the sign-in screen: the three client and three provider motifs, each in its own colour. */
 export function SampleStrip() {
-  const id = useId().replace(/:/g, '');
-  // The whole vocabulary: the three client and three provider motifs, each in its own colour.
   const samples: Motif[] = [0, 1, 2, 3, 4, 5].map(i => ({
     family: i % 2 ? 'provider' : 'client', variant: Math.floor(i / 2), ink: waxColors[i].ink, tint: waxColors[i].tint,
   }));
-  const w = 56;
-  return <svg className="sample-strip" viewBox={`0 0 ${w * samples.length} ${w}`} aria-hidden="true" focusable="false">
-    <defs>
-      <clipPath id={`${id}-clip`}><rect width={w * samples.length} height={w} rx="6" /></clipPath>
-      {samples.map((m, i) => <Pattern key={i} id={`${id}-${i}`} motif={m} />)}
-    </defs>
-    <g clipPath={`url(#${id}-clip)`}>{samples.map((_, i) => <rect key={i} x={i * w} width={w} height={w} fill={`url(#${id}-${i})`} />)}</g>
-  </svg>;
+  return <div className="sample-strip" aria-hidden="true">{samples.map((motif, i) => <span key={i} style={clothStyle(motif, 20)} />)}</div>;
 }
 
 /** Inline CSS variables carrying the organisation colour to the page. */
