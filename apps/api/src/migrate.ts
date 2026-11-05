@@ -15,7 +15,7 @@ async function migrate() {
       await client.query('SELECT pg_advisory_xact_lock(728134)');
       await client.query(`CREATE TABLE IF NOT EXISTS schema_migration (
         name text PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())`);
-      for (const name of ['001_identity_sites.sql', '002_account_access.sql', '003_audit_reason.sql']) {
+      for (const name of ['001_identity_sites.sql', '002_account_access.sql', '003_audit_reason.sql', '004_provider_workspace.sql']) {
       const sql = await readFile(new URL('../migrations/' + name, import.meta.url), 'utf8');
       const checksum = createHash('sha256').update(sql).digest('hex');
       const result = await client.query<{ checksum: string }>('SELECT checksum FROM schema_migration WHERE name = $1', [name]);

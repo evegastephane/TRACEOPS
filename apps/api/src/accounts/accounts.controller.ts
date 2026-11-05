@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Module, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Module, Param, Post, Req, Res } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { DatabaseModule } from '../database.module.js';
 import { AccountsService, uuid } from './accounts.service.js';
@@ -29,6 +29,14 @@ export class AccountsController {
   @Get('organization/members') async members(@Req() req: Request) { return this.accounts.members(await this.user(req),uuid(req.headers['x-organization-id'])); }
   @Post('organization/invitations') async invite(@Body() body: unknown,@Req() req: Request) { return this.accounts.invite(await this.user(req),uuid(req.headers['x-organization-id']),body); }
   @Post('organization/agents') async agent(@Body() body: unknown,@Req() req: Request) { return this.accounts.createAgent(await this.user(req),uuid(req.headers['x-organization-id']),body); }
+  @Get('organization/profile') async profile(@Req() req: Request) { return this.accounts.profile(await this.user(req),uuid(req.headers['x-organization-id'])); }
+  @Post('organization/profile') async updateProfile(@Body() body: unknown,@Req() req: Request) { return this.accounts.updateProfile(await this.user(req),uuid(req.headers['x-organization-id']),body); }
+  @Post('organization/members/:id') async updateMember(@Param('id') id: string,@Body() body: unknown,@Req() req: Request) { return this.accounts.updateMember(await this.user(req),uuid(req.headers['x-organization-id']),id,body); }
+  @Post('organization/members/:id/withdraw') async withdraw(@Param('id') id: string,@Req() req: Request) { return this.accounts.setMemberActive(await this.user(req),uuid(req.headers['x-organization-id']),id,false); }
+  @Post('organization/members/:id/reactivate') async reactivate(@Param('id') id: string,@Req() req: Request) { return this.accounts.setMemberActive(await this.user(req),uuid(req.headers['x-organization-id']),id,true); }
+  @Get('organization/assignments') async assignments(@Req() req: Request) { return this.accounts.assignments(await this.user(req),uuid(req.headers['x-organization-id'])); }
+  @Post('organization/assignments') async assign(@Body() body: unknown,@Req() req: Request) { return this.accounts.assign(await this.user(req),uuid(req.headers['x-organization-id']),body); }
+  @Post('organization/assignments/remove') async unassign(@Body() body: unknown,@Req() req: Request) { return this.accounts.unassign(await this.user(req),uuid(req.headers['x-organization-id']),body); }
 }
 @Module({imports:[DatabaseModule],providers:[AccountsService],controllers:[AccountsController],exports:[AccountsService]})
 export class AccountsModule {}

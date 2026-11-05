@@ -36,7 +36,7 @@ Les responsabilités sont séparées par organisation et vérifiées côté serv
 
 ## Capabilities and Constraints
 
-**Livré :** connexion par mot de passe et session, changement obligatoire du mot de passe initial, organisations clientes et prestataires, invitations, ajout d'agents, membres et état d'accès (actif, suspendu), sites et lieux hiérarchiques (création, consultation, recherche), français et anglais.
+**Livré :** connexion par mot de passe et session, changement obligatoire du mot de passe initial, organisations clientes et prestataires, invitations, ajout d'agents, membres et état d'accès (actif, suspendu), sites et lieux hiérarchiques (création, consultation, recherche), français et anglais. Côté prestataire : tableau de bord (agents actifs, agents sans affectation, lieux couverts, sites rattachés), affectation des agents à un ou plusieurs lieux (bâtiment, étage, zone, salle, équipement) des sites rattachés, modification du nom d'un agent, retrait de l'équipe avec historique conservé et réactivation. Fiche société (coordonnées, NIU, RCCM, services, responsable) modifiable par les responsables.
 
 **À venir, jamais présenté comme disponible :** interventions persistantes, affectation, comptes rendus, photos avant/après, contrôle et reprise, anomalies, récurrence, QR, PDF, notifications dans l'application, modification et archivage des lieux, récupération de mot de passe. Les rattachements prestataires et les habilitations des contrôleurs n'existent que par API.
 

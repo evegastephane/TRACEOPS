@@ -7,13 +7,13 @@ import { Sites } from './sites';
 import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
-import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CopyIcon, LinkIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon, UserPlusIcon } from './icons';
+import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, DashboardIcon, LinkIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon, UserPlusIcon } from './icons';
+import { Company, MemberPanel, ProviderDashboard, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
 
-type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: string[] };
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
-type Member = { id: string; display_name: string; login: string; roles: string[]; active: boolean };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'dashboard' | 'team' | 'sites';
+type Section = 'dashboard' | 'team' | 'sites' | 'company';
+type LoadState = 'loading' | 'ready' | 'error';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
 
@@ -43,6 +43,9 @@ function App() {
   const orgRef = useRef(orgId); orgRef.current = orgId;
   const [form, setForm] = useState<'org' | 'agent' | 'invite' | null>(null), [secret, setSecret] = useState<Secret | null>(null), [copied, setCopied] = useState(false);
   const [section, setSection] = useState<Section>('dashboard');
+  // Provider workspace: agent assignments, and the agent whose drawer is open.
+  const [assignments, setAssignments] = useState<Assignment[]>([]), [assignmentsState, setAssignmentsState] = useState<LoadState>('loading');
+  const [manageId, setManageId] = useState<string | null>(null);
   // Phone only: with several organisations, the list of organisations is its own screen.
   const [mobileView, setMobileView] = useState<'orgs' | 'org'>('org');
   const detailHeading = useRef<HTMLHeadingElement>(null);
@@ -50,7 +53,7 @@ function App() {
 
   useEffect(() => { document.documentElement.lang = lang; localStorage.setItem('traceops-language', lang); }, [lang]);
   // An opened form or secret takes the reading focus (below 1280px it replaces the list).
-  useEffect(() => { if (form || secret) detailHeading.current?.focus(); }, [form, secret]);
+  useEffect(() => { if (form || secret || manageId) detailHeading.current?.focus(); }, [form, secret, manageId]);
 
   async function refresh() {
     setLoading(true); setError('');
@@ -70,6 +73,23 @@ function App() {
   const org = orgs.find(o => o.id === orgId);
   const manager = Boolean(user?.admin || org?.roles?.some(r => r === 'CLIENT_MANAGER' || r === 'PROVIDER_MANAGER'));
   const canSeeSections = Boolean(org && (manager || org.roles?.includes('CLIENT_CONTROLLER')));
+  const providerManager = Boolean(org && org.kind === 'PROVIDER' && manager);
+
+  async function reloadAssignments() {
+    const target = orgId; if (!target || !providerManager) return;
+    try { const data = await api('organization/assignments', undefined, target); if (orgRef.current === target) { setAssignments(data); setAssignmentsState('ready'); } }
+    catch { if (orgRef.current === target) setAssignmentsState('error'); }
+  }
+  useEffect(() => {
+    let stale = false;
+    setAssignments([]); setManageId(null); setAssignmentsState('loading');
+    if (orgId && providerManager && !user?.must_change_password) {
+      api('organization/assignments', undefined, orgId)
+        .then(data => { if (!stale) { setAssignments(data); setAssignmentsState('ready'); } })
+        .catch(() => { if (!stale) setAssignmentsState('error'); });
+    }
+    return () => { stale = true; };
+  }, [orgId, providerManager, user?.must_change_password]);
 
   async function reloadMembers() {
     const target = orgId; if (!target || !manager) return;
@@ -148,9 +168,13 @@ function App() {
   const grouped = groups.length > 1;
   const itemMeta = (o: Org) => grouped ? rolesOf(o) : [kindLabel(o), rolesOf(o)].filter(Boolean).join(' · ');
   const roleLine = org && (rolesOf(org) ? `${t.yourRole} ${rolesOf(org)}` : user.admin ? t.adminAccess : '');
-  const panelOpen = Boolean(form || secret);
+  const managed = manageId ? members.find(m => m.membership_id === manageId) : undefined;
+  const panelOpen = Boolean(form || secret || managed);
   const closeForm = () => setForm(null);
-  const openForm = (next: 'agent' | 'invite') => { setForm(next); setSecret(null); };
+  const openForm = (next: 'agent' | 'invite') => { setForm(next); setSecret(null); setManageId(null); };
+  const openManage = (m: Member) => { setManageId(m.membership_id); setForm(null); setSecret(null); };
+  const membersState: LoadState = membersLoading ? 'loading' : membersError ? 'error' : 'ready';
+  const assignmentsOf = (m: Member) => assignments.filter(a => a.membership_id === m.membership_id);
 
   // Right-hand drawer of the team workspace: a one-time secret or an open form.
   const teamPanel = secret
@@ -201,7 +225,10 @@ function App() {
             </div>
           </form>
         </div>
-      : null;
+      : managed && org
+        ? <MemberPanel key={managed.membership_id} org={org} member={managed} assignments={assignments} t={t} lang={lang} busy={busy} setBusy={setBusy}
+            headingRef={detailHeading} onClose={() => setManageId(null)} onChanged={async () => { await Promise.all([reloadMembers(), reloadAssignments()]); }} />
+        : null;
 
   // Team actions sit above the list; the one blue action yields to the drawer's own while it is open.
   const teamActions = org && manager && <div className="toolbar-actions">
@@ -254,15 +281,24 @@ function App() {
           </div>
         </header>
         {<nav className="tabs" aria-label={t.sections}>
-          {(['dashboard', ...(canSeeSections ? ['team','sites'] : [])] as Section[]).map(item => <button key={item} className="tab" aria-current={section === item ? 'page' : undefined} disabled={busy}
-            onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); }}>
-            {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'dashboard' ? (lang === 'fr' ? 'Tableau de bord' : 'Dashboard') : item === 'team' ? t.team : t.sites}
+          {(['dashboard', ...(canSeeSections ? ['team', 'sites'] : []), ...(org ? ['company'] : [])] as Section[]).map(item => <button key={item} className="tab" aria-current={section === item ? 'page' : undefined} disabled={busy}
+            onClick={() => { setSection(item); setForm(null); setSecret(null); setManageId(null); setError(''); }}>
+            {item === 'dashboard' ? <DashboardIcon /> : item === 'team' ? <TeamIcon /> : item === 'sites' ? <SitesIcon /> : <CompanyIcon />}
+            {item === 'dashboard' ? t.dashboard : item === 'team' ? t.team : item === 'sites' ? t.sites : t.company}
             {item === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
           </button>)}
         </nav>}
         {errorBox}
 
-        {section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={()=>{setSection('team');setForm('org');setSecret(null);}} /> : section === 'sites' && org && canSeeSections
+        {section === 'company' && org
+          ? <Company key={orgId} org={org} canEdit={manager} t={t} lang={lang} busy={busy} setBusy={setBusy} onRenamed={name => setOrgs(list => list.map(o => o.id === org.id ? { ...o, name } : o))} />
+        : section === 'dashboard' && org && providerManager
+          ? <div className={['workspace', 'workspace-team', panelOpen && 'has-panel'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>
+              <ProviderDashboard org={org} members={members} membersState={membersState} assignments={assignments} assignmentsState={assignmentsState} t={t}
+                actions={teamActions} onManage={openManage} retryMembers={() => void reloadMembers()} retryAssignments={() => void reloadAssignments()} />
+              {teamPanel && <aside className="pane-panel">{teamPanel}</aside>}
+            </div>
+        : section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={()=>{setSection('team');setForm('org');setSecret(null);}} /> : section === 'sites' && org && canSeeSections
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
           : <div className={['workspace', 'workspace-team', panelOpen && 'has-panel', !org && 'no-list'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>
               {org && (manager
@@ -276,12 +312,21 @@ function App() {
                         : members.length
                           ? <div className="table-card">
                               <table className="members" role="table">
-                                <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th><th role="columnheader" scope="col">{t.access}</th></tr></thead>
+                                <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th>
+                                  {providerManager && <th role="columnheader" scope="col">{t.assignmentsCol}</th>}
+                                  <th role="columnheader" scope="col">{t.access}</th>
+                                  {providerManager && <th role="columnheader" scope="col"><span className="sr-only">{t.manage}</span></th>}</tr></thead>
                                 <tbody role="rowgroup">{members.map(m => <tr role="row" key={m.id} className={m.active ? undefined : 'is-suspended'}>
                                   <td role="cell" className="member-name"><span className="member-id"><Avatar name={m.display_name} seed={m.id} /><strong>{m.display_name}</strong></span></td>
                                   <td role="cell" data-label={t.login} className="member-login"><code>{m.login}</code></td>
                                   <td role="cell" data-label={t.role} className="member-role">{m.roles.map(roleLabel).join(', ')}</td>
+                                  {providerManager && <td role="cell" data-label={t.assignmentsCol} className="member-places">{isAgent(m)
+                                    ? assignmentsOf(m).length
+                                      ? <span title={assignmentsOf(m).map(placeLabel).join('\n')}>{placeLabel(assignmentsOf(m)[0])}{assignmentsOf(m).length > 1 && <span className="more"> {t.moreAssignments.replace('{n}', String(assignmentsOf(m).length - 1))}</span>}</span>
+                                      : <span className="muted">{t.noAssignment}</span>
+                                    : <span className="muted">—</span>}</td>}
                                   <td role="cell" data-label={t.access} className="member-access"><span className={m.active ? 'status status-on' : 'status status-off'}>{m.active ? t.active : t.disabled}</span></td>
+                                  {providerManager && <td role="cell" className="member-actions">{isAgent(m) && <button className="secondary small" aria-label={`${t.manage} : ${m.display_name}`} disabled={busy} onClick={() => openManage(m)}>{t.manage}</button>}</td>}
                                 </tr>)}</tbody>
                               </table>
                             </div>

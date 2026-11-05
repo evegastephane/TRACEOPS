@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, ForbiddenException, HttpException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { BadRequestException, ConflictException, ForbiddenException, HttpException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { PoolClient } from 'pg';
 import { Database } from '../database.module.js';
@@ -177,4 +177,120 @@ export class AccountsService {
       });
     } catch(e) { if ((e as {code?:string}).code==='23505') throw new ConflictException('LOGIN_UNAVAILABLE'); throw e; }
   }
+
+  /* Company details. Any member reads them; managers (and the administrator) edit them. */
+  async profile(user: Identity, org: string) {
+    await this.context(user,org);
+    const r=await this.db.query(`SELECT o.name,o.kind,p.address,p.city,p.phone,p.email,p.niu,p.rccm,p.services,p.description,p.contact_name,p.updated_at
+      FROM organization o LEFT JOIN organization_profile p ON p.organization_id=o.id WHERE o.id=$1`,[org]);
+    return r.rows[0];
+  }
+  async updateProfile(user: Identity, org: string, body: unknown) {
+    await this.context(user,org,true);
+    const name=field(body,'name').trim();
+    const v={ address:optional(body,'address',200), city:optional(body,'city',120), phone:optional(body,'phone',40), email:optional(body,'email',160),
+      niu:optional(body,'niu',40), rccm:optional(body,'rccm',60), services:optional(body,'services',300), description:optional(body,'description',1000), contactName:optional(body,'contactName',120) };
+    if (v.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) throw new BadRequestException('INVALID_EMAIL');
+    if (v.phone && !/^\+?[0-9 ().-]{6,40}$/.test(v.phone)) throw new BadRequestException('INVALID_PHONE');
+    await this.db.transaction(async tx=>{
+      await tx.query('UPDATE organization SET name=$2 WHERE id=$1',[org,name]);
+      await tx.query(`INSERT INTO organization_profile(organization_id,address,city,phone,email,niu,rccm,services,description,contact_name,updated_by)
+        VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) ON CONFLICT (organization_id) DO UPDATE SET address=$2,city=$3,phone=$4,email=$5,niu=$6,rccm=$7,
+        services=$8,description=$9,contact_name=$10,updated_by=$11,updated_at=now()`,
+        [org,v.address,v.city,v.phone,v.email,v.niu,v.rccm,v.services,v.description,v.contactName,user.id]);
+      await this.audit(tx,user.id,org,'PROFILE_UPDATED',org);
+    });
+    return this.profile(user,org);
+  }
+
+  /* Field agents of a provider: edit, withdraw from the team (history kept), reactivate. */
+  private async manageable(tx: PoolClient, user: Identity, org: string, membership: string) {
+    const context=await this.context(user,org,true);
+    const row=(await tx.query('SELECT id,user_id,active FROM membership WHERE id=$1 AND organization_id=$2 FOR UPDATE',[uuid(membership),org])).rows[0];
+    if (!row) throw new NotFoundException('MEMBER_NOT_FOUND');
+    if (row.user_id===user.id) throw new ForbiddenException('SELF_FORBIDDEN');
+    const roles=(await tx.query('SELECT role FROM membership_role WHERE membership_id=$1',[row.id])).rows.map((r: {role:string})=>r.role);
+    if (!user.admin && !(context.kind==='PROVIDER' && roles.length===1 && roles[0]==='FIELD_AGENT')) throw new ForbiddenException('FORBIDDEN');
+    return row as {id:string;user_id:string;active:boolean};
+  }
+  async updateMember(user: Identity, org: string, membership: string, body: unknown) {
+    const name=field(body,'displayName').trim();
+    return this.db.transaction(async tx=>{
+      const row=await this.manageable(tx,user,org,membership);
+      await tx.query('UPDATE app_user SET display_name=$2 WHERE id=$1',[row.user_id,name]);
+      await this.audit(tx,user.id,org,'MEMBER_UPDATED',row.user_id);
+      return {ok:true};
+    });
+  }
+  async setMemberActive(user: Identity, org: string, membership: string, active: boolean) {
+    return this.db.transaction(async tx=>{
+      const row=await this.manageable(tx,user,org,membership);
+      await tx.query('UPDATE membership SET active=$2 WHERE id=$1',[row.id,active]);
+      if (active) await tx.query('UPDATE app_user SET active=true WHERE id=$1',[row.user_id]);
+      else {
+        await tx.query('DELETE FROM agent_assignment WHERE membership_id=$1',[row.id]);
+        // An account with no other team and no platform role can no longer sign in.
+        const other=(await tx.query(`SELECT 1 FROM membership WHERE user_id=$1 AND active
+          UNION SELECT 1 FROM platform_admin WHERE user_id=$1 AND active`,[row.user_id])).rowCount;
+        if (!other) await tx.query('UPDATE app_user SET active=false WHERE id=$1',[row.user_id]);
+        await tx.query('UPDATE user_session SET revoked_at=now() WHERE user_id=$1 AND revoked_at IS NULL',[row.user_id]);
+      }
+      await this.audit(tx,user.id,org,active?'MEMBER_REACTIVATED':'MEMBER_WITHDRAWN',row.user_id);
+      return {ok:true};
+    });
+  }
+
+  /* Agent assignments to the places of the sites the provider is linked to. */
+  async assignments(user: Identity, org: string) {
+    await this.context(user,org,true);
+    const rows=(await this.db.query(`SELECT a.membership_id,z.id AS zone_id,z.code,z.name,z.kind,s.id AS site_id,s.name AS site_name
+      FROM agent_assignment a JOIN membership m ON m.id=a.membership_id JOIN zone z ON z.id=a.zone_id JOIN site s ON s.id=z.site_id
+      WHERE m.organization_id=$1 AND m.active AND z.active AND s.active ORDER BY s.name,z.code`,[org])).rows;
+    const sites=[...new Set(rows.map((r: {site_id:string})=>r.site_id))];
+    const zones=sites.length ? (await this.db.query('SELECT id,parent_id,name FROM zone WHERE site_id=ANY($1)',[sites])).rows as {id:string;parent_id:string|null;name:string}[] : [];
+    const byId=new Map(zones.map(z=>[z.id,z]));
+    return rows.map((r: {zone_id:string})=>{
+      const path: string[]=[]; let parent=byId.get(r.zone_id)?.parent_id; const seen=new Set<string>();
+      while (parent && !seen.has(parent)) { seen.add(parent); const z=byId.get(parent); if (!z) break; path.unshift(z.name); parent=z.parent_id; }
+      return {...r,path};
+    });
+  }
+  private async assignment(tx: PoolClient, user: Identity, org: string, body: unknown) {
+    const context=await this.context(user,org,true);
+    if (context.kind!=='PROVIDER') throw new ForbiddenException('FORBIDDEN');
+    const membership=uuid(field(body,'membershipId')), zone=uuid(field(body,'zoneId'));
+    const agent=(await tx.query(`SELECT 1 FROM membership m JOIN membership_role r ON r.membership_id=m.id
+      WHERE m.id=$1 AND m.organization_id=$2 AND m.active AND r.role='FIELD_AGENT'`,[membership,org])).rowCount;
+    if (!agent) throw new BadRequestException('INVALID_AGENT');
+    const place=(await tx.query(`SELECT 1 FROM zone z JOIN site s ON s.id=z.site_id JOIN service_agreement a ON a.site_id=s.id
+      WHERE z.id=$1 AND z.active AND s.active AND a.provider_id=$2 AND a.active AND a.starts_at<=now() AND (a.ends_at IS NULL OR a.ends_at>now())`,[zone,org])).rowCount;
+    if (!place) throw new BadRequestException('INVALID_ZONE');
+    return {membership,zone};
+  }
+  async assign(user: Identity, org: string, body: unknown) {
+    return this.db.transaction(async tx=>{
+      const {membership,zone}=await this.assignment(tx,user,org,body);
+      await tx.query('INSERT INTO agent_assignment(membership_id,zone_id,created_by) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[membership,zone,user.id]);
+      await this.audit(tx,user.id,org,'AGENT_ASSIGNED',zone);
+      return {ok:true};
+    });
+  }
+  async unassign(user: Identity, org: string, body: unknown) {
+    return this.db.transaction(async tx=>{
+      const membership=uuid(field(body,'membershipId')), zone=uuid(field(body,'zoneId'));
+      const context=await this.context(user,org,true);
+      if (context.kind!=='PROVIDER') throw new ForbiddenException('FORBIDDEN');
+      const r=await tx.query(`DELETE FROM agent_assignment a USING membership m WHERE a.membership_id=m.id AND m.organization_id=$1 AND a.membership_id=$2 AND a.zone_id=$3`,[org,membership,zone]);
+      if (r.rowCount) await this.audit(tx,user.id,org,'AGENT_UNASSIGNED',zone);
+      return {ok:true};
+    });
+  }
+}
+
+function optional(body: unknown, name: string, max: number): string | null {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) throw new BadRequestException('INVALID_INPUT');
+  const value=(body as Record<string, unknown>)[name];
+  if (value===undefined || value===null) return null;
+  if (typeof value!=='string' || value.length>max) throw new BadRequestException('INVALID_INPUT');
+  return value.trim() || null;
 }

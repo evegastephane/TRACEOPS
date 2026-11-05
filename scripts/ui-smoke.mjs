@@ -54,6 +54,7 @@ try {
  await provider.unroute('**/api/v1/organization/agents');
  const temporary=await provider.locator('textarea').inputValue();
  await provider.getByRole('button',{name:'J’ai conservé les informations'}).click();
+ await provider.getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('cell',{name:'Agent pilote',exact:true}).waitFor();
  await provider.route('**/api/v1/organization/members',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'error'})}));
  await provider.reload();
@@ -61,6 +62,7 @@ try {
  assert.equal(await provider.getByText('Aucun membre dans cette organisation.',{exact:true}).count(),0);
  await provider.unroute('**/api/v1/organization/members');
  await provider.getByRole('button',{name:'Réessayer',exact:true}).click();
+ await provider.getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('cell',{name:'Agent pilote',exact:true}).waitFor();
  await provider.screenshot({path:'.impeccable/review/desktop.png',fullPage:true});
  await provider.setViewportSize({width:390,height:844});
@@ -78,7 +80,7 @@ try {
  await agent.getByLabel('Mot de passe actuel',{exact:true}).fill(temporary);
  await agent.getByLabel('Nouveau mot de passe',{exact:true}).fill('Disposable agent password 2026');
  await agent.getByRole('button',{name:'Enregistrer le mot de passe'}).click();
- await agent.getByRole('heading',{name:'Votre compte est prêt'}).waitFor();
+ await agent.getByRole('heading',{name:'Bienvenue dans votre espace'}).waitFor();
  assert.equal(await agent.getByRole('button',{name:'Ajouter un agent',exact:true}).count(),0);
  assert.deepEqual(errors,[]);
  console.log('Browser journey passed: admin, invitation, provider, agent, password change, FR/EN, desktop/mobile.');

@@ -17,7 +17,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
  const db=new Pool({connectionString:url.toString()});
  const app=await createApplication(false);
  try{
-  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
+  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const adminId=randomUUID(),password='Test2345';
   await db.query('INSERT INTO app_user(id,login,password_hash,display_name,must_change_password) VALUES($1,$2,$3,$4,false)',[adminId,'owner',await hashPassword(password),'Owner']);
   await db.query('INSERT INTO platform_admin(user_id) VALUES($1)',[adminId]);
@@ -82,6 +82,29 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   assert.equal((await clientBrowser('sites/'+site.data.id+'/providers',{providerId:org},other)).status,201);
   assert.equal((await provider('sites',undefined,org)).data.length,1);
   assert.equal((await provider('sites/'+site.data.id+'/zones',undefined,org)).data.length,2);
+  // Provider workspace: company details, agent assignments, edit, withdrawal and reactivation.
+  assert.equal((await provider('organization/profile',undefined,org)).data.name,'Provider A');
+  assert.equal((await provider('organization/profile',{name:'Provider A',email:'not-an-email'},org)).status,400);
+  const profile=await provider('organization/profile',{name:'Provider A SARL',city:'Douala',phone:'+237 600 00 00 00',niu:'M012345678901A'},org);
+  assert.equal(profile.status,201);assert.equal(profile.data.city,'Douala');assert.equal(profile.data.name,'Provider A SARL');
+  assert.equal((await agent('organization/profile',{name:'Hijack'},org)).status,403);
+  assert.equal((await clientBrowser('organization/profile',{name:'Hijack'},org)).status,403);
+  const agentMember=(await provider('organization/members',undefined,org)).data.find((m:{login:string})=>m.login==='agent01');
+  assert.equal((await provider('organization/assignments',{membershipId:agentMember.membership_id,zoneId:room.data.id},org)).status,201);
+  const foreign=await clientBrowser('sites/'+site2.data.id+'/zones',{code:'R3',name:'Unlinked room',kind:'ROOM'},other);
+  assert.equal((await provider('organization/assignments',{membershipId:agentMember.membership_id,zoneId:foreign.data.id},org)).status,400);
+  const assigned=await provider('organization/assignments',undefined,org);
+  assert.equal(assigned.data.length,1);assert.deepEqual(assigned.data[0].path,['First floor']);
+  const self=(await provider('organization/members',undefined,org)).data.find((m:{login:string})=>m.login==='manager');
+  assert.equal((await provider('organization/members/'+self.membership_id+'/withdraw',{},org)).status,403);
+  assert.equal((await provider('organization/members/'+agentMember.membership_id,{displayName:'Agent Renamed'},org)).status,201);
+  assert.equal((await provider('organization/members/'+agentMember.membership_id+'/withdraw',{},org)).status,201);
+  assert.equal((await agent('auth/me')).status,401);
+  assert.equal((await agent('auth/login',{login:'agent01',password})).status,401);
+  assert.equal((await provider('organization/assignments',undefined,org)).data.length,0);
+  assert.equal((await provider('organization/members/'+agentMember.membership_id+'/reactivate',{},org)).status,201);
+  assert.equal((await agent('auth/login',{login:'agent01',password})).status,201);
+  assert.equal((await db.query("SELECT count(*)::int AS n FROM access_audit WHERE action IN ('MEMBER_WITHDRAWN','MEMBER_REACTIVATED','AGENT_ASSIGNED','PROFILE_UPDATED')")).rows[0].n,4);
   assert.equal((await provider('sites/'+site.data.id+'/zones',{code:'X',name:'Unauthorized',kind:'ROOM'},org)).status,403);
   assert.equal((await agent('sites',undefined,org)).data.length,0);
   const exceptional=await admin('sites',{name:'Assisted site',sector:'hotel',reason:'Client requested assistance'},other);

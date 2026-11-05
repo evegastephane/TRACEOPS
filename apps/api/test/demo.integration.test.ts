@@ -26,7 +26,7 @@ test('local demo creates usable scoped accounts once and preserves existing data
  process.env.DATABASE_URL=url.toString();process.env.APP_ORIGIN='http://localhost:5173';
  const db=new Database();const app=await createApplication(false);
  try {
-  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
+  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const accounts=await initializeDemo(db);
   assert.equal(new Set(accounts.map(a=>a.password)).size,5);
   assert.ok(accounts.every(a=>a.password.length===8));
