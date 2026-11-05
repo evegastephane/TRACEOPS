@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { api, ApiError } from './api';
-import { BackIcon, ChevronIcon, PlusIcon, SearchIcon } from './icons';
+import { AlertIcon, BackIcon, CheckIcon, ChevronIcon, CloseIcon, PinIcon, PlusIcon, SearchIcon, SitesIcon } from './icons';
 
 type Site = { id: string; name: string; sector: string; timezone: string };
 type Kind = 'BUILDING' | 'FLOOR' | 'AREA' | 'ROOM' | 'EQUIPMENT';
@@ -10,10 +10,10 @@ const fr = {
  title: 'Sites et salles', intro: 'Définissez les lieux où vos équipes interviennent.', readOnly: 'Consultation des sites auxquels vous avez accès.',
  createSite: 'Créer un site', createZone: 'Ajouter un lieu', siteName: 'Nom du site', sector: 'Activité', otherSector: 'Précisez l’activité', timezone: 'Fuseau horaire',
  company: 'Entreprise', hospital: 'Hôpital', hotel: 'Hôtel', property: 'Immeuble', other: 'Autre',
- name: 'Nom du lieu', code: 'Code du lieu', codeHelp: 'Un code unique dans ce site, par exemple SAL-101.', kind: 'Type de lieu', parent: 'Rattachement', root: 'Directement au site',
+ name: 'Nom du lieu', code: 'Code du lieu', codeHelp: 'Un code unique dans ce site, par exemple SAL‑101.', kind: 'Type de lieu', parent: 'Rattachement', root: 'Directement au site',
  BUILDING: 'Bâtiment', FLOOR: 'Étage', AREA: 'Zone', ROOM: 'Salle', EQUIPMENT: 'Équipement',
  reason: 'Motif de l’action administrative', reasonHelp: 'Ce motif sera conservé dans le journal d’audit.',
- save: 'Enregistrer', cancel: 'Annuler', back: 'Tous les sites', loading: 'Chargement…', retry: 'Réessayer',
+ save: 'Enregistrer', cancel: 'Annuler', close: 'Fermer', back: 'Tous les sites', loading: 'Chargement…', retry: 'Réessayer',
  empty: 'Aucun site accessible', emptyHelp: 'Créez un site pour définir ensuite ses bâtiments, étages et salles.', emptyRead: 'Les sites apparaîtront ici après leur rattachement ou votre habilitation.',
  noZones: 'Aucun lieu défini', noZonesHelp: 'Vous pouvez ajouter une salle directement au site, ou commencer par un bâtiment et un étage.', noZonesRead: 'Aucun lieu n’a encore été ajouté à ce site.',
  search: 'Rechercher un lieu', noMatch: 'Aucun lieu ne correspond à cette recherche.', places: 'Lieux du site', clear: 'Effacer la recherche',
@@ -27,10 +27,10 @@ const en: typeof fr = {
  title: 'Sites and rooms', intro: 'Define the places where your teams work.', readOnly: 'View the sites you have access to.',
  createSite: 'Create site', createZone: 'Add location', siteName: 'Site name', sector: 'Activity', otherSector: 'Specify activity', timezone: 'Time zone',
  company: 'Business', hospital: 'Hospital', hotel: 'Hotel', property: 'Building', other: 'Other',
- name: 'Location name', code: 'Location code', codeHelp: 'A code unique to this site, for example ROOM-101.', kind: 'Location type', parent: 'Parent location', root: 'Directly under the site',
+ name: 'Location name', code: 'Location code', codeHelp: 'A code unique to this site, for example ROOM‑101.', kind: 'Location type', parent: 'Parent location', root: 'Directly under the site',
  BUILDING: 'Building', FLOOR: 'Floor', AREA: 'Area', ROOM: 'Room', EQUIPMENT: 'Equipment',
  reason: 'Reason for the administrative action', reasonHelp: 'This reason will be kept in the audit log.',
- save: 'Save', cancel: 'Cancel', back: 'All sites', loading: 'Loading…', retry: 'Try again',
+ save: 'Save', cancel: 'Cancel', close: 'Close', back: 'All sites', loading: 'Loading…', retry: 'Try again',
  empty: 'No accessible sites', emptyHelp: 'Create a site, then define its buildings, floors and rooms.', emptyRead: 'Sites will appear here once they are linked or you are granted access.',
  noZones: 'No locations defined', noZonesHelp: 'Add a room directly under the site, or start with a building and a floor.', noZonesRead: 'No locations have been added to this site yet.',
  search: 'Search locations', noMatch: 'No locations match your search.', places: 'Site locations', clear: 'Clear search',
@@ -113,10 +113,18 @@ export function Sites({ org, admin, lang, setBusy }: {
  const parents = zones.filter(z => kinds.indexOf(z.kind) < kinds.indexOf(kind));
  const sectorName = (value: string) => ['company','hospital','hotel','property','other'].includes(value) ? (t as Record<string,string>)[value] : value;
  const skeleton = <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>;
+ const loadError = (code: string, specific: string, retry: () => void) => <div className="alert alert-error" role="alert"><AlertIcon /><div className="alert-body"><p>{loadMessage(code, specific)}</p><button className="secondary small" onClick={retry}>{t.retry}</button></div></div>;
  const detailOpen = Boolean(selected) || form === 'site';
- const formPanel = form && <section className="form-panel"><h3 ref={formHeading} tabIndex={-1}>{form === 'site' ? t.createSite : t.createZone}</h3>
-   {form === 'zone' && selected && <p className="form-context">{selected.name}</p>}
-   <form onSubmit={event => void submit(event)}><fieldset disabled={saving}>
+ // With no site at all, the list's empty state says everything: no second placeholder beside it.
+ const noSites = !sitesLoading && !sitesError && !sites.length;
+ const formPanel = form && <section className="panel" aria-labelledby="site-form-title">
+   <div className="panel-head">
+    <h3 id="site-form-title" ref={formHeading} tabIndex={-1}>{form === 'site' ? t.createSite : t.createZone}</h3>
+    <button type="button" className="icon-button" aria-label={t.close} disabled={saving} onClick={closeForm}><CloseIcon /></button>
+   </div>
+   <form className="panel-form" onSubmit={event => void submit(event)}><div className="panel-body">
+   {form === 'zone' && selected && <p className="panel-desc">{selected.name}</p>}
+   <fieldset disabled={saving}>
     <label>{form === 'site' ? t.siteName : t.name}<input name="name" required maxLength={120}/></label>
     {form === 'site' ? <>
      <label>{t.sector}<select aria-label={t.sector} value={sector} onChange={e => setSector(e.target.value)}>{(['company','hospital','hotel','property','other'] as const).map(k => <option key={k} value={k}>{t[k]}</option>)}</select></label>
@@ -129,40 +137,47 @@ export function Sites({ org, admin, lang, setBusy }: {
     </>}
     {reason}
    </fieldset>
-   {saveError && <div className="error" role="alert">{message(saveError, t.saveError)}</div>}
-   <div className="actions"><button className="primary" disabled={saving}>{saving ? t.loading : t.save}</button><button type="button" className="secondary" disabled={saving} onClick={closeForm}>{t.cancel}</button></div>
+   {saveError && <div className="alert alert-error" role="alert"><AlertIcon /><p>{message(saveError, t.saveError)}</p></div>}
+   </div>
+   <div className="panel-foot"><button type="button" className="secondary" disabled={saving} onClick={closeForm}>{t.cancel}</button><button className="primary" disabled={saving}>{saving ? t.loading : t.save}</button></div>
    </form>
   </section>;
- return <div className="workspace workspace-sites has-detail" data-detail={detailOpen ? 'open' : 'closed'} data-form={form ?? 'none'}>
+ return <div className="workspace workspace-sites" data-detail={detailOpen ? 'open' : 'closed'} data-form={form ?? 'none'} data-empty={noSites ? 'true' : undefined}>
+  <div className="toolbar">
+   <p className="toolbar-text" title={writable ? t.intro : t.readOnly}>{writable ? t.intro : t.readOnly}</p>
+   {writable && form !== 'site' && <div className="toolbar-actions"><button className={detailOpen || form ? 'secondary' : 'primary'} disabled={saving} onClick={() => showForm('site')}><PlusIcon />{t.createSite}</button></div>}
+  </div>
   <section className="pane-list" aria-labelledby="sites-title">
    <h2 id="sites-title" className="sr-only" tabIndex={-1} ref={listHeading}>{t.title}</h2>
-   <div className="list-toolbar">
-    <p>{writable ? t.intro : t.readOnly}</p>
-    {writable && form !== 'site' && <button className={detailOpen || form ? 'secondary' : 'primary'} disabled={saving} onClick={() => showForm('site')}><PlusIcon />{t.createSite}</button>}
-   </div>
    {sitesLoading ? skeleton
-    : sitesError ? <div className="error" role="alert"><p>{loadMessage(sitesError, t.sitesLoadError)}</p><button className="secondary" onClick={() => setSitesReload(n => n + 1)}>{t.retry}</button></div>
-    : sites.length ? <ul className="site-list">{sites.map(site => <li key={site.id}><button className="site-link" aria-current={selected?.id === site.id ? 'true' : undefined} onClick={() => open(site)} disabled={saving}><span className="site-text"><strong>{site.name}</strong><span>{sectorName(site.sector)} · {site.timezone}</span></span><ChevronIcon /></button></li>)}</ul>
-    : <div className="empty"><h3>{t.empty}</h3><p>{writable ? t.emptyHelp : t.emptyRead}</p></div>}
+    : sitesError ? loadError(sitesError, t.sitesLoadError, () => setSitesReload(n => n + 1))
+    : sites.length ? <ul className="site-list">{sites.map(site => <li key={site.id}><button className="site-link" aria-current={selected?.id === site.id ? 'true' : undefined} onClick={() => open(site)} disabled={saving}><span className="site-icon" aria-hidden="true"><SitesIcon /></span><span className="site-text"><strong>{site.name}</strong><span>{sectorName(site.sector)} · {site.timezone}</span></span><ChevronIcon /></button></li>)}</ul>
+    : <div className="empty"><span className="empty-icon" aria-hidden="true"><SitesIcon /></span><h3>{t.empty}</h3><p>{writable ? t.emptyHelp : t.emptyRead}</p></div>}
   </section>
   <div className="pane-detail">
-   {form === 'site' ? formPanel
-    : selected ? <section className="site-detail" aria-labelledby="site-title">
-      <button className="back-button sites-back" disabled={saving} onClick={() => open(null)}><BackIcon />{t.back}</button>
-      <div className="section-heading">
-       <div><h2 id="site-title" tabIndex={-1} ref={heading}>{selected.name}</h2><p>{sectorName(selected.sector)} · {selected.timezone}</p></div>
-       {writable && !form && !zonesLoading && !zonesError && <button className="primary" disabled={saving} onClick={() => showForm('zone')}><PlusIcon />{t.createZone}</button>}
+   {selected ? <section className="site-detail" aria-labelledby="site-title">
+      <button className="back-link sites-back" disabled={saving} onClick={() => open(null)}><BackIcon />{t.back}</button>
+      <div className="site-body">
+       <div className="detail-header">
+        <div><h2 id="site-title" tabIndex={-1} ref={heading}>{selected.name}</h2><p>{sectorName(selected.sector)} · {selected.timezone}</p></div>
+        {writable && !form && !zonesLoading && !zonesError && <button className="primary" disabled={saving} onClick={() => showForm('zone')}><PlusIcon />{t.createZone}</button>}
+       </div>
+       {notice && <p className="alert alert-success" role="status"><CheckIcon />{t[notice]}</p>}
+       {zonesLoading ? skeleton
+        : zonesError ? loadError(zonesError, t.zonesLoadError, () => setZonesReload(n => n + 1))
+        : zones.length ? <section className="zones" aria-label={t.places}>
+          <label className="location-search">{t.search}<span className="search-field"><SearchIcon /><input type="search" value={query} onChange={e => setQuery(e.target.value)}/></span></label>
+          {visible.length ? <div className="zone-table">
+            <div className="zone-head" aria-hidden="true"><span>{t.name}</span><span>{t.kind}</span><span>{t.code}</span></div>
+            <ul className="zone-list">{visible.map(zone => <li key={zone.id}><div className="zone-main"><strong>{zone.name}</strong><span className="zone-path">{ancestors(zone).join(' › ') || t.root}</span></div><span className="zone-kind">{t[zone.kind]}</span><span className="zone-code">{zone.code}</span></li>)}</ul>
+           </div> : <div className="empty"><p>{t.noMatch}</p><button className="secondary" onClick={() => setQuery('')}>{t.clear}</button></div>}
+         </section>
+        : <div className="empty"><span className="empty-icon" aria-hidden="true"><PinIcon /></span><h3>{t.noZones}</h3><p>{writable ? t.noZonesHelp : t.noZonesRead}</p></div>}
       </div>
-      {notice && <p className="save-notice" role="status">{t[notice]}</p>}
-      {zonesLoading ? skeleton
-       : zonesError ? <div className="error" role="alert"><p>{loadMessage(zonesError, t.zonesLoadError)}</p><button className="secondary" onClick={() => setZonesReload(n => n + 1)}>{t.retry}</button></div>
-       : zones.length ? <section aria-label={t.places}><label className="location-search"><span>{t.search}</span><span className="search-field"><SearchIcon /><input type="search" value={query} onChange={e => setQuery(e.target.value)}/></span></label>
-        {visible.length ? <ul className="zone-list">{visible.map(zone => <li key={zone.id}><div><strong>{zone.name}</strong><span className="zone-path">{ancestors(zone).join(' › ') || t.root}</span></div><div className="zone-meta"><span className="zone-kind">{t[zone.kind]}</span><span className="zone-code">{zone.code}</span></div></li>)}</ul> : <div className="empty"><p>{t.noMatch}</p><button className="secondary" onClick={() => setQuery('')}>{t.clear}</button></div>}
-       </section>
-       : <div className="empty"><h3>{t.noZones}</h3><p>{writable ? t.noZonesHelp : t.noZonesRead}</p></div>}
      </section>
-    : <div className="detail-card detail-hint"><h2>{t.places}</h2><p>{t.pickSite}</p></div>}
+    : noSites ? null
+    : <div className="empty detail-hint"><span className="empty-icon" aria-hidden="true"><PinIcon /></span><h2>{t.places}</h2><p>{t.pickSite}</p></div>}
   </div>
-  {form === 'zone' && <aside className="pane-form">{formPanel}</aside>}
+  {form && <aside className="pane-panel">{formPanel}</aside>}
  </div>;
 }
