@@ -17,10 +17,14 @@ async function migrate() {
         name text PRIMARY KEY, checksum text NOT NULL, applied_at timestamptz NOT NULL DEFAULT now())`);
       for (const name of ['001_identity_sites.sql', '002_account_access.sql', '003_audit_reason.sql', '004_provider_workspace.sql']) {
       const sql = await readFile(new URL('../migrations/' + name, import.meta.url), 'utf8');
-      const checksum = createHash('sha256').update(sql).digest('hex');
+      const hash = (text: string) => createHash('sha256').update(text).digest('hex');
+      const checksum = hash(sql);
+      // A Git checkout on Windows may switch line endings; the same migration stays accepted either way.
+      const lf = sql.replace(/\r\n/g, '\n');
+      const accepted = new Set([checksum, hash(lf), hash(lf.replace(/\n/g, '\r\n'))]);
       const result = await client.query<{ checksum: string }>('SELECT checksum FROM schema_migration WHERE name = $1', [name]);
       if (result.rows[0]) {
-        if (result.rows[0].checksum !== checksum) throw new Error('Applied migration checksum differs');
+        if (!accepted.has(result.rows[0].checksum)) throw new Error('Applied migration checksum differs');
       } else {
         await client.query(sql);
         await client.query('INSERT INTO schema_migration(name, checksum) VALUES ($1, $2)', [name, checksum]);
