@@ -114,7 +114,7 @@ try {
  // Changing organization must not retain another client's site details.
  await orgButton(page,`Prestataire sites test ${stamp}`).click();
  await page.getByRole('button',{name:'Sites et salles',exact:true}).click();
- await page.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
+ await page.getByRole('button',{name:/Hôpital pilote/}).waitFor();
  assert.equal(await page.getByText('Salle de consultation 101',{exact:true}).count(),0);
  assert.deepEqual(errors,[]);
  console.log('Sites browser checks passed: admin reason, client creation, hierarchy, duplicate code, search, network retry, provider/controller access, context switching, FR/EN, desktop/mobile.');

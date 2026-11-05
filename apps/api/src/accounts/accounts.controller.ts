@@ -30,6 +30,7 @@ export class AccountsController {
   @Post('organization/invitations') async invite(@Body() body: unknown,@Req() req: Request) { return this.accounts.invite(await this.user(req),uuid(req.headers['x-organization-id']),body); }
   @Post('organization/agents') async agent(@Body() body: unknown,@Req() req: Request) { return this.accounts.createAgent(await this.user(req),uuid(req.headers['x-organization-id']),body); }
   @Get('admin/audit') async audit(@Query() query: Record<string, unknown>,@Req() req: Request) { return this.accounts.auditLog(await this.user(req),query); }
+  @Get('admin/overview') async platform(@Req() req: Request) { return this.accounts.platformOverview(await this.user(req)); }
   @Get('admin/audit/actions') async auditActions(@Req() req: Request) { return this.accounts.auditActions(await this.user(req)); }
   @Post('auth/account') async account(@Body() body: unknown,@Req() req: Request) { return this.accounts.updateAccount(await this.user(req),body); }
   @Get('organization/directory') async directory(@Req() req: Request) { return this.accounts.directory(await this.user(req),uuid(req.headers['x-organization-id'])); }

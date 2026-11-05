@@ -7,14 +7,15 @@ import { Sites } from './sites';
 import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
-import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, DashboardIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
+import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, ChevronIcon, DashboardIcon, GlobeIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
 import { Company, MemberPanel, ProviderDashboard, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
 import { AuditLog, Profile } from './admin';
+import { PlatformOverview } from './platform';
 import { ClientDashboard, ControllerPanel, Directory } from './client';
 
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'dashboard' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
+type Section = 'overview' | 'dashboard' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
 type LoadState = 'loading' | 'ready' | 'error';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
@@ -74,6 +75,8 @@ function App() {
     } finally { setLoading(false); }
   }
   useEffect(() => { void refresh(); }, []);
+  // The administrator lands on the whole platform, not on one organization.
+  useEffect(() => { if (user?.admin && !user.must_change_password) setSection(s => s === 'dashboard' ? 'overview' : s); }, [user?.id, user?.admin, user?.must_change_password]);
 
   const org = orgs.find(o => o.id === orgId);
   const manager = Boolean(user?.admin || org?.roles?.some(r => r === 'CLIENT_MANAGER' || r === 'PROVIDER_MANAGER'));
@@ -142,7 +145,7 @@ function App() {
               if (token) { await api('auth/accept', { ...data, token }); setToken(''); history.replaceState(null, '', location.pathname); }
               else if (user) await api('auth/password', data);
               else await api('auth/login', data);
-              await refresh(); setSection('dashboard');
+              setSection('dashboard'); await refresh();
             });
           }}>
             {token && <Field name="displayName" label={t.displayName} />}
@@ -258,7 +261,7 @@ function App() {
     ...(org ? [{ id: 'company' as Section, label: t.company, icon: <CompanyIcon /> }] : []),
   ];
   const globalItems: { id: Section; label: string; icon: React.ReactNode }[] = [
-    ...(user.admin ? [{ id: 'audit' as Section, label: t.auditNav, icon: <LogIcon /> }] : []),
+    ...(user.admin ? [{ id: 'overview' as Section, label: t.overviewNav, icon: <GlobeIcon /> }, { id: 'audit' as Section, label: t.auditNav, icon: <LogIcon /> }] : []),
     { id: 'profile', label: t.profileNav, icon: <UserIcon /> },
   ];
   const navButton = (item: { id: Section; label: string; icon: React.ReactNode }) => <li key={item.id}>
@@ -267,7 +270,8 @@ function App() {
       {item.id === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
     </button>
   </li>;
-  const pageTitle = section === 'audit' ? t.auditNav : section === 'profile' ? t.profileNav : null;
+  const orgSection = !['overview', 'audit', 'profile'].includes(section);
+  const pageTitle = section === 'overview' ? t.overviewNav : section === 'audit' ? t.auditNav : section === 'profile' ? t.profileNav : null;
 
   return <div className="app" data-view={phoneView} data-collapsed={collapsed ? 'true' : undefined}>
     <aside className="sidebar">
@@ -275,7 +279,7 @@ function App() {
         <button type="button" className="icon-button collapse-toggle" aria-label={collapsed ? t.expandMenu : t.collapseMenu} title={collapsed ? t.expandMenu : t.collapseMenu} aria-expanded={!collapsed} onClick={() => setCollapsed(c => !c)}><PanelIcon /></button>
       </div>
       <nav className="section-nav" aria-label={t.sections}>
-        <ul className="nav-list">{orgItems.map(navButton)}</ul>
+        <ul className="nav-list nav-org-mobile">{orgItems.map(navButton)}</ul>
         <p className="nav-label nav-divider">{t.platformNav}</p>
         <ul className="nav-list">{globalItems.map(navButton)}</ul>
       </nav>
@@ -285,10 +289,12 @@ function App() {
           ? <div className="org-groups">{groups.map(group => <div className="org-group" key={group.kind}>
               {grouped && <p className="nav-label" id={`org-group-${group.kind}`}>{group.kind === 'CLIENT' ? t.clients : t.providers}</p>}
               <ul className="org-list" aria-labelledby={grouped ? `org-group-${group.kind}` : undefined}>{group.items.map(o => <li key={o.id}>
-                <button className="org-item" title={o.name} aria-current={o.id === orgId ? 'true' : undefined} disabled={busy} onClick={() => chooseOrg(o.id)}>
+                <button className="org-item" title={o.name} aria-current={o.id === orgId && orgSection ? 'true' : undefined} aria-expanded={o.id === orgId && orgSection} disabled={busy} onClick={() => chooseOrg(o.id)}>
                   <Avatar name={o.name} seed={o.id} shape="square" size="sm" />
                   <span className="org-item-text"><span className="org-item-name">{o.name}</span>{itemMeta(o) && <span className="org-item-meta">{itemMeta(o)}</span>}</span>
+                  <ChevronIcon />
                 </button>
+                {o.id === orgId && orgSection && <ul className="org-subnav" aria-label={o.name}>{orgItems.map(navButton)}</ul>}
               </li>)}</ul>
             </div>)}</div>
           : <p className="org-nav-empty">{user.admin ? t.emptyOrg : t.noContext}</p>}
@@ -320,7 +326,9 @@ function App() {
             </header>}
         {errorBox}
 
-        {section === 'audit' && user.admin
+        {section === 'overview' && user.admin
+          ? <PlatformOverview lang={lang} onOpenOrg={id => chooseOrg(id)} onOpenLog={() => go('audit')} />
+        : section === 'audit' && user.admin
           ? <AuditLog lang={lang} orgs={orgs} />
         : section === 'profile'
           ? <Profile lang={lang} user={user} roleLabel={roleLabel} kindLabel={k => k === 'CLIENT' ? t.client : t.provider} busy={busy} setBusy={setBusy} onSaved={name => setUser(u => u && { ...u, display_name: name })} />

@@ -28,10 +28,10 @@ export class SitesController {
   return {...scope,site};
  }
  @Get() async list(@Req()req:Request){const {user,org,context}=await this.scope(req);
-  if(user.admin)return (await this.db.query('SELECT id,name,sector,timezone FROM site WHERE client_id=$1 AND active ORDER BY name',[org])).rows;
+  if(user.admin&&context.kind==='CLIENT')return (await this.db.query('SELECT id,name,sector,timezone FROM site WHERE client_id=$1 AND active ORDER BY name',[org])).rows;
   if(context.kind==='CLIENT')return (await this.db.query(`SELECT s.id,s.name,s.sector,s.timezone FROM site s WHERE s.client_id=$1 AND s.active AND
    ($2 OR EXISTS(SELECT 1 FROM site_grant g JOIN membership m ON m.id=g.membership_id WHERE g.site_id=s.id AND m.user_id=$3 AND m.organization_id=$1 AND m.active)) ORDER BY s.name`,[org,context.roles.includes('CLIENT_MANAGER'),user.id])).rows;
-  if(!context.roles.includes('PROVIDER_MANAGER'))return [];
+  if(!user.admin&&!context.roles.includes('PROVIDER_MANAGER'))return [];
   return (await this.db.query(`SELECT DISTINCT s.id,s.name,s.sector,s.timezone FROM site s JOIN service_agreement a ON a.site_id=s.id WHERE a.provider_id=$1 AND s.active AND a.active AND a.starts_at<=now() AND (a.ends_at IS NULL OR a.ends_at>now()) ORDER BY s.name`,[org])).rows;
  }
  @Post() async create(@Req()req:Request,@Body()body:unknown){const {user,org,context}=await this.scope(req);

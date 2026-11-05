@@ -20,6 +20,7 @@ export const LinkIcon = () => <Icon><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 
 export const UserPlusIcon = () => <Icon><circle cx="10" cy="8" r="3.5" /><path d="M3.5 20c.6-3.6 3.2-5.5 6.5-5.5 1.4 0 2.7.3 3.7 1M18 14v6M15 17h6" /></Icon>;
 export const DashboardIcon = () => <Icon><rect x="3.5" y="3.5" width="7" height="8" rx="1.5" /><rect x="13.5" y="3.5" width="7" height="5" rx="1.5" /><rect x="13.5" y="11.5" width="7" height="9" rx="1.5" /><rect x="3.5" y="14.5" width="7" height="6" rx="1.5" /></Icon>;
 export const CompanyIcon = () => <Icon><rect x="3.5" y="7" width="17" height="13" rx="2" /><path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7M3.5 12.5h17M10.5 12.5v2h3v-2" /></Icon>;
+export const GlobeIcon = () => <Icon><circle cx="12" cy="12" r="8.5" /><path d="M3.5 12h17M12 3.5c2.3 2.4 3.4 5.2 3.4 8.5s-1.1 6.1-3.4 8.5c-2.3-2.4-3.4-5.2-3.4-8.5s1.1-6.1 3.4-8.5z" /></Icon>;
 export const PanelIcon = () => <Icon><rect x="3.5" y="4" width="17" height="16" rx="2" /><path d="M9.5 4v16" /></Icon>;
 export const LogIcon = () => <Icon><path d="M8 6h12M8 12h12M8 18h12" /><path d="M4 6h.01M4 12h.01M4 18h.01" /></Icon>;
 export const UserIcon = () => <Icon><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5c.8-4 3.7-6 7.5-6s6.7 2 7.5 6" /></Icon>;

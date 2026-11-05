@@ -110,6 +110,11 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   assert.equal(log.status,200);assert.equal(log.data.entries.length,5);assert.equal(log.data.more,true);assert.ok(log.data.entries[0].actor_name);
   assert.ok((await admin('admin/audit?action=PROFILE_UPDATED')).data.entries.every((e:{action:string})=>e.action==='PROFILE_UPDATED'));
   assert.equal((await provider('admin/audit')).status,403);
+  const platform=await admin('admin/overview');
+  assert.equal(platform.status,200);assert.equal(platform.data.totals.providers,1);assert.equal(platform.data.totals.clients,1);
+  assert.equal(platform.data.organizations.find((o:{id:string})=>o.id===org).sites,1);
+  assert.equal((await provider('admin/overview')).status,403);
+  assert.equal((await admin('sites',undefined,org)).data.length,1);
   const directory=await clientBrowser('organization/directory',undefined,other);
   assert.equal(directory.status,200);
   const listed=directory.data.find((p:{id:string})=>p.id===org);

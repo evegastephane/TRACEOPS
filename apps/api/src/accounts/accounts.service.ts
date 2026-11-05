@@ -309,6 +309,30 @@ export class AccountsService {
       ORDER BY a.created_at DESC,a.id LIMIT $5`,[before,action,org,q,limit+1])).rows;
     return { entries: rows.slice(0,limit), more: rows.length>limit };
   }
+  /* Administrator: the whole platform at a glance, every figure computed from live data. */
+  async platformOverview(user: Identity) {
+    await this.admin(user);
+    const totals=(await this.db.query(`SELECT
+        (SELECT count(*)::int FROM organization WHERE active AND kind='CLIENT') AS clients,
+        (SELECT count(*)::int FROM organization WHERE active AND kind='PROVIDER') AS providers,
+        (SELECT count(*)::int FROM app_user WHERE active) AS users,
+        (SELECT count(DISTINCT m.user_id)::int FROM membership m JOIN membership_role r ON r.membership_id=m.id WHERE m.active AND r.role='FIELD_AGENT') AS agents,
+        (SELECT count(*)::int FROM site WHERE active) AS sites,
+        (SELECT count(*)::int FROM zone WHERE active) AS zones,
+        (SELECT count(*)::int FROM agent_assignment) AS assignments,
+        (SELECT count(*)::int FROM service_agreement WHERE active AND (ends_at IS NULL OR ends_at>now())) AS agreements,
+        (SELECT count(*)::int FROM invitation WHERE accepted_at IS NULL AND expires_at>now()) AS pending_invitations,
+        (SELECT count(*)::int FROM access_audit WHERE created_at>now()-interval '24 hours') AS actions_24h`)).rows[0];
+    const organizations=(await this.db.query(`SELECT o.id,o.name,o.kind,
+        (SELECT count(*)::int FROM membership m WHERE m.organization_id=o.id AND m.active) AS members,
+        (SELECT count(*)::int FROM membership m JOIN membership_role r ON r.membership_id=m.id WHERE m.organization_id=o.id AND m.active AND r.role='FIELD_AGENT') AS agents,
+        CASE WHEN o.kind='CLIENT' THEN (SELECT count(*)::int FROM site s WHERE s.client_id=o.id AND s.active)
+          ELSE (SELECT count(DISTINCT a.site_id)::int FROM service_agreement a WHERE a.provider_id=o.id AND a.active AND (a.ends_at IS NULL OR a.ends_at>now())) END AS sites,
+        (SELECT max(created_at) FROM access_audit x WHERE x.organization_id=o.id) AS last_activity
+      FROM organization o WHERE o.active ORDER BY o.kind,o.name`)).rows;
+    const recent=(await this.auditLog(user,{limit:'8'})).entries;
+    return { totals, organizations, recent };
+  }
   async auditActions(user: Identity) {
     await this.admin(user);
     return (await this.db.query('SELECT DISTINCT action FROM access_audit ORDER BY action')).rows.map((r: {action:string})=>r.action);
