@@ -26,13 +26,19 @@ test('local demo creates usable scoped accounts once and preserves existing data
  process.env.DATABASE_URL=url.toString();process.env.APP_ORIGIN='http://localhost:5173';
  const db=new Database();const app=await createApplication(false);
  try {
-  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
+  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql','005_interventions.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const accounts=await initializeDemo(db);
-  assert.equal(new Set(accounts.map(a=>a.password)).size,5);
+  assert.equal(accounts.length,8);
+  assert.equal(new Set(accounts.map(a=>a.password)).size,8);
   assert.ok(accounts.every(a=>a.password.length===8));
   await assert.rejects(initializeDemo(db),/DEMO_REQUIRES_EMPTY_DATABASE/);
-  assert.equal((await db.query('SELECT count(*)::int AS count FROM app_user')).rows[0].count,5);
-  assert.equal((await db.query('SELECT count(*)::int AS count FROM organization')).rows[0].count,2);
+  assert.equal((await db.query('SELECT count(*)::int AS count FROM app_user')).rows[0].count,8);
+  assert.equal((await db.query('SELECT count(*)::int AS count FROM organization')).rows[0].count,3);
+  assert.equal((await db.query("SELECT count(*)::int AS count FROM organization WHERE name='AFISA Food Industry' AND kind='CLIENT'")).rows[0].count,1);
+  assert.equal((await db.query('SELECT count(*)::int AS count FROM programme')).rows[0].count,2);
+  const kinds=(await db.query("SELECT kind,count(*)::int AS count FROM intervention GROUP BY kind ORDER BY kind")).rows;
+  assert.deepEqual(kinds.map((r:{kind:string})=>r.kind),['CLEANING','MAINTENANCE']);
+  assert.equal((await db.query("SELECT count(*)::int AS count FROM intervention WHERE kind='MAINTENANCE'")).rows[0].count,5);
   await app.listen(0,'127.0.0.1');const base=await app.getUrl();
   for(const account of accounts) {
    const login=await fetch(base+'/api/v1/auth/login',{method:'POST',headers:{'Content-Type':'application/json','X-Traceops':'request'},body:JSON.stringify({login:account.login,password:account.password})});
@@ -46,7 +52,9 @@ test('local demo creates usable scoped accounts once and preserves existing data
    if(account.role==='FIELD_AGENT') {assert.equal(response.status,403);continue;}
    const sites=await response.json();assert.equal(sites.length,1);
    const zones=await (await fetch(base+`/api/v1/sites/${sites[0].id}/zones`,{headers:{...headers,'X-Organization-Id':org}})).json();
-   assert.equal(zones.length,3);
+   assert.equal(zones.length,16);
+   const list=await (await fetch(base+'/api/v1/interventions',{headers:{...headers,'X-Organization-Id':org}})).json();
+   assert.ok(list.length>0,account.login);
    if(account.role==='CLIENT_MANAGER') {
     const reset=spawnSync(process.execPath,['dist/src/reset-demo-password.js',account.login],{env:{...process.env,NODE_ENV:'development',TRACEOPS_DEMO:'local-only'},encoding:'utf8'});
     assert.equal(reset.status,0,reset.stderr);

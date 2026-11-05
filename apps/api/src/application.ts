@@ -10,6 +10,8 @@ export async function createApplication(logger: false | undefined = undefined) {
   const app = await NestFactory.create(AppModule, { bodyParser:false, logger });
   app.use(helmet());
   app.use(express.json({limit:'16kb'}));
+  // Field photos arrive as raw JPEG or PNG bytes on their own route, never as JSON.
+  app.use('/api/v1/interventions/:id/photos', express.raw({type:['image/jpeg','image/png'],limit:'6mb'}));
   app.use(cookieParser());
   const origin = process.env.APP_ORIGIN ?? 'http://localhost:5173';
   if (process.env.NODE_ENV === 'production' && !process.env.APP_ORIGIN) throw new Error('APP_ORIGIN required');

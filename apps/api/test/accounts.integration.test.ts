@@ -17,7 +17,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
  const db=new Pool({connectionString:url.toString()});
  const app=await createApplication(false);
  try{
-  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
+  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql','005_interventions.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const adminId=randomUUID(),password='Test2345';
   await db.query('INSERT INTO app_user(id,login,password_hash,display_name,must_change_password) VALUES($1,$2,$3,$4,false)',[adminId,'owner',await hashPassword(password),'Owner']);
   await db.query('INSERT INTO platform_admin(user_id) VALUES($1)',[adminId]);

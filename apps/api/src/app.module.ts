@@ -1,4 +1,5 @@
 import { SitesModule } from './sites/sites.controller.js';
+import { InterventionsModule } from './interventions/interventions.controller.js';
 import { Controller, Get, Module, ServiceUnavailableException } from '@nestjs/common';
 import { AccountsModule } from './accounts/accounts.controller.js';
 import { Database, DatabaseModule } from './database.module.js';
@@ -14,5 +15,5 @@ export class HealthController {
   }
 }
 
-@Module({ imports: [DatabaseModule, AccountsModule, SitesModule], controllers: [HealthController] })
+@Module({ imports: [DatabaseModule, AccountsModule, SitesModule, InterventionsModule], controllers: [HealthController] })
 export class AppModule {}

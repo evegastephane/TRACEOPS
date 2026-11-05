@@ -1,6 +1,7 @@
 import { chromium } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+const settings=async p=>{await p.getByRole('button',{name:'Vue d’ensemble',exact:true}).first().waitFor();const b=p.getByRole('button',{name:'Paramètres',exact:true});if(await b.count()&&await b.getAttribute('aria-expanded')==='false')await b.click();return p;};
 if (!process.env.UI_SMOKE_CREDENTIALS) throw new Error('UI_SMOKE_CREDENTIALS must point to a private test-account JSON file');
 const base=process.env.UI_BASE_URL??'http://127.0.0.1:3000';
 const credentials=JSON.parse(await readFile(process.env.UI_SMOKE_CREDENTIALS,'utf8'));
@@ -41,6 +42,8 @@ try {
  await provider.getByLabel('Identifiant',{exact:true}).fill('manager-ui-'+Date.now());
  await provider.getByLabel('Mot de passe',{exact:true}).fill('Disposable UI test password 2026');
  await provider.getByRole('button',{name:'Accepter l’invitation'}).click();
+ await provider.getByRole('button',{name:'Vue d’ensemble',exact:true}).waitFor();
+ await (await settings(provider)).getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('button',{name:'Ajouter un agent',exact:true}).click();
  await provider.getByLabel('Nom complet',{exact:true}).fill('Agent pilote');
  const agentLogin='agent-ui-'+Date.now();
@@ -54,15 +57,16 @@ try {
  await provider.unroute('**/api/v1/organization/agents');
  const temporary=await provider.locator('textarea').inputValue();
  await provider.getByRole('button',{name:'J’ai conservé les informations'}).click();
- await provider.getByRole('button',{name:'Équipe',exact:true}).click();
+ await (await settings(provider)).getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('cell',{name:'Agent pilote',exact:true}).waitFor();
  await provider.route('**/api/v1/organization/members',route=>route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({message:'error'})}));
  await provider.reload();
+ await (await settings(provider)).getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('button',{name:'Réessayer',exact:true}).waitFor();
  assert.equal(await provider.getByText('Aucun membre dans cette organisation.',{exact:true}).count(),0);
  await provider.unroute('**/api/v1/organization/members');
  await provider.getByRole('button',{name:'Réessayer',exact:true}).click();
- await provider.getByRole('button',{name:'Équipe',exact:true}).click();
+ await (await settings(provider)).getByRole('button',{name:'Équipe',exact:true}).click();
  await provider.getByRole('cell',{name:'Agent pilote',exact:true}).waitFor();
  await provider.screenshot({path:'.impeccable/review/desktop.png',fullPage:true});
  await provider.setViewportSize({width:390,height:844});
@@ -80,7 +84,8 @@ try {
  await agent.getByLabel('Mot de passe actuel',{exact:true}).fill(temporary);
  await agent.getByLabel('Nouveau mot de passe',{exact:true}).fill('Disposable agent password 2026');
  await agent.getByRole('button',{name:'Enregistrer le mot de passe'}).click();
- await agent.getByRole('heading',{name:'Bienvenue dans votre espace'}).waitFor();
+ await agent.getByRole('heading',{name:'À traiter',exact:true}).waitFor();
+ assert.equal(await agent.getByRole('button',{name:'Planning',exact:true}).count(),1);
  assert.equal(await agent.getByRole('button',{name:'Ajouter un agent',exact:true}).count(),0);
  assert.deepEqual(errors,[]);
  console.log('Browser journey passed: admin, invitation, provider, agent, password change, FR/EN, desktop/mobile.');

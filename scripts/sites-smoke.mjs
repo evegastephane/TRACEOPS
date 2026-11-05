@@ -1,6 +1,7 @@
 import { chromium } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
+const settings=async p=>{await p.getByRole('button',{name:'Vue d’ensemble',exact:true}).first().waitFor();const b=p.getByRole('button',{name:'Paramètres',exact:true});if(await b.count()&&await b.getAttribute('aria-expanded')==='false')await b.click();return p;};
 if (!process.env.UI_SMOKE_CREDENTIALS) throw new Error('Set UI_SMOKE_CREDENTIALS to a private test-account JSON file');
 const credentials = JSON.parse(await readFile(process.env.UI_SMOKE_CREDENTIALS, 'utf8'));
 const base = process.env.UI_BASE_URL ?? 'http://127.0.0.1:3001';
@@ -25,7 +26,7 @@ try {
  await page.goto(base);
  const orgButton = (pg, name) => pg.getByRole('navigation',{name:'Organisations',exact:true}).getByRole('button',{name});
  await orgButton(page,`Client sites test ${stamp}`).click();
- await page.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await (await settings(page)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await page.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
  await page.getByRole('button',{name:'Créer un site',exact:true}).click();
  await page.getByLabel('Nom du site',{exact:true}).fill('Hôpital pilote — démonstration');
@@ -46,7 +47,7 @@ try {
  const manager = await invited(admin,client,'CLIENT_MANAGER');
  const mp = await manager.newPage(); mp.on('pageerror',e=>errors.push(e.message));
  await mp.goto(base);
- await mp.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await (await settings(mp)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await mp.getByRole('button',{name:/Hôpital pilote/}).click();
  async function zone(name,code,kind,parent) {
   await mp.getByRole('button',{name:'Ajouter un lieu',exact:true}).click();
@@ -93,27 +94,27 @@ try {
  await mp.getByText('Salle de consultation 101',{exact:true}).waitFor();
  const pc = await invited(admin,provider,'PROVIDER_MANAGER');
  const pp = await pc.newPage(); await pp.goto(base);
- await pp.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await (await settings(pp)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await pp.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
  await api(admin,`sites/${site.id}/providers`,{providerId:provider.id,reason:'Accès pilote'},client.id);
- await pp.reload(); await pp.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await pp.reload(); await (await settings(pp)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await pp.getByRole('button',{name:/Hôpital pilote/}).click();
  await pp.getByText('Salle de consultation 101',{exact:true}).waitFor();
  assert.equal(await pp.getByRole('button',{name:'Ajouter un lieu',exact:true}).count(),0);
  const cc = await invited(admin,client,'CLIENT_CONTROLLER');
  const cp = await cc.newPage(); await cp.goto(base);
- await cp.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await (await settings(cp)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await cp.getByRole('heading',{name:'Aucun site accessible'}).waitFor();
  const members = await api(admin,'organization/members',undefined,client.id);
  const controller = members.find(m=>m.roles.includes('CLIENT_CONTROLLER'));
  await api(admin,`sites/${site.id}/controllers`,{membershipId:controller.membership_id,reason:'Habilitation pilote'},client.id);
- await cp.reload(); await cp.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await cp.reload(); await (await settings(cp)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await cp.getByRole('button',{name:/Hôpital pilote/}).click();
  await cp.getByText('Salle de consultation 101',{exact:true}).waitFor();
  assert.equal(await cp.getByRole('button',{name:'Ajouter un lieu',exact:true}).count(),0);
  // Changing organization must not retain another client's site details.
  await orgButton(page,`Prestataire sites test ${stamp}`).click();
- await page.getByRole('button',{name:'Sites et salles',exact:true}).click();
+ await (await settings(page)).getByRole('button',{name:'Sites et salles',exact:true}).click();
  await page.getByRole('button',{name:/Hôpital pilote/}).waitFor();
  assert.equal(await page.getByText('Salle de consultation 101',{exact:true}).count(),0);
  assert.deepEqual(errors,[]);

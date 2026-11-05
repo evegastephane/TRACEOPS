@@ -7,15 +7,16 @@ import { Sites } from './sites';
 import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
-import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, ChevronIcon, DashboardIcon, GlobeIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
-import { Company, MemberPanel, ProviderDashboard, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
+import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, CalendarIcon, ChevronIcon, ClipboardIcon, DashboardIcon, SettingsIcon, GlobeIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
+import { Company, MemberPanel, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
 import { AuditLog, Profile } from './admin';
 import { PlatformOverview } from './platform';
-import { ClientDashboard, ControllerPanel, Directory } from './client';
+import { ControllerPanel, Directory } from './client';
+import { InterventionDetail, InterventionsPage, Planning, WorkOverview } from './interventions';
 
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'overview' | 'dashboard' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
+type Section = 'overview' | 'dashboard' | 'planning' | 'interventions' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
 type LoadState = 'loading' | 'ready' | 'error';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
@@ -45,7 +46,10 @@ function App() {
   const [members, setMembers] = useState<Member[]>([]), [membersLoading, setMembersLoading] = useState(false), [membersError, setMembersError] = useState('');
   const orgRef = useRef(orgId); orgRef.current = orgId;
   const [form, setForm] = useState<'org' | 'agent' | 'invite' | null>(null), [secret, setSecret] = useState<Secret | null>(null), [copied, setCopied] = useState(false);
-  const [section, setSection] = useState<Section>('dashboard');
+  const [section, setSection] = useState<Section>('dashboard'), [openId, setOpenId] = useState<string | null>(null);
+  // The advanced settings stay folded away unless the person opens them; the choice is remembered on this device.
+  const [settingsOpen, setSettingsOpen] = useState(() => { try { return localStorage.getItem('traceops-settings') === 'open'; } catch { return false; } });
+  useEffect(() => { try { localStorage.setItem('traceops-settings', settingsOpen ? 'open' : 'closed'); } catch { /* storage unavailable */ } }, [settingsOpen]);
   // Provider workspace: agent assignments, and the agent whose drawer is open.
   const [assignments, setAssignments] = useState<Assignment[]>([]), [assignmentsState, setAssignmentsState] = useState<LoadState>('loading');
   const [manageId, setManageId] = useState<string | null>(null);
@@ -61,10 +65,13 @@ function App() {
   // An opened form or secret takes the reading focus (below 1280px it replaces the list).
   useEffect(() => { if (form || secret || manageId) detailHeading.current?.focus(); }, [form, secret, manageId]);
 
+  const landed = useRef('');
   async function refresh() {
     setLoading(true); setError('');
     try {
       const me = await api('auth/me') as User;
+      // The administrator lands on the whole platform, not on one organization (once per sign-in).
+      if (landed.current !== me.id && !me.must_change_password) { landed.current = me.id; if (me.admin) setSection('overview'); }
       setUser(me);
       const list = me.admin && !me.must_change_password ? await api('admin/organizations') : me.memberships;
       setOrgs(list);
@@ -75,8 +82,6 @@ function App() {
     } finally { setLoading(false); }
   }
   useEffect(() => { void refresh(); }, []);
-  // The administrator lands on the whole platform, not on one organization.
-  useEffect(() => { if (user?.admin && !user.must_change_password) setSection(s => s === 'dashboard' ? 'overview' : s); }, [user?.id, user?.admin, user?.must_change_password]);
 
   const org = orgs.find(o => o.id === orgId);
   const manager = Boolean(user?.admin || org?.roles?.some(r => r === 'CLIENT_MANAGER' || r === 'PROVIDER_MANAGER'));
@@ -165,11 +170,11 @@ function App() {
   const kindLabel = (o: Org) => o.kind === 'CLIENT' ? t.client : t.provider;
   const roleLabel = (r: string) => r === 'FIELD_AGENT' ? t.agent : r === 'CLIENT_CONTROLLER' ? t.controller : t.manager;
   const rolesOf = (o: Org) => o.roles?.length ? o.roles.map(roleLabel).join(', ') : '';
-  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); setSection('dashboard'); });
+  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); setSection('dashboard'); landed.current = ''; });
   const multiOrg = orgs.length > 1;
   // Phone screen: the organisations list, or the active organisation. An admin without any organisation starts on the list, where it can create one.
   const phoneView = multiOrg ? mobileView : 'org';
-  const chooseOrg = (id: string) => { setOrgId(id); setSection('dashboard'); setMobileView('org'); };
+  const chooseOrg = (id: string) => { setOrgId(id); setSection('dashboard'); setOpenId(null); setMobileView('org'); };
   const membersCounted = manager && !membersLoading && !membersError;
   // Organisations of both kinds are grouped under Clients / Prestataires; the group then names the kind.
   const groups = (['CLIENT', 'PROVIDER'] as const).map(kind => ({ kind, items: orgs.filter(o => o.kind === kind) })).filter(group => group.items.length);
@@ -253,24 +258,40 @@ function App() {
   const skeleton = <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>;
 
   // Sidebar menu: the active organisation's sections, then the platform-wide pages.
-  const go = (item: Section) => { setSection(item); setForm(null); setSecret(null); setManageId(null); setError(''); };
-  const orgItems: { id: Section; label: string; icon: React.ReactNode }[] = [
+  const go = (item: Section) => { setSection(item); setOpenId(null); setForm(null); setSecret(null); setManageId(null); setError(''); };
+  const openIntervention = (id: string) => { go('interventions'); setOpenId(id); };
+  const mainItems: { id: Section; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: t.dashboard, icon: <DashboardIcon /> },
+    ...(org ? [{ id: 'planning' as Section, label: t.planningNav, icon: <CalendarIcon /> }, { id: 'interventions' as Section, label: t.interventionsNav, icon: <ClipboardIcon /> }] : []),
+  ];
+  const settingsItems: { id: Section; label: string; icon: React.ReactNode }[] = [
     ...(canSeeSections ? [{ id: 'team' as Section, label: t.team, icon: <TeamIcon /> }, { id: 'sites' as Section, label: t.sites, icon: <SitesIcon /> }] : []),
     ...(clientManager ? [{ id: 'providers' as Section, label: t.providersNav, icon: <HandshakeIcon /> }] : []),
     ...(org ? [{ id: 'company' as Section, label: t.company, icon: <CompanyIcon /> }] : []),
   ];
+  const orgItems = [...mainItems, ...settingsItems];
+  const inSettings = settingsItems.some(i => i.id === section);
   const globalItems: { id: Section; label: string; icon: React.ReactNode }[] = [
     ...(user.admin ? [{ id: 'overview' as Section, label: t.overviewNav, icon: <GlobeIcon /> }, { id: 'audit' as Section, label: t.auditNav, icon: <LogIcon /> }] : []),
     { id: 'profile', label: t.profileNav, icon: <UserIcon /> },
   ];
-  const navButton = (item: { id: Section; label: string; icon: React.ReactNode }) => <li key={item.id}>
+  function navButton(item: { id: Section; label: string; icon: React.ReactNode }) { return <li key={item.id}>
     <button className="nav-item" aria-current={section === item.id ? 'page' : undefined} title={collapsed ? item.label : undefined} disabled={busy} onClick={() => go(item.id)}>
       {item.icon}<span className="nav-text">{item.label}</span>
       {item.id === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
     </button>
-  </li>;
-  const orgSection = !['overview', 'audit', 'profile'].includes(section);
+  </li>; }
+  // Everyone but the administrator: the three daily pages, then the folded settings group.
+  const flatMenu = <>
+    <ul className="nav-list">{mainItems.map(navButton)}</ul>
+    {settingsItems.length > 0 && <>
+      <button type="button" className="nav-item nav-group" aria-expanded={settingsOpen || inSettings} aria-controls="settings-nav" title={collapsed ? t.settingsNav : undefined} onClick={() => setSettingsOpen(o => !(o || inSettings))}>
+        <SettingsIcon /><span className="nav-text">{t.settingsNav}</span><span className="nav-caret"><ChevronIcon /></span></button>
+      {(settingsOpen || inSettings || collapsed) && <ul className="nav-list nav-sublist" id="settings-nav">{settingsItems.map(navButton)}</ul>}
+    </>}
+  </>;
+  // Only the administrator browses many organizations: each one unfolds its own menu. Everyone else keeps the flat menu at the top.
+  const orgSection = user.admin && !['overview', 'audit', 'profile'].includes(section);
   const pageTitle = section === 'overview' ? t.overviewNav : section === 'audit' ? t.auditNav : section === 'profile' ? t.profileNav : null;
 
   return <div className="app" data-view={phoneView} data-collapsed={collapsed ? 'true' : undefined}>
@@ -279,7 +300,7 @@ function App() {
         <button type="button" className="icon-button collapse-toggle" aria-label={collapsed ? t.expandMenu : t.collapseMenu} title={collapsed ? t.expandMenu : t.collapseMenu} aria-expanded={!collapsed} onClick={() => setCollapsed(c => !c)}><PanelIcon /></button>
       </div>
       <nav className="section-nav" aria-label={t.sections}>
-        <ul className="nav-list nav-org-mobile">{orgItems.map(navButton)}</ul>
+        {user.admin ? <ul className="nav-list nav-org-mobile">{orgItems.map(navButton)}</ul> : flatMenu}
         <p className="nav-label nav-divider">{t.platformNav}</p>
         <ul className="nav-list">{globalItems.map(navButton)}</ul>
       </nav>
@@ -289,10 +310,10 @@ function App() {
           ? <div className="org-groups">{groups.map(group => <div className="org-group" key={group.kind}>
               {grouped && <p className="nav-label" id={`org-group-${group.kind}`}>{group.kind === 'CLIENT' ? t.clients : t.providers}</p>}
               <ul className="org-list" aria-labelledby={grouped ? `org-group-${group.kind}` : undefined}>{group.items.map(o => <li key={o.id}>
-                <button className="org-item" title={o.name} aria-current={o.id === orgId && orgSection ? 'true' : undefined} aria-expanded={o.id === orgId && orgSection} disabled={busy} onClick={() => chooseOrg(o.id)}>
+                <button className="org-item" title={o.name} aria-current={o.id === orgId && (orgSection || !user.admin) ? 'true' : undefined} aria-expanded={user.admin ? o.id === orgId && orgSection : undefined} disabled={busy} onClick={() => chooseOrg(o.id)}>
                   <Avatar name={o.name} seed={o.id} shape="square" size="sm" />
                   <span className="org-item-text"><span className="org-item-name">{o.name}</span>{itemMeta(o) && <span className="org-item-meta">{itemMeta(o)}</span>}</span>
-                  <ChevronIcon />
+                  {user.admin && <ChevronIcon />}
                 </button>
                 {o.id === orgId && orgSection && <ul className="org-subnav" aria-label={o.name}>{orgItems.map(navButton)}</ul>}
               </li>)}</ul>
@@ -334,16 +355,14 @@ function App() {
           ? <Profile lang={lang} user={user} roleLabel={roleLabel} kindLabel={k => k === 'CLIENT' ? t.client : t.provider} busy={busy} setBusy={setBusy} onSaved={name => setUser(u => u && { ...u, display_name: name })} />
         : section === 'providers' && org && clientManager
           ? <Directory key={orgId} org={org} lang={lang} admin={user.admin} busy={busy} setBusy={setBusy} />
-        : section === 'dashboard' && org && clientManager
-          ? <ClientDashboard key={orgId} org={org} lang={lang} teamCount={membersCounted ? members.length : null} onNavigate={go} />
+        : section === 'dashboard' && org
+          ? <WorkOverview key={orgId} org={org} lang={lang} admin={user.admin} onOpen={openIntervention} onNavigate={go} />
+        : section === 'planning' && org
+          ? <Planning key={orgId} org={org} lang={lang} onOpen={openIntervention} />
+        : section === 'interventions' && org
+          ? openId ? <InterventionDetail key={openId} org={org} id={openId} lang={lang} onBack={() => setOpenId(null)} /> : <InterventionsPage key={orgId} org={org} lang={lang} admin={user.admin} onOpen={setOpenId} />
         : section === 'company' && org
           ? <Company key={orgId} org={org} canEdit={manager} t={t} lang={lang} busy={busy} setBusy={setBusy} onRenamed={name => setOrgs(list => list.map(o => o.id === org.id ? { ...o, name } : o))} />
-        : section === 'dashboard' && org && providerManager
-          ? <div className={['workspace', 'workspace-team', panelOpen && 'has-panel'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>
-              <ProviderDashboard org={org} members={members} membersState={membersState} assignments={assignments} assignmentsState={assignmentsState} t={t}
-                actions={teamActions} onManage={openManage} retryMembers={() => void reloadMembers()} retryAssignments={() => void reloadAssignments()} />
-              {teamPanel && <aside className="pane-panel">{teamPanel}</aside>}
-            </div>
         : section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={()=>{setSection('team');setForm('org');setSecret(null);}} /> : section === 'sites' && org && canSeeSections
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
           : <div className={['workspace', 'workspace-team', panelOpen && 'has-panel', !org && 'no-list'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>

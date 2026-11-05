@@ -22,15 +22,19 @@ docker compose build
 docker compose run --rm setup
 ```
 
-La première commande télécharge les dépendances ; sa durée dépend de votre connexion. La seconde démarre PostgreSQL, applique les migrations et crée cinq comptes avec des mots de passe aléatoires de 8 caractères (lettres et chiffres faciles à recopier). **Conservez les identifiants affichés dans votre terminal** : ils ne sont pas réaffichés lors des prochains lancements.
+La première commande télécharge les dépendances ; sa durée dépend de votre connexion. La seconde démarre PostgreSQL, applique les migrations et crée le jeu de démonstration fictif **AFISA Food Industry** (usine de Bonabéri) et huit comptes avec des mots de passe aléatoires de 8 caractères (lettres et chiffres faciles à recopier). **Conservez les identifiants affichés dans votre terminal** : ils ne sont pas réaffichés lors des prochains lancements.
 
 | Identifiant | Vue à tester |
 | --- | --- |
-| `demo.admin` | Organisations, invitations, sites et lieux avec motif administratif |
-| `demo.client` | Équipe cliente, création des sites et lieux |
-| `demo.controleur` | Consultation du site habilité |
-| `demo.prestataire` | Équipe prestataire, ajout d’agents, consultation du site rattaché |
-| `demo.agent` | Changement obligatoire du mot de passe, puis espace agent |
+| `demo.admin` | Toute la plateforme : vue d’ensemble, journal d’activité, organisations (lecture des interventions) |
+| `demo.client` | Responsable services généraux AFISA : programmes de nettoyage, demandes de maintenance, décision sur devis, contrôle |
+| `demo.controleur` | Contrôleuse qualité AFISA : contrôle des comptes rendus, reprise ou acceptation, anomalies |
+| `demo.prestataire` | Responsable Hygiène Plus Services (nettoyage sous contrat) : affectation des équipes |
+| `demo.agent`, `demo.agent2` | Agents de nettoyage : réalisation des passages, tâches, photos, compte rendu |
+| `demo.maintenance` | Responsable MécaTech Industrie (maintenance) : devis, affectation |
+| `demo.technicien` | Technicien de maintenance : réalisation, photos, anomalies |
+
+Toutes les données sont fictives. Les comptes agents doivent changer leur mot de passe à la première connexion.
 
 Les mots de passe sont différents pour chaque installation. Aucun compte de production n’est créé. L’initialisation refuse une base contenant déjà des utilisateurs ou organisations : elle ne remplace pas vos données et ne réinitialise aucun mot de passe.
 
@@ -46,12 +50,25 @@ Le serveur écoute uniquement sur votre ordinateur. Il ne fournit pas de lien pu
 
 ## 4. Parcours conseillé
 
-1. **Client** : ouvrir Sites et salles, puis Hôpital de démonstration. Le bâtiment, l’étage et la salle 101 existent déjà. Ajouter une salle sous le premier étage, avec un code unique ; rechercher ce code. Tenter de réutiliser ce code pour vérifier le message d’erreur.
-2. **Contrôleur** : se déconnecter puis se connecter avec `demo.controleur`. Le site est consultable, sans bouton de création.
-3. **Prestataire** : consulter le site rattaché, puis ouvrir Équipe et ajouter un agent. Conserver son mot de passe temporaire avant de fermer le résultat.
-4. **Agent** : se connecter avec `demo.agent` ou le nouvel agent. Remplacer le mot de passe temporaire. Les missions ne sont pas encore disponibles.
-5. **Administrateur** : choisir l’organisation cliente et créer un site. Le motif administratif est obligatoire. Créer également une organisation ou une invitation pour explorer la gestion des accès.
-6. Passer de Français à English et vérifier l’affichage sur une fenêtre étroite.
+Le menu principal tient en trois pages : **Vue d’ensemble**, **Planning** et **Interventions**. Équipe, Sites et salles, Prestataires et Société sont rangés sous **Paramètres** (groupe replié).
+
+**Nettoyage régulier sous contrat**
+
+1. **Client** (`demo.client`) : Vue d’ensemble, puis Planning. Le programme « Nettoyage quotidien » produit un passage par jour (lundi–samedi, 05:30–07:00), chacun suivi séparément : passés acceptés, une reprise demandée, un passage à contrôler, celui du jour en cours, les suivants planifiés. Le programme hebdomadaire des chambres froides attend encore son équipe.
+2. **Prestataire** (`demo.prestataire`) : Interventions › Programmes, puis « Affecter l’équipe à tous les passages à venir » sur le programme des chambres froides.
+3. **Agent** (`demo.agent`) : ouvrir le passage du jour, cocher les tâches restantes, ajouter une photo avant/après, soumettre le compte rendu.
+4. **Contrôleur** (`demo.controleur`) : ouvrir le passage « À contrôler », demander une reprise sur une tâche précise avec un motif, ou accepter la prestation.
+
+**Maintenance ponctuelle avec devis**
+
+1. **Client** : Interventions › Nouvelle demande de maintenance. Choisir le prestataire destinataire, les lieux et équipements, une date de début et une date de fin indépendantes, cocher « Devis préalable requis ».
+2. **Maintenance** (`demo.maintenance`) : transmettre le devis (montant FCFA, délai, contenu). Rien n’est planifié avant l’accord du client.
+3. **Client** : accepter le devis, ou le refuser avec un motif.
+4. **Maintenance** : affecter le technicien et le responsable de mission. **Technicien** (`demo.technicien`) : démarrer, renseigner les tâches, signaler une anomalie, soumettre.
+5. **Contrôleur** : accepter la prestation. L’anomalie reste ouverte : elle se clôture séparément (proposition de résolution, puis clôture avec constat).
+6. Sur la fiche, « Télécharger le compte rendu (PDF) » produit le compte rendu avec tâches, devis, anomalies, historique et photos.
+
+Passer de Français à English et vérifier l’affichage sur une fenêtre étroite.
 
 Pour comparer plusieurs rôles simultanément, employer des profils de navigateur séparés. Les onglets d’un même profil partagent la même session.
 
@@ -88,7 +105,7 @@ Pour remplacer le mot de passe d’un compte de démonstration déjà créé, ap
 docker compose run --rm setup node dist/src/reset-demo-password.js demo.admin
 ```
 
-La commande affiche le nouveau mot de passe de 8 caractères, invalide les sessions de ce compte et conserve les données. Remplacer `demo.admin` par `demo.client`, `demo.controleur`, `demo.prestataire` ou `demo.agent` pour un autre compte. Elle refuse les comptes hors démonstration et le mode production. L’agent doit toujours changer son mot de passe à la prochaine connexion.
+La commande affiche le nouveau mot de passe de 8 caractères, invalide les sessions de ce compte et conserve les données. Remplacer `demo.admin` par un autre identifiant de démonstration (`demo.client`, `demo.controleur`, `demo.prestataire`, `demo.maintenance`, `demo.agent`, `demo.agent2`, `demo.technicien`). Elle refuse les comptes hors démonstration et le mode production. L’agent doit toujours changer son mot de passe à la prochaine connexion.
 
 ## Dépannage
 
@@ -100,6 +117,8 @@ La commande affiche le nouveau mot de passe de 8 caractères, invalide les sessi
 
 ### Repartir de zéro, uniquement si vous voulez effacer tous vos essais
 
+Une installation existante garde l’ancienne démonstration (hôpital) : pour obtenir le jeu AFISA, il faut repartir de zéro avec les commandes ci-dessous.
+
 Les commandes suivantes suppriment **toute la base de démonstration locale**, y compris les comptes, sites et salles ajoutés. Elles servent notamment si vous avez perdu tous les mots de passe. Ne pas les utiliser pour une simple mise à jour.
 
 ```sh
@@ -110,8 +129,8 @@ docker compose up -d --wait web
 
 ## Périmètre de cette version
 
-Disponible : comptes, organisations, invitations, agents, création/consultation des sites et lieux, recherche, français/anglais et droits par organisation/site.
+Disponible : comptes, organisations, invitations, agents, sites et lieux, programmes de nettoyage récurrents (un passage suivi par date), demandes de maintenance avec devis préalable, affectation avec responsable de mission et contrôle de disponibilité, réalisation par tâches, photos avant/après (JPEG/PNG), compte rendu, contrôle avec reprise ciblée, acceptation, anomalies clôturées séparément, compte rendu PDF, journal d’activité, français/anglais.
 
-À venir : parcours persistants des interventions, affectation opérationnelle, comptes rendus, validation client, récurrence, photos, QR, PDF et notifications. Le rattachement des prestataires et l’habilitation des contrôleurs sont préconfigurés dans cette démonstration et restent gérés par API. Modification/archivage des lieux et récupération de mot de passe ne sont pas encore disponibles.
+À venir : QR, notifications, modification d’un programme après création, récupération de mot de passe.
 
 Cette composition est destinée aux essais locaux, avec des identifiants PostgreSQL locaux et HTTP. Elle ne constitue pas une configuration de production.

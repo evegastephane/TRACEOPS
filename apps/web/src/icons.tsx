@@ -26,3 +26,6 @@ export const LogIcon = () => <Icon><path d="M8 6h12M8 12h12M8 18h12" /><path d="
 export const UserIcon = () => <Icon><circle cx="12" cy="8" r="4" /><path d="M4.5 20.5c.8-4 3.7-6 7.5-6s6.7 2 7.5 6" /></Icon>;
 export const HandshakeIcon = () => <Icon><path d="m11 17 2 2a1.4 1.4 0 0 0 2-2M14 14l2.5 2.5a1.4 1.4 0 0 0 2-2l-3.9-3.9a2 2 0 0 0-2.8 0l-.9.9a1.4 1.4 0 0 1-2-2L11.6 6.8a3 3 0 0 1 3.6-.5l.6.4a2 2 0 0 0 1.5.3L21 6" /><path d="M3 6l3.8.8a2 2 0 0 1 1.3 1L9 9.5M3 13l4 4" /></Icon>;
 export const PinIcon = () => <Icon><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" /><circle cx="12" cy="10" r="2.5" /></Icon>;
+export const CalendarIcon = () => <Icon><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></Icon>;
+export const ClipboardIcon = () => <Icon><rect x="5" y="4.5" width="14" height="16" rx="2" /><path d="M9 4.5V3.5h6v1M8.5 11l2 2 4-4M8.5 16.5h7" /></Icon>;
+export const SettingsIcon = () => <Icon><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></Icon>;
