@@ -67,6 +67,10 @@ export class SitesController {
    if(!r.rowCount)throw new BadRequestException('INVALID_CONTROLLER');await tx.query('INSERT INTO site_grant(membership_id,site_id) VALUES($1,$2) ON CONFLICT DO NOTHING',[membership,id]);
    await this.accounts.audit(tx,user.id,site.client_id,'CONTROLLER_GRANTED',membership,user.admin?field(body,'reason',500):undefined);return{ok:true};});
  }
+ @Post(':id/controllers/remove')async removeController(@Req()req:Request,@Param('id')id:string,@Body()body:unknown){const {user,site}=await this.access(req,id,true);this.reason(user,body);const membership=uuid(field(body,'membershipId'));
+  return this.db.transaction(async tx=>{const r=await tx.query('DELETE FROM site_grant WHERE membership_id=$1 AND site_id=$2',[membership,id]);
+   if(r.rowCount)await this.accounts.audit(tx,user.id,site.client_id,'CONTROLLER_REVOKED',membership,user.admin?field(body,'reason',500):undefined);return{ok:true};});
+ }
 }
 @Module({imports:[DatabaseModule,AccountsModule],controllers:[SitesController]})
 export class SitesModule{}

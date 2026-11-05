@@ -7,12 +7,14 @@ import { Sites } from './sites';
 import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
-import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, DashboardIcon, LinkIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon, UserPlusIcon } from './icons';
+import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, DashboardIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
 import { Company, MemberPanel, ProviderDashboard, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
+import { AuditLog, Profile } from './admin';
+import { ClientDashboard, ControllerPanel, Directory } from './client';
 
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'dashboard' | 'team' | 'sites' | 'company';
+type Section = 'dashboard' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
 type LoadState = 'loading' | 'ready' | 'error';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
@@ -46,6 +48,9 @@ function App() {
   // Provider workspace: agent assignments, and the agent whose drawer is open.
   const [assignments, setAssignments] = useState<Assignment[]>([]), [assignmentsState, setAssignmentsState] = useState<LoadState>('loading');
   const [manageId, setManageId] = useState<string | null>(null);
+  // Desktop sidebar can shrink to an icon rail; the choice is remembered on this device.
+  const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem('traceops-sidebar') === 'collapsed'; } catch { return false; } });
+  useEffect(() => { try { localStorage.setItem('traceops-sidebar', collapsed ? 'collapsed' : 'open'); } catch { /* storage unavailable */ } }, [collapsed]);
   // Phone only: with several organisations, the list of organisations is its own screen.
   const [mobileView, setMobileView] = useState<'orgs' | 'org'>('org');
   const detailHeading = useRef<HTMLHeadingElement>(null);
@@ -168,6 +173,8 @@ function App() {
   const grouped = groups.length > 1;
   const itemMeta = (o: Org) => grouped ? rolesOf(o) : [kindLabel(o), rolesOf(o)].filter(Boolean).join(' · ');
   const roleLine = org && (rolesOf(org) ? `${t.yourRole} ${rolesOf(org)}` : user.admin ? t.adminAccess : '');
+  const clientManager = Boolean(org && org.kind === 'CLIENT' && manager);
+  const canManage = (m: Member) => (providerManager && isAgent(m)) || (clientManager && m.roles.includes('CLIENT_CONTROLLER') && m.active);
   const managed = manageId ? members.find(m => m.membership_id === manageId) : undefined;
   const panelOpen = Boolean(form || secret || managed);
   const closeForm = () => setForm(null);
@@ -225,6 +232,8 @@ function App() {
             </div>
           </form>
         </div>
+      : managed && org && org.kind === 'CLIENT'
+        ? <ControllerPanel key={managed.membership_id} org={org} member={managed} lang={lang} admin={user.admin} busy={busy} setBusy={setBusy} headingRef={detailHeading} onClose={() => setManageId(null)} />
       : managed && org
         ? <MemberPanel key={managed.membership_id} org={org} member={managed} assignments={assignments} t={t} lang={lang} busy={busy} setBusy={setBusy}
             headingRef={detailHeading} onClose={() => setManageId(null)} onChanged={async () => { await Promise.all([reloadMembers(), reloadAssignments()]); }} />
@@ -240,9 +249,36 @@ function App() {
 
   const skeleton = <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span>{[0, 1, 2].map(i => <span key={i} className="skeleton-row" />)}</div>;
 
-  return <div className="app" data-view={phoneView}>
+  // Sidebar menu: the active organisation's sections, then the platform-wide pages.
+  const go = (item: Section) => { setSection(item); setForm(null); setSecret(null); setManageId(null); setError(''); };
+  const orgItems: { id: Section; label: string; icon: React.ReactNode }[] = [
+    { id: 'dashboard', label: t.dashboard, icon: <DashboardIcon /> },
+    ...(canSeeSections ? [{ id: 'team' as Section, label: t.team, icon: <TeamIcon /> }, { id: 'sites' as Section, label: t.sites, icon: <SitesIcon /> }] : []),
+    ...(clientManager ? [{ id: 'providers' as Section, label: t.providersNav, icon: <HandshakeIcon /> }] : []),
+    ...(org ? [{ id: 'company' as Section, label: t.company, icon: <CompanyIcon /> }] : []),
+  ];
+  const globalItems: { id: Section; label: string; icon: React.ReactNode }[] = [
+    ...(user.admin ? [{ id: 'audit' as Section, label: t.auditNav, icon: <LogIcon /> }] : []),
+    { id: 'profile', label: t.profileNav, icon: <UserIcon /> },
+  ];
+  const navButton = (item: { id: Section; label: string; icon: React.ReactNode }) => <li key={item.id}>
+    <button className="nav-item" aria-current={section === item.id ? 'page' : undefined} title={collapsed ? item.label : undefined} disabled={busy} onClick={() => go(item.id)}>
+      {item.icon}<span className="nav-text">{item.label}</span>
+      {item.id === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
+    </button>
+  </li>;
+  const pageTitle = section === 'audit' ? t.auditNav : section === 'profile' ? t.profileNav : null;
+
+  return <div className="app" data-view={phoneView} data-collapsed={collapsed ? 'true' : undefined}>
     <aside className="sidebar">
-      <div className="sidebar-top"><Brand /></div>
+      <div className="sidebar-top"><Brand />
+        <button type="button" className="icon-button collapse-toggle" aria-label={collapsed ? t.expandMenu : t.collapseMenu} title={collapsed ? t.expandMenu : t.collapseMenu} aria-expanded={!collapsed} onClick={() => setCollapsed(c => !c)}><PanelIcon /></button>
+      </div>
+      <nav className="section-nav" aria-label={t.sections}>
+        <ul className="nav-list">{orgItems.map(navButton)}</ul>
+        <p className="nav-label nav-divider">{t.platformNav}</p>
+        <ul className="nav-list">{globalItems.map(navButton)}</ul>
+      </nav>
       <nav className="org-nav" aria-labelledby="org-nav-title">
         <p className={grouped ? 'nav-label sr-only' : 'nav-label'} id="org-nav-title">{t.orgs}</p>
         {orgs.length
@@ -273,24 +309,26 @@ function App() {
     <main className="content">
       <div className="content-inner">
         {multiOrg && <button className="back-link orgs-back" disabled={busy} onClick={() => setMobileView('orgs')}><BackIcon />{t.orgs}</button>}
-        <header className="page-header">
-          {org && <Avatar name={org.name} seed={org.id} shape="square" size="lg" />}
-          <div className="page-title">
-            <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
-            <p className="page-meta">{org ? <><span className="badge">{kindLabel(org)}</span>{roleLine && <span>{roleLine}</span>}</> : user.admin ? t.emptyOrgText : t.noContextText}</p>
-          </div>
-        </header>
-        {<nav className="tabs" aria-label={t.sections}>
-          {(['dashboard', ...(canSeeSections ? ['team', 'sites'] : []), ...(org ? ['company'] : [])] as Section[]).map(item => <button key={item} className="tab" aria-current={section === item ? 'page' : undefined} disabled={busy}
-            onClick={() => { setSection(item); setForm(null); setSecret(null); setManageId(null); setError(''); }}>
-            {item === 'dashboard' ? <DashboardIcon /> : item === 'team' ? <TeamIcon /> : item === 'sites' ? <SitesIcon /> : <CompanyIcon />}
-            {item === 'dashboard' ? t.dashboard : item === 'team' ? t.team : item === 'sites' ? t.sites : t.company}
-            {item === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
-          </button>)}
-        </nav>}
+        {pageTitle
+          ? <header className="page-header"><div className="page-title"><h1>{pageTitle}</h1></div></header>
+          : <header className="page-header">
+              {org && <Avatar name={org.name} seed={org.id} shape="square" size="lg" />}
+              <div className="page-title">
+                <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
+                <p className="page-meta">{org ? <><span className="badge">{kindLabel(org)}</span>{roleLine && <span>{roleLine}</span>}</> : user.admin ? t.emptyOrgText : t.noContextText}</p>
+              </div>
+            </header>}
         {errorBox}
 
-        {section === 'company' && org
+        {section === 'audit' && user.admin
+          ? <AuditLog lang={lang} orgs={orgs} />
+        : section === 'profile'
+          ? <Profile lang={lang} user={user} roleLabel={roleLabel} kindLabel={k => k === 'CLIENT' ? t.client : t.provider} busy={busy} setBusy={setBusy} onSaved={name => setUser(u => u && { ...u, display_name: name })} />
+        : section === 'providers' && org && clientManager
+          ? <Directory key={orgId} org={org} lang={lang} admin={user.admin} busy={busy} setBusy={setBusy} />
+        : section === 'dashboard' && org && clientManager
+          ? <ClientDashboard key={orgId} org={org} lang={lang} teamCount={membersCounted ? members.length : null} onNavigate={go} />
+        : section === 'company' && org
           ? <Company key={orgId} org={org} canEdit={manager} t={t} lang={lang} busy={busy} setBusy={setBusy} onRenamed={name => setOrgs(list => list.map(o => o.id === org.id ? { ...o, name } : o))} />
         : section === 'dashboard' && org && providerManager
           ? <div className={['workspace', 'workspace-team', panelOpen && 'has-panel'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>
@@ -315,7 +353,7 @@ function App() {
                                 <thead role="rowgroup"><tr role="row"><th role="columnheader" scope="col">{t.displayName}</th><th role="columnheader" scope="col">{t.login}</th><th role="columnheader" scope="col">{t.role}</th>
                                   {providerManager && <th role="columnheader" scope="col">{t.assignmentsCol}</th>}
                                   <th role="columnheader" scope="col">{t.access}</th>
-                                  {providerManager && <th role="columnheader" scope="col"><span className="sr-only">{t.manage}</span></th>}</tr></thead>
+                                  {(providerManager || clientManager) && <th role="columnheader" scope="col"><span className="sr-only">{t.manage}</span></th>}</tr></thead>
                                 <tbody role="rowgroup">{members.map(m => <tr role="row" key={m.id} className={m.active ? undefined : 'is-suspended'}>
                                   <td role="cell" className="member-name"><span className="member-id"><Avatar name={m.display_name} seed={m.id} /><strong>{m.display_name}</strong></span></td>
                                   <td role="cell" data-label={t.login} className="member-login"><code>{m.login}</code></td>
@@ -326,7 +364,7 @@ function App() {
                                       : <span className="muted">{t.noAssignment}</span>
                                     : <span className="muted">—</span>}</td>}
                                   <td role="cell" data-label={t.access} className="member-access"><span className={m.active ? 'status status-on' : 'status status-off'}>{m.active ? t.active : t.disabled}</span></td>
-                                  {providerManager && <td role="cell" className="member-actions">{isAgent(m) && <button className="secondary small" aria-label={`${t.manage} : ${m.display_name}`} disabled={busy} onClick={() => openManage(m)}>{t.manage}</button>}</td>}
+                                  {(providerManager || clientManager) && <td role="cell" className="member-actions">{canManage(m) && <button className="secondary small" aria-label={`${t.manage} : ${m.display_name}`} disabled={busy} onClick={() => openManage(m)}>{t.manage}</button>}</td>}
                                 </tr>)}</tbody>
                               </table>
                             </div>

@@ -105,6 +105,21 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   assert.equal((await provider('organization/members/'+agentMember.membership_id+'/reactivate',{},org)).status,201);
   assert.equal((await agent('auth/login',{login:'agent01',password})).status,201);
   assert.equal((await db.query("SELECT count(*)::int AS n FROM access_audit WHERE action IN ('MEMBER_WITHDRAWN','MEMBER_REACTIVATED','AGENT_ASSIGNED','PROFILE_UPDATED')")).rows[0].n,4);
+  // Activity log (administrator only), provider directory and client overview, own account.
+  const log=await admin('admin/audit?limit=5');
+  assert.equal(log.status,200);assert.equal(log.data.entries.length,5);assert.equal(log.data.more,true);assert.ok(log.data.entries[0].actor_name);
+  assert.ok((await admin('admin/audit?action=PROFILE_UPDATED')).data.entries.every((e:{action:string})=>e.action==='PROFILE_UPDATED'));
+  assert.equal((await provider('admin/audit')).status,403);
+  const directory=await clientBrowser('organization/directory',undefined,other);
+  assert.equal(directory.status,200);
+  const listed=directory.data.find((p:{id:string})=>p.id===org);
+  assert.equal(listed.city,'Douala');assert.deepEqual(listed.site_ids,[site.data.id]);
+  assert.equal((await provider('organization/directory',undefined,org)).status,403);
+  const overview=await clientBrowser('organization/overview',undefined,other);
+  const main=overview.data.sites.find((s:{id:string})=>s.id===site.data.id);
+  assert.equal(main.zones,2);assert.equal(main.rooms,1);assert.equal(main.providers[0].id,org);
+  assert.equal((await clientBrowser('auth/account',{displayName:'Client lead'})).status,201);
+  assert.equal((await clientBrowser('auth/me')).data.display_name,'Client lead');
   assert.equal((await provider('sites/'+site.data.id+'/zones',{code:'X',name:'Unauthorized',kind:'ROOM'},org)).status,403);
   assert.equal((await agent('sites',undefined,org)).data.length,0);
   const exceptional=await admin('sites',{name:'Assisted site',sector:'hotel',reason:'Client requested assistance'},other);

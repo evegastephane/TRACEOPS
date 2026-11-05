@@ -12,6 +12,9 @@ if(p==='/auth/me')return res.json({id:'test-user',login:'test',display_name:'Res
 if(p==='/admin/organizations')return res.json([org]);
 if(p==='/organization/members')return res.json([{id:'test-user',login:'test',display_name:'Responsable test',roles:['CLIENT_MANAGER'],active:true}]);
 if(p==='/organization/invitations')return res.json({token:'synthetic-test-token'});
+if(p==='/organization/overview')return res.json({sites:[{id:'test-site',name:'Hôpital pilote',sector:'hospital',timezone:'Africa/Douala',zones:1,rooms:1,providers:[],controllers:[]}]});
+if(p==='/organization/assignments'||p==='/organization/directory')return res.json([]);
+if(p==='/organization/profile')return res.json({name:org.name,kind:org.kind});
 if(p==='/sites')return res.json([{id:'test-site',name:'Hôpital pilote',sector:'hospital',timezone:'Africa/Douala'}]);
 if(p==='/sites/test-site/zones')return res.json([{id:'test-room',parent_id:null,code:'SAL-101',name:'Salle 101',kind:'ROOM'}]);
 res.status(404).json({message:'NOT_FOUND'});});
@@ -25,7 +28,7 @@ await page.getByRole('button',{name:'Se connecter',exact:true}).waitFor();
 await page.screenshot({path:'.impeccable/review/login-desktop.png',fullPage:true});
 await page.getByLabel('Identifiant',{exact:true}).fill('test');await page.getByLabel('Mot de passe',{exact:true}).fill('testpass');await page.getByRole('button',{name:'Se connecter',exact:true}).click();
 await page.getByRole('button',{name:'Tableau de bord',exact:true}).waitFor();
-await page.locator('.dashboard-sites').getByText('Hôpital pilote',{exact:true}).waitFor();
+await page.locator('.coverage').getByText('Hôpital pilote',{exact:true}).waitFor();
 await page.screenshot({path:'.impeccable/review/dashboard-desktop.png',fullPage:true});
 await page.setViewportSize({width:390,height:844});await page.screenshot({path:'.impeccable/review/dashboard-mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.setViewportSize({width:1440,height:1000});
 await page.getByRole('button',{name:'Équipe',exact:true}).click();
@@ -40,8 +43,8 @@ await page.getByRole('button',{name:'Équipe',exact:true}).click();await page.ge
 await page.setViewportSize({width:360,height:800});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
 for(const [kind,roles,isAdmin] of [['PROVIDER',['PROVIDER_MANAGER'],false],['CLIENT',['CLIENT_CONTROLLER'],false],['PROVIDER',['FIELD_AGENT'],false],['CLIENT',[],true]]) {
  org.kind=kind;org.roles=roles;admin=isAdmin;await page.reload();await page.getByRole('button',{name:'Dashboard',exact:true}).waitFor();
- assert.equal(await page.getByRole('button',{name:'Manage my team',exact:true}).count(),isAdmin||roles.includes('PROVIDER_MANAGER')?1:0);
- assert.equal(await page.getByRole('button',{name:'Create organization',exact:true}).count()>0,isAdmin);
+ assert.equal(await page.getByRole('heading',{name:'Unassigned agents',exact:true}).count(),roles.includes('PROVIDER_MANAGER')?1:0);
+ assert.equal(await page.getByRole('button',{name:'Activity log',exact:true}).count(),isAdmin?1:0);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
 }
 await page.getByRole('button',{name:'Sign out',exact:true}).click();await page.getByRole('button',{name:'Sign in',exact:true}).waitFor();

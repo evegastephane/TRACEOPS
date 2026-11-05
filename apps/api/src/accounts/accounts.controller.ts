@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Module, Param, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Module, Param, Post, Query, Req, Res } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { DatabaseModule } from '../database.module.js';
 import { AccountsService, uuid } from './accounts.service.js';
@@ -29,6 +29,11 @@ export class AccountsController {
   @Get('organization/members') async members(@Req() req: Request) { return this.accounts.members(await this.user(req),uuid(req.headers['x-organization-id'])); }
   @Post('organization/invitations') async invite(@Body() body: unknown,@Req() req: Request) { return this.accounts.invite(await this.user(req),uuid(req.headers['x-organization-id']),body); }
   @Post('organization/agents') async agent(@Body() body: unknown,@Req() req: Request) { return this.accounts.createAgent(await this.user(req),uuid(req.headers['x-organization-id']),body); }
+  @Get('admin/audit') async audit(@Query() query: Record<string, unknown>,@Req() req: Request) { return this.accounts.auditLog(await this.user(req),query); }
+  @Get('admin/audit/actions') async auditActions(@Req() req: Request) { return this.accounts.auditActions(await this.user(req)); }
+  @Post('auth/account') async account(@Body() body: unknown,@Req() req: Request) { return this.accounts.updateAccount(await this.user(req),body); }
+  @Get('organization/directory') async directory(@Req() req: Request) { return this.accounts.directory(await this.user(req),uuid(req.headers['x-organization-id'])); }
+  @Get('organization/overview') async overview(@Req() req: Request) { return this.accounts.overview(await this.user(req),uuid(req.headers['x-organization-id'])); }
   @Get('organization/profile') async profile(@Req() req: Request) { return this.accounts.profile(await this.user(req),uuid(req.headers['x-organization-id'])); }
   @Post('organization/profile') async updateProfile(@Body() body: unknown,@Req() req: Request) { return this.accounts.updateProfile(await this.user(req),uuid(req.headers['x-organization-id']),body); }
   @Post('organization/members/:id') async updateMember(@Param('id') id: string,@Body() body: unknown,@Req() req: Request) { return this.accounts.updateMember(await this.user(req),uuid(req.headers['x-organization-id']),id,body); }

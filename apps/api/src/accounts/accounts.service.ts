@@ -285,6 +285,73 @@ export class AccountsService {
       return {ok:true};
     });
   }
+
+  /* Administrator: everything recorded on the platform, newest first, with readable actor and target. */
+  async auditLog(user: Identity, query: Record<string, unknown>) {
+    await this.admin(user);
+    const text=(name: string, max=120)=>{ const v=query[name]; return typeof v==='string' && v.trim() && v.length<=max ? v.trim() : null; };
+    const before=text('before',40), action=text('action',60), org=text('org',40), q=text('q');
+    if (before && Number.isNaN(Date.parse(before))) throw new BadRequestException('INVALID_INPUT');
+    if (org) uuid(org);
+    if (action && !/^[A-Z_]+$/.test(action)) throw new BadRequestException('INVALID_INPUT');
+    const limit=Math.min(100,Math.max(1,Number(query.limit)||50));
+    const rows=(await this.db.query(`SELECT a.id,a.created_at,a.action,a.reason,a.target_id,
+        u.display_name AS actor_name,u.login AS actor_login,o.id AS org_id,o.name AS org_name,
+        COALESCE(tu.display_name,tmu.display_name,tor.name,ts.name,tz.name||' ('||tz.code||')',sap.name||' → '||sas.name,
+          CASE WHEN inv.id IS NOT NULL THEN inv.role END) AS target_name
+      FROM access_audit a JOIN app_user u ON u.id=a.actor_id LEFT JOIN organization o ON o.id=a.organization_id
+      LEFT JOIN app_user tu ON tu.id=a.target_id LEFT JOIN membership tm ON tm.id=a.target_id LEFT JOIN app_user tmu ON tmu.id=tm.user_id
+      LEFT JOIN organization tor ON tor.id=a.target_id LEFT JOIN site ts ON ts.id=a.target_id LEFT JOIN zone tz ON tz.id=a.target_id
+      LEFT JOIN service_agreement sa ON sa.id=a.target_id LEFT JOIN organization sap ON sap.id=sa.provider_id LEFT JOIN site sas ON sas.id=sa.site_id
+      LEFT JOIN invitation inv ON inv.id=a.target_id
+      WHERE ($1::timestamptz IS NULL OR a.created_at<$1) AND ($2::text IS NULL OR a.action=$2) AND ($3::uuid IS NULL OR a.organization_id=$3)
+        AND ($4::text IS NULL OR u.display_name ILIKE '%'||$4||'%' OR u.login ILIKE '%'||$4||'%' OR o.name ILIKE '%'||$4||'%' OR a.reason ILIKE '%'||$4||'%')
+      ORDER BY a.created_at DESC,a.id LIMIT $5`,[before,action,org,q,limit+1])).rows;
+    return { entries: rows.slice(0,limit), more: rows.length>limit };
+  }
+  async auditActions(user: Identity) {
+    await this.admin(user);
+    return (await this.db.query('SELECT DISTINCT action FROM access_audit ORDER BY action')).rows.map((r: {action:string})=>r.action);
+  }
+
+  /* Own account: name, language. Password changes go through auth/password. */
+  async updateAccount(user: Identity, body: unknown) {
+    this.ensureReady(user);
+    const name=field(body,'displayName').trim();
+    const locale=(body as Record<string, unknown>).locale;
+    if (locale!==undefined && locale!=='fr' && locale!=='en') throw new BadRequestException('INVALID_INPUT');
+    await this.db.transaction(async tx=>{
+      await tx.query('UPDATE app_user SET display_name=$2,locale=COALESCE($3,locale) WHERE id=$1',[user.id,name,locale ?? null]);
+      await this.audit(tx,user.id,null,'ACCOUNT_UPDATED',user.id);
+    });
+    return {ok:true};
+  }
+
+  /* Client: the providers it can work with, and the sites each one is already linked to. */
+  async directory(user: Identity, org: string) {
+    const context=await this.context(user,org,true);
+    if (context.kind!=='CLIENT') throw new ForbiddenException('FORBIDDEN');
+    return (await this.db.query(`SELECT o.id,o.name,p.city,p.phone,p.email,p.services,p.description,p.contact_name,
+        COALESCE(array_agg(a.site_id) FILTER (WHERE a.site_id IS NOT NULL),'{}') AS site_ids
+      FROM organization o LEFT JOIN organization_profile p ON p.organization_id=o.id
+      LEFT JOIN service_agreement a ON a.provider_id=o.id AND a.client_id=$1 AND a.active AND (a.ends_at IS NULL OR a.ends_at>now())
+      WHERE o.kind='PROVIDER' AND o.active GROUP BY o.id,p.organization_id ORDER BY o.name`,[org])).rows;
+  }
+
+  /* Client overview: sites with their places, linked providers and authorized controllers. */
+  async overview(user: Identity, org: string) {
+    const context=await this.context(user,org,true);
+    if (context.kind!=='CLIENT') throw new ForbiddenException('FORBIDDEN');
+    const sites=(await this.db.query(`SELECT s.id,s.name,s.sector,s.timezone,
+        (SELECT count(*)::int FROM zone z WHERE z.site_id=s.id AND z.active) AS zones,
+        (SELECT count(*)::int FROM zone z WHERE z.site_id=s.id AND z.active AND z.kind='ROOM') AS rooms,
+        COALESCE((SELECT json_agg(json_build_object('id',p.id,'name',p.name) ORDER BY p.name) FROM service_agreement a JOIN organization p ON p.id=a.provider_id
+          WHERE a.site_id=s.id AND a.active AND (a.ends_at IS NULL OR a.ends_at>now())),'[]') AS providers,
+        COALESCE((SELECT json_agg(json_build_object('membership_id',m.id,'name',u.display_name) ORDER BY u.display_name) FROM site_grant g
+          JOIN membership m ON m.id=g.membership_id AND m.active JOIN app_user u ON u.id=m.user_id WHERE g.site_id=s.id),'[]') AS controllers
+      FROM site s WHERE s.client_id=$1 AND s.active ORDER BY s.name`,[org])).rows;
+    return { sites };
+  }
 }
 
 function optional(body: unknown, name: string, max: number): string | null {
