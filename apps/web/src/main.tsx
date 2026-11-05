@@ -4,6 +4,7 @@ import '@fontsource-variable/inter/opsz.css';
 import './style.css';
 import { api, ApiError } from './api';
 import { Sites } from './sites';
+import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
 import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CopyIcon, LinkIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon, UserPlusIcon } from './icons';
@@ -12,7 +13,7 @@ type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: stri
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Member = { id: string; display_name: string; login: string; roles: string[]; active: boolean };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'team' | 'sites';
+type Section = 'dashboard' | 'team' | 'sites';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
 
@@ -41,9 +42,9 @@ function App() {
   const [members, setMembers] = useState<Member[]>([]), [membersLoading, setMembersLoading] = useState(false), [membersError, setMembersError] = useState('');
   const orgRef = useRef(orgId); orgRef.current = orgId;
   const [form, setForm] = useState<'org' | 'agent' | 'invite' | null>(null), [secret, setSecret] = useState<Secret | null>(null), [copied, setCopied] = useState(false);
-  const [section, setSection] = useState<Section>('team');
+  const [section, setSection] = useState<Section>('dashboard');
   // Phone only: with several organisations, the list of organisations is its own screen.
-  const [mobileView, setMobileView] = useState<'orgs' | 'org'>('orgs');
+  const [mobileView, setMobileView] = useState<'orgs' | 'org'>('org');
   const detailHeading = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState(() => new URLSearchParams(location.hash.slice(1)).get('invite') ?? '');
 
@@ -116,7 +117,7 @@ function App() {
               if (token) { await api('auth/accept', { ...data, token }); setToken(''); history.replaceState(null, '', location.pathname); }
               else if (user) await api('auth/password', data);
               else await api('auth/login', data);
-              await refresh();
+              await refresh(); setSection('dashboard');
             });
           }}>
             {token && <Field name="displayName" label={t.displayName} />}
@@ -136,11 +137,11 @@ function App() {
   const kindLabel = (o: Org) => o.kind === 'CLIENT' ? t.client : t.provider;
   const roleLabel = (r: string) => r === 'FIELD_AGENT' ? t.agent : r === 'CLIENT_CONTROLLER' ? t.controller : t.manager;
   const rolesOf = (o: Org) => o.roles?.length ? o.roles.map(roleLabel).join(', ') : '';
-  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); });
+  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); setSection('dashboard'); });
   const multiOrg = orgs.length > 1;
   // Phone screen: the organisations list, or the active organisation. An admin without any organisation starts on the list, where it can create one.
-  const phoneView = multiOrg ? mobileView : orgs.length ? 'org' : user.admin && form !== 'org' ? 'orgs' : 'org';
-  const chooseOrg = (id: string) => { setOrgId(id); setMobileView('org'); };
+  const phoneView = multiOrg ? mobileView : 'org';
+  const chooseOrg = (id: string) => { setOrgId(id); setSection('dashboard'); setMobileView('org'); };
   const membersCounted = manager && !membersLoading && !membersError;
   // Organisations of both kinds are grouped under Clients / Prestataires; the group then names the kind.
   const groups = (['CLIENT', 'PROVIDER'] as const).map(kind => ({ kind, items: orgs.filter(o => o.kind === kind) })).filter(group => group.items.length);
@@ -252,16 +253,16 @@ function App() {
             <p className="page-meta">{org ? <><span className="badge">{kindLabel(org)}</span>{roleLine && <span>{roleLine}</span>}</> : user.admin ? t.emptyOrgText : t.noContextText}</p>
           </div>
         </header>
-        {canSeeSections && <nav className="tabs" aria-label={t.sections}>
-          {(['team', 'sites'] as const).map(item => <button key={item} className="tab" aria-current={section === item ? 'page' : undefined} disabled={busy}
+        {<nav className="tabs" aria-label={t.sections}>
+          {(['dashboard', ...(canSeeSections ? ['team','sites'] : [])] as Section[]).map(item => <button key={item} className="tab" aria-current={section === item ? 'page' : undefined} disabled={busy}
             onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); }}>
-            {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'team' ? t.team : t.sites}
+            {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'dashboard' ? (lang === 'fr' ? 'Tableau de bord' : 'Dashboard') : item === 'team' ? t.team : t.sites}
             {item === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
           </button>)}
         </nav>}
         {errorBox}
 
-        {section === 'sites' && org && canSeeSections
+        {section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={()=>{setSection('team');setForm('org');setSecret(null);}} /> : section === 'sites' && org && canSeeSections
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
           : <div className={['workspace', 'workspace-team', panelOpen && 'has-panel', !org && 'no-list'].filter(Boolean).join(' ')} data-detail={panelOpen ? 'open' : 'closed'}>
               {org && (manager

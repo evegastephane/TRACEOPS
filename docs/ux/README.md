@@ -15,3 +15,7 @@ La roadmap UX a été consultée ; le contenu interactif détaillé de Product D
 Le [prototype HTML](prototype.html) permet maintenant de simuler le parcours. Lire le [guide d’ouverture et d’essai](04_PROTOTYPE.md). Il s’agit d’une proposition française, en données fictives, indépendante de la base de l’application.
 
 Le [système visuel du prototype](prototype-design/DESIGN.md) décrit cette proposition ; il ne remplace pas encore celui de l’application métier.
+
+## Tableau de bord connecté
+
+Un accueil par profil est disponible dans l’application React, avec le design courant conservé. Voir le [guide de mise à jour](05_APPLICATION_REACT.md).
