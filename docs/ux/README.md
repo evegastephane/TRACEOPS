@@ -1,6 +1,6 @@
 # Refonte UX de TRACEOPS
 
-Conception, prototype et application de la direction visuelle aux écrans React existants.
+Proposition du 4 novembre 2026 : conception et maquettes fonctionnelles, sans modification de l’application.
 
 1. [Conception produit, navigation et parcours](01_CONCEPTION_PRODUIT.md)
 2. [Neuf maquettes fonctionnelles annotées](02_MAQUETTES.md)
@@ -16,6 +16,6 @@ Le [prototype HTML](prototype.html) permet maintenant de simuler le parcours. Li
 
 Le [système visuel du prototype](prototype-design/DESIGN.md) décrit cette proposition ; il ne remplace pas encore celui de l’application métier.
 
-## Interface de l’application
+## Tableau de bord connecté
 
-La direction visuelle est désormais appliquée à la connexion, aux équipes, aux sites et aux salles à la racine `/`. Voir le [guide de mise à jour de l’application](05_APPLICATION_REACT.md). Les parcours d’intervention du prototype restent à implémenter côté métier.
+Un accueil par profil est disponible dans l’application React, avec le design courant conservé. Voir le [guide de mise à jour](05_APPLICATION_REACT.md).

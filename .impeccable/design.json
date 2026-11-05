@@ -1,135 +1,666 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-05T08:25:24.464549+00:00",
+  "generatedAt": "2026-11-05T07:10:42.469875+00:00",
   "title": "Design System: TRACEOPS",
   "extensions": {
     "colorMeta": {
-      "saffron": {
-        "role": "primary",
-        "displayName": "Cobalt (nom CSS historique saffron)"
-      },
-      "indigo-900": {
+      "white": {
         "role": "neutral",
-        "displayName": "Bleu nuit"
+        "displayName": "Blanc de travail",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
       },
-      "focus-on-dark": {
-        "role": "focus",
-        "displayName": "Focus orange sur rail"
+      "gray-25": {
+        "role": "neutral",
+        "displayName": "Survol de ligne",
+        "canonical": "#fcfcfd",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-50": {
+        "role": "neutral",
+        "displayName": "Gris de panneau",
+        "canonical": "#f9fafb",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-100": {
+        "role": "neutral",
+        "displayName": "Séparateur de ligne",
+        "canonical": "#f3f4f6",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-200": {
+        "role": "neutral",
+        "displayName": "Filet",
+        "canonical": "#e5e7eb",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-300": {
+        "role": "neutral",
+        "displayName": "Filet de contrôle",
+        "canonical": "#d1d5db",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-400": {
+        "role": "neutral",
+        "displayName": "Gris d'icône discrète",
+        "canonical": "#9ca3af",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-500": {
+        "role": "neutral",
+        "displayName": "Texte tertiaire",
+        "canonical": "#6b7280",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-600": {
+        "role": "neutral",
+        "displayName": "Texte secondaire",
+        "canonical": "#4b5563",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-700": {
+        "role": "neutral",
+        "displayName": "Gris de libellé",
+        "canonical": "#374151",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-800": {
+        "role": "neutral",
+        "displayName": "Gris de champ",
+        "canonical": "#1f2937",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "gray-900": {
+        "role": "neutral",
+        "displayName": "Encre",
+        "canonical": "#111827",
+        "tonalRamp": [
+          "#111827",
+          "#1f2937",
+          "#374151",
+          "#4b5563",
+          "#6b7280",
+          "#9ca3af",
+          "#d1d5db",
+          "#f3f4f6"
+        ]
+      },
+      "blue-50": {
+        "role": "primary",
+        "displayName": "Bleu de sélection",
+        "canonical": "#eff6ff",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      },
+      "blue-100": {
+        "role": "primary",
+        "displayName": "Bleu de surlignage",
+        "canonical": "#dbeafe",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      },
+      "blue-600": {
+        "role": "primary",
+        "displayName": "Bleu d'action",
+        "canonical": "#2563eb",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      },
+      "blue-700": {
+        "role": "primary",
+        "displayName": "Bleu appuyé",
+        "canonical": "#1d4ed8",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      },
+      "blue-800": {
+        "role": "primary",
+        "displayName": "Bleu profond",
+        "canonical": "#1e40af",
+        "tonalRamp": [
+          "#1e3a8a",
+          "#1e40af",
+          "#1d4ed8",
+          "#2563eb",
+          "#60a5fa",
+          "#bfdbfe",
+          "#dbeafe",
+          "#eff6ff"
+        ]
+      },
+      "green-50": {
+        "role": "state",
+        "displayName": "Fond vert d'état",
+        "canonical": "#f0fdf4",
+        "tonalRamp": [
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "green-200": {
+        "role": "state",
+        "displayName": "Filet vert d'état",
+        "canonical": "#bbf7d0",
+        "tonalRamp": [
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "green-700": {
+        "role": "state",
+        "displayName": "Vert d'état",
+        "canonical": "#15803d",
+        "tonalRamp": [
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "green-800": {
+        "role": "state",
+        "displayName": "Vert d'alerte",
+        "canonical": "#166534",
+        "tonalRamp": [
+          "#14532d",
+          "#166534",
+          "#15803d",
+          "#16a34a",
+          "#4ade80",
+          "#86efac",
+          "#bbf7d0",
+          "#f0fdf4"
+        ]
+      },
+      "red-50": {
+        "role": "state",
+        "displayName": "Fond rouge d'état",
+        "canonical": "#fef2f2",
+        "tonalRamp": [
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#f87171",
+          "#fca5a5",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "red-200": {
+        "role": "state",
+        "displayName": "Filet rouge d'état",
+        "canonical": "#fecaca",
+        "tonalRamp": [
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#f87171",
+          "#fca5a5",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "red-700": {
+        "role": "state",
+        "displayName": "Rouge d'état",
+        "canonical": "#b91c1c",
+        "tonalRamp": [
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#f87171",
+          "#fca5a5",
+          "#fecaca",
+          "#fef2f2"
+        ]
+      },
+      "red-800": {
+        "role": "state",
+        "displayName": "Rouge d'alerte",
+        "canonical": "#991b1b",
+        "tonalRamp": [
+          "#7f1d1d",
+          "#991b1b",
+          "#b91c1c",
+          "#dc2626",
+          "#f87171",
+          "#fca5a5",
+          "#fecaca",
+          "#fef2f2"
+        ]
       }
     },
-    "shadows": [],
-    "motion": [
+    "typographyMeta": {
+      "wordmark": {
+        "displayName": "Mot-symbole",
+        "purpose": "TRACE·OPS uniquement : TRACE en 800, OPS en 400, point rond bleu."
+      },
+      "headline": {
+        "displayName": "Titre de page",
+        "purpose": "Nom de l'organisation dans l'en-tête, titre de la carte de connexion."
+      },
+      "title": {
+        "displayName": "Titre de détail",
+        "purpose": "Nom du site choisi."
+      },
+      "title-sm": {
+        "displayName": "Titre de tiroir",
+        "purpose": "Titre du tiroir ; 15 px en 600 pour les titres d'état vide."
+      },
+      "body": {
+        "displayName": "Texte courant",
+        "purpose": "Texte, cellules, champs ; 15 px sur téléphone, 16 px dans les champs."
+      },
+      "body-strong": {
+        "displayName": "Texte appuyé",
+        "purpose": "Boutons, noms de membres, de sites, de lieux et de l'utilisateur."
+      },
+      "label": {
+        "displayName": "Libellé",
+        "purpose": "En-têtes de colonnes, libellés de groupe, badges, statuts, compteurs ; casse de phrase."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Identifiants, codes de lieu et secrets à usage unique uniquement."
+      }
+    },
+    "avatarTones": [
       {
-        "name": "control-transition",
-        "value": "150ms",
-        "purpose": "Couleurs de fond, bordure et texte des boutons."
+        "bg": "#e0e7ff",
+        "fg": "#3730a3"
       },
       {
-        "name": "loading-shimmer",
-        "value": "1.4s linear infinite",
-        "purpose": "Squelette de chargement de l’équipe."
+        "bg": "#ede9fe",
+        "fg": "#5b21b6"
+      },
+      {
+        "bg": "#f3e8ff",
+        "fg": "#6b21a8"
+      },
+      {
+        "bg": "#e0f2fe",
+        "fg": "#075985"
+      },
+      {
+        "bg": "#cffafe",
+        "fg": "#155e75"
+      },
+      {
+        "bg": "#fef3c7",
+        "fg": "#92400e"
+      },
+      {
+        "bg": "#f1f5f9",
+        "fg": "#334155"
+      },
+      {
+        "bg": "#f5f5f4",
+        "fg": "#44403c"
+      }
+    ],
+    "shadows": [
+      {
+        "name": "shadow-xs",
+        "value": "0 1px 2px rgb(16 24 40 / .05)",
+        "purpose": "Contact : boutons, champs, cartes de tableau, liste de sites, organisation active."
+      },
+      {
+        "name": "shadow-sm",
+        "value": "0 1px 3px rgb(16 24 40 / .08), 0 1px 2px rgb(16 24 40 / .04)",
+        "purpose": "Carte posée : carte de connexion ; tiroir sur téléphone."
+      },
+      {
+        "name": "shadow-lg",
+        "value": "0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05)",
+        "purpose": "Tiroir sur ordinateur, seul élément superposé."
+      },
+      {
+        "name": "ring",
+        "value": "0 0 0 3px rgb(37 99 235 / .22)",
+        "purpose": "Anneau de focus des champs, avec la bordure bleue."
+      },
+      {
+        "name": "primary-highlight",
+        "value": "inset 0 1px 0 rgb(255 255 255 / .14)",
+        "purpose": "Reflet en haut du bouton principal."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(.16, 1, .3, 1)",
+        "purpose": "Courbe du seul mouvement signé."
+      },
+      {
+        "name": "panel-in",
+        "value": "opacity 0 → 1, translateX(12px) → 0, 220ms ease-out",
+        "purpose": "Ouverture du tiroir ; le focus passe ensuite à son titre."
+      },
+      {
+        "name": "state-transition",
+        "value": "150ms",
+        "purpose": "Changements de couleur, de bordure et d'ombre des contrôles et onglets."
+      },
+      {
+        "name": "loading",
+        "value": "shimmer 1.4s linear infinite ; spin .8s linear infinite",
+        "purpose": "Indicateurs de chargement fonctionnels (skeleton, spinner), non décoratifs."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce → animations et transitions supprimées",
+        "purpose": "Préférence système toujours honorée."
       }
     ],
     "breakpoints": [
       {
+        "name": "wide",
+        "value": "1280px",
+        "purpose": "À partir de 1280 px, liste et tiroir côte à côte ; en dessous, ils alternent."
+      },
+      {
+        "name": "tablet",
+        "value": "1024px",
+        "purpose": "En dessous : barre latérale de 232 px, marges de 24 × 28 px."
+      },
+      {
         "name": "phone",
-        "value": "760px"
-      },
-      {
-        "name": "dashboard-stack",
-        "value": "1050px"
-      },
-      {
-        "name": "auth-gap",
-        "value": "1100px"
-      },
-      {
-        "name": "master-detail",
-        "value": "1240px"
-      },
-      {
-        "name": "wide-detail",
-        "value": "1440px"
+        "value": "768px",
+        "purpose": "En dessous (max-width 767px) : écrans successifs, barre supérieure, contrôles de 44 px, tableaux en cartes."
       }
-    ],
-    "focus": {
-      "default": "2px solid var(--focus), offset 2px",
-      "rail": "2px solid var(--focus-on-dark), offset 2px",
-      "fields": "2px solid var(--focus), offset 1px"
-    },
-    "reducedMotion": "Animations et transitions désactivées avec prefers-reduced-motion: reduce."
+    ]
   },
   "components": [
     {
       "name": "Bouton principal",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Action principale cobalt.",
-      "html": "<button class=\"ds-primary\">Enregistrer</button>",
-      "css": ".ds-primary{font-family:ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:15px;font-weight:600;line-height:1.4;border-radius:6px;padding:9px 16px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s;background:var(--saffron, #2259d5);color:#fff;border:1px solid var(--saffron, #2259d5)}.ds-primary:hover{background:var(--saffron-hover, #1747af);border-color:var(--saffron-hover, #1747af)}.ds-primary:focus-visible{outline:2px solid var(--focus, #2f4fc4);outline-offset:2px;}.ds-primary:disabled{opacity:.55;cursor:wait}"
+      "description": "L'unique action bleue de la vue.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Créer un site</button>",
+      "css": ".ds-btn { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; color:#111827; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; transition:background-color .15s, border-color .15s, color .15s; } .ds-icon { width:16px; height:16px; } .ds-btn-primary { background:#2563eb; border-color:#1d4ed8; color:#fff; box-shadow:0 1px 2px rgb(16 24 40 / .05), inset 0 1px 0 rgb(255 255 255 / .14); } .ds-btn-primary:hover { background:#1d4ed8; } .ds-btn:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }"
     },
     {
       "name": "Bouton secondaire",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Action secondaire bordée.",
-      "html": "<button class=\"ds-secondary\">Annuler</button>",
-      "css": ".ds-secondary{font-family:ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:15px;font-weight:600;line-height:1.4;border-radius:6px;padding:9px 16px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s;background:var(--surface, #ffffff);color:var(--ink, #172634);border:1px solid #c5c9dc}.ds-secondary:hover{background:var(--hover, #e8efff)}.ds-secondary:focus-visible{outline:2px solid var(--focus, #2f4fc4);outline-offset:2px;}"
+      "description": "Bouton par défaut : blanc, filet de contrôle, ombre de contact.",
+      "html": "<button class=\"ds-btn2\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1\"/><path d=\"M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1\"/></svg>Créer une invitation</button>",
+      "css": ".ds-btn2 { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; color:#111827; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; transition:background-color .15s, border-color .15s, color .15s; } .ds-btn2 .ds-icon { width:16px; height:16px; color:#6b7280; } .ds-btn2:hover { background:#f9fafb; } .ds-btn2:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }"
     },
     {
       "name": "Champ",
       "kind": "input",
       "refersTo": "input",
-      "description": "Libellé visible et contour de focus.",
-      "html": "<label class=\"ds-field\">Nom<input placeholder=\"Nom du site\"></label>",
-      "css": ".ds-field{display:grid;gap:6px;font-family:ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:14px;font-weight:600;color:var(--ink, #172634)}.ds-field input{padding:10px 12px;font:400 16px/1.5 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;color:var(--ink, #172634);background:var(--surface, #ffffff);border:1px solid var(--line-strong, #829aba);border-radius:6px}.ds-field input:focus-visible{outline:2px solid var(--focus, #2f4fc4);outline-offset:2px;outline-offset:1px;border-color:var(--focus, #2f4fc4)}"
+      "description": "Libellé au-dessus ; bordure bleue et anneau au focus.",
+      "html": "<label class=\"ds-field\">Nom du lieu<input class=\"ds-input\" placeholder=\"Bloc opératoire\"></label>",
+      "css": ".ds-field { display:grid; gap:6px; font:500 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#1f2937; } .ds-input { min-height:38px; padding:8px 12px; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; background:#fff; border:1px solid #d1d5db; border-radius:8px; box-shadow:0 1px 2px rgb(16 24 40 / .05); caret-color:#2563eb; transition:border-color .15s, box-shadow .15s; } .ds-input::placeholder { color:#6b7280; } .ds-input:hover { border-color:#9ca3af; } .ds-input:focus { outline:none; border-color:#2563eb; box-shadow:0 1px 2px rgb(16 24 40 / .05), 0 0 0 3px rgb(37 99 235 / .22); }"
     },
     {
-      "name": "Navigation active",
+      "name": "Navigation des organisations",
       "kind": "nav",
-      "refersTo": "navigation-active",
-      "description": "Rubrique sélectionnée dans le rail.",
-      "html": "<nav class=\"ds-rail\"><button aria-current=\"page\">Tableau de bord</button><button>Sites et salles</button></nav>",
-      "css": ".ds-rail{display:grid;gap:8px;padding:16px;background:var(--indigo-900, #152d44)}.ds-rail button{font-family:ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;font-size:15px;font-weight:600;line-height:1.4;border-radius:6px;padding:9px 16px;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s;text-align:left;padding:14px 12px;border:0;border-radius:8px;color:var(--rail-muted, #bdcfdf);background:transparent}.ds-rail button:hover{background:var(--indigo-800, #213f5b);color:white}.ds-rail button[aria-current]{background:var(--org-tint, #e8efff);color:#173e92}.ds-rail button:focus-visible{outline:2px solid var(--focus-on-dark, #d98920);outline-offset:2px}"
+      "refersTo": "nav-item-active",
+      "description": "Barre latérale groupée Clients / Prestataires ; l'active sur blanc à ombre de contact, noms sur une ligne.",
+      "html": "<nav class=\"ds-side\"><p class=\"ds-navlabel\">Clients</p><button class=\"ds-org ds-org-on\" title=\"Client de démonstration\"><span class=\"ds-av\" style=\"background:#e0f2fe;color:#075985\">CD</span><span class=\"ds-org-name\">Client de démonstration</span></button><button class=\"ds-org\" title=\"Clinique du Plateau\"><span class=\"ds-av\" style=\"background:#fef3c7;color:#92400e\">CP</span><span class=\"ds-org-name\">Clinique du Plateau</span></button></nav>",
+      "css": ".ds-side { display:grid; gap:2px; width:232px; padding:12px; background:#f9fafb; font-family:\"Inter Variable\", system-ui, sans-serif; } .ds-navlabel { margin:0 0 4px; padding:0 8px; font-size:12px; font-weight:550; color:#6b7280; } .ds-org { display:flex; align-items:center; gap:10px; min-height:36px; padding:6px 8px; border:1px solid transparent; border-radius:8px; background:transparent; color:#374151; font:500 14px/1.35 \"Inter Variable\", system-ui, sans-serif; text-align:left; cursor:pointer; } .ds-org:hover { background:#f3f4f6; color:#111827; } .ds-org-on, .ds-org-on:hover { background:#fff; border-color:#e5e7eb; box-shadow:0 1px 2px rgb(16 24 40 / .05); color:#111827; } .ds-org-name { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; } .ds-av { display:inline-grid; place-items:center; flex:none; width:24px; height:24px; border-radius:6px; font-size:10px; font-weight:600; } .ds-org:focus-visible { outline:2px solid #2563eb; outline-offset:0; }"
     },
     {
-      "name": "Statut actif",
+      "name": "Onglets soulignés",
+      "kind": "nav",
+      "refersTo": "tab-active",
+      "description": "Trait bleu de 2 px sous l'onglet actif ; l'emplacement du compteur ne disparaît jamais.",
+      "html": "<nav class=\"ds-tabs\"><button class=\"ds-tab ds-tab-on\">Équipe<span class=\"ds-count\">2</span></button><button class=\"ds-tab\">Sites et salles</button></nav>",
+      "css": ".ds-tabs { display:flex; gap:24px; border-bottom:1px solid #e5e7eb; } .ds-tab { position:relative; display:inline-flex; align-items:center; gap:8px; min-height:42px; padding:0 2px; border:0; background:transparent; color:#4b5563; font:500 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; } .ds-tab::after { content:\"\"; position:absolute; left:0; right:0; bottom:-1px; height:2px; border-radius:2px 2px 0 0; background:transparent; transition:background-color .15s; } .ds-tab:hover { color:#111827; } .ds-tab:hover::after { background:#d1d5db; } .ds-tab-on { color:#111827; } .ds-tab-on::after, .ds-tab-on:hover::after { background:#2563eb; } .ds-count { min-width:20px; padding:0 6px; border-radius:999px; background:#f3f4f6; color:#374151; font-size:12px; font-weight:550; line-height:20px; text-align:center; font-variant-numeric:tabular-nums; } .ds-tab-on .ds-count { background:#eff6ff; color:#1d4ed8; } .ds-tab:focus-visible { outline:2px solid #2563eb; outline-offset:-2px; border-radius:6px; }"
+    },
+    {
+      "name": "Statut d'accès",
       "kind": "chip",
       "refersTo": "status-active",
-      "description": "Texte et point accompagnent la couleur.",
-      "html": "<span class=\"ds-status\">Actif</span>",
-      "css": ".ds-status{display:inline-flex;align-items:center;gap:7px;padding:3px 10px 3px 8px;border-radius:999px;font:600 13px/1.5 ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;color:var(--emerald, #13774b);background:var(--emerald-tint, #e1f2e9)}.ds-status:before{content:\"\";width:7px;height:7px;border-radius:50%;background:currentColor}"
+      "description": "Toujours pastille plus mot ; pastille creuse pour Suspendu.",
+      "html": "<span class=\"ds-status ds-on\">Actif</span> <span class=\"ds-status ds-off\">Suspendu</span>",
+      "css": ".ds-status { display:inline-flex; align-items:center; gap:6px; padding:1px 8px; border:1px solid; border-radius:999px; font:550 12px/18px \"Inter Variable\", system-ui, sans-serif; } .ds-status::before { content:\"\"; width:6px; height:6px; border-radius:50%; background:currentColor; } .ds-on { background:#f0fdf4; border-color:#bbf7d0; color:#15803d; } .ds-off { background:#fef2f2; border-color:#fecaca; color:#b91c1c; } .ds-off::before { background:transparent; box-shadow:inset 0 0 0 1.5px currentColor; }"
     },
     {
-      "name": "Panneau",
+      "name": "Tableau des membres",
       "kind": "card",
-      "refersTo": "panel",
-      "description": "Surface plate pour données ou formulaire.",
-      "html": "<section class=\"ds-panel\"><h2>Votre périmètre</h2><p>Organisation sélectionnée</p></section>",
-      "css": ".ds-panel{font-family:ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;padding:22px 24px 24px;background:var(--surface, #ffffff);color:var(--ink, #172634);border:1px solid var(--line, #d6e0ef);border-radius:12px}.ds-panel h2{font-size:20px;line-height:1.25;margin:0 0 8px}.ds-panel p{font-size:15px;line-height:1.5;margin:0;color:var(--ink-2, #526781)}"
+      "refersTo": "table-card",
+      "description": "Conteneur de 12 px, en-tête gris, identifiants en mono, statut pastille plus mot.",
+      "html": "<div class=\"ds-tcard\"><table class=\"ds-table\"><thead><tr><th>Nom complet</th><th>Identifiant</th><th>Accès</th></tr></thead><tbody><tr><td><b>Contrôleur démo</b></td><td><code>demo.controleur</code></td><td><span class=\"ds-st\">Actif</span></td></tr></tbody></table></div>",
+      "css": ".ds-tcard { background:#fff; border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 1px 2px rgb(16 24 40 / .05); overflow:hidden; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; } .ds-table { width:100%; border-collapse:collapse; text-align:left; } .ds-table th { padding:10px 16px; background:#f9fafb; border-bottom:1px solid #e5e7eb; color:#6b7280; font-size:12px; font-weight:550; } .ds-table td { padding:12px 16px; } .ds-table b { font-weight:550; } .ds-table tbody tr:hover td { background:#fcfcfd; } .ds-table code { font:13px ui-monospace, SFMono-Regular, Consolas, monospace; color:#4b5563; } .ds-st { display:inline-flex; align-items:center; gap:6px; padding:1px 8px; border:1px solid #bbf7d0; border-radius:999px; background:#f0fdf4; color:#15803d; font-size:12px; font-weight:550; line-height:18px; } .ds-st::before { content:\"\"; width:6px; height:6px; border-radius:50%; background:currentColor; }"
+    },
+    {
+      "name": "Tiroir",
+      "kind": "custom",
+      "refersTo": "drawer",
+      "description": "Panneau de 400 px à droite ; glisse de 12 px en 220 ms ; pied gris, principal en dernier.",
+      "html": "<div class=\"ds-drawer\"><div class=\"ds-dhead\"><h2>Créer une invitation</h2></div><div class=\"ds-dbody\"><p>Un lien à usage unique, valable 48 heures.</p></div><div class=\"ds-dfoot\"><button class=\"ds-b\">Annuler</button><button class=\"ds-b ds-bp\">Créer</button></div></div>",
+      "css": ".ds-drawer { width:400px; display:flex; flex-direction:column; background:#fff; border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05); overflow:hidden; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; animation:ds-in .22s cubic-bezier(.16, 1, .3, 1); } @keyframes ds-in { from { opacity:0; transform:translateX(12px); } } .ds-dhead { min-height:60px; display:flex; align-items:center; padding:14px 14px 0 20px; } .ds-dhead h2 { margin:0; font-size:16px; font-weight:600; letter-spacing:-.011em; } .ds-dbody { padding:12px 20px 22px; } .ds-dbody p { margin:0; color:#4b5563; } .ds-dfoot { display:flex; justify-content:flex-end; gap:8px; padding:14px 20px; background:#f9fafb; border-top:1px solid #e5e7eb; } .ds-b { min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; } .ds-b:hover { background:#f9fafb; } .ds-bp { background:#2563eb; border-color:#1d4ed8; color:#fff; } .ds-bp:hover { background:#1d4ed8; } .ds-b:focus-visible { outline:2px solid #2563eb; outline-offset:2px; } @media (prefers-reduced-motion: reduce) { .ds-drawer { animation:none; } }"
     }
   ],
   "narrative": {
-    "northStar": "La console bleu nuit et cobalt",
-    "overview": "La direction adoptée de `docs/ux/prototype.html` s’applique à l’application React servie à `/` : en-tête blanc, navigation bleu nuit, contenu clair et actions cobalt. La présentation reste sobre, lisible et structurée par l’organisation sélectionnée. Cette version remplace l’ancienne direction à motifs textiles ; les fichiers de motifs encore présents ne définissent plus le système.",
+    "northStar": "La console qu'on sait déjà lire",
+    "overview": "TRACEOPS est la console d'administration attendue, exécutée au niveau de finition de Linear, Stripe Dashboard, Vercel et Google Workspace Admin : on sait où tout se trouve avant de remarquer le style. Une barre latérale gris très clair bordée d'un filet, un espace de travail blanc, une encre presque noire, un seul bleu. La qualité tient aux détails d'exécution (graisses intermédiaires d'Inter, ombres à peine visibles, alignements tenus, états toujours nommés), pas au décor.\n\nLa densité est celle d'un outil de travail : texte de 14 px sur ordinateur, lignes de tableau de 56 px, contrôles de 36 px. Sur téléphone, l'interface passe en écrans successifs (organisations, organisation, tiroir) avec des cibles de 44 px et un texte de 15 px, pour un usage debout, en circulation, en forte lumière. Thème clair uniquement, contrastes forts.\n\nLe système refuse le décor (tissus, liserés, couleur d'organisation qui envahit l'écran) autant que la console grise négligée. De l'identité précédente, seul le mot-symbole TRACE·OPS subsiste : TRACE en graisse forte, OPS en graisse régulière, suivi d'un point rond bleu.",
     "keyCharacteristics": [
-      "En-tête blanc et navigation bleu nuit ; organisation active clairement nommée.",
-      "Surfaces blanches, filets fins et boutons cobalt ; aucun motif textile.",
-      "Tableau de bord initial commun aux profils, avec contenu et actions selon leurs droits.",
-      "Sur téléphone, navigation compacte et vues de liste/détail successives."
+      "Barre latérale #f9fafb de 256 px, contenu blanc, filets #e5e7eb.",
+      "Un seul accent bleu pour l'action principale, la sélection et le focus.",
+      "Vert et rouge réservés aux états, toujours pastille plus mot.",
+      "Inter Variable à tailles optiques ; mono réservé aux identifiants, codes et secrets.",
+      "Trois rayons hiérarchisés (6, 8, 12 px) et des ombres douces décalées.",
+      "Formulaires et secrets dans un tiroir de 400 px à droite, sans perdre la liste.",
+      "Un seul mouvement signé : le tiroir glisse de 12 px."
     ],
-    "rules": [],
+    "rules": [
+      {
+        "name": "The Accent unique Rule",
+        "body": "Le bleu ne désigne que l'action principale, la sélection et le focus. Une vue ne montre qu'un bouton bleu : quand le tiroir s'ouvre, le bouton principal de la barre d'outils redevient secondaire et cède le bleu au bouton du tiroir.",
+        "section": "colors"
+      },
+      {
+        "name": "The État dit Rule",
+        "body": "Vert et rouge ne servent qu'aux états, et un état est toujours une pastille plus un mot, jamais une couleur seule. « Actif » porte une pastille pleine ; « Suspendu » une pastille creuse (anneau de 1,5 px), pour que l'état se lise aussi sans couleur.",
+        "section": "colors"
+      },
+      {
+        "name": "The Teinte muette Rule",
+        "body": "Les avatars à initiales prennent une teinte douce déterministe tirée de l'identifiant, parmi huit (indigo, violet, pourpre, ciel, cyan, ambre, ardoise, pierre). Le jeu exclut le vert, le rouge et le bleu d'accent : une teinte ne porte jamais un état ni un droit, et le nom est toujours écrit à côté.",
+        "section": "colors"
+      },
+      {
+        "name": "The Mono réservé Rule",
+        "body": "La police mono est réservée aux identifiants, aux codes de lieu et aux secrets à usage unique ; tout ce qui se lit plutôt qu'il ne se recopie reste en Inter.",
+        "section": "typography"
+      },
+      {
+        "name": "The Graisse intermédiaire Rule",
+        "body": "La hiérarchie se fait par 400, 500, 550, 600 et 650, pas par 700. Le gras plein (800) n'appartient qu'au mot-symbole.",
+        "section": "typography"
+      },
+      {
+        "name": "The Ligne tenue Rule",
+        "body": "Tant que le tiroir est ouvert, la barre d'outils garde une seule ligne : la phrase d'aide se tronque, les actions ne passent jamais à la ligne, et la liste ne saute pas.",
+        "section": "layout"
+      },
+      {
+        "name": "The Pied visible Rule",
+        "body": "Sur ordinateur, la hauteur du tiroir est plafonnée (`max(360px, 100dvh - 248px)`) : l'en-tête et le pied restent à l'écran, seul le corps défile.",
+        "section": "layout"
+      },
+      {
+        "name": "The Compteur réservé Rule",
+        "body": "L'emplacement du compteur d'onglet ne disparaît jamais : pendant le chargement il affiche un tiret gris, puis le nombre, sans que les onglets bougent.",
+        "section": "layout"
+      },
+      {
+        "name": "The Ombre douce Rule",
+        "body": "Les ombres sont floues, décalées vers le bas et à moins de 15 % d'opacité ; aucune ombre dure ni décalée en aplat. Plus un élément est superposé, plus son ombre s'élargit, jamais plus sombre.",
+        "section": "elevation"
+      }
+    ],
     "dos": [
-      "Do conserver les libellés de champs visibles et un focus clavier perceptible.",
-      "Do associer les couleurs d’état à un texte explicite.",
-      "Do afficher chargement, erreur, absence de données et indisponibilité comme des états distincts.",
-      "Do limiter les actions rapides aux fonctions autorisées pour le compte."
+      "**Do** garder un seul bouton bleu par vue, et rendre secondaire l'action de la barre d'outils quand le tiroir apporte la sienne.",
+      "**Do** écrire chaque état avec une pastille et un mot ; pastille pleine pour « Actif », creuse pour « Suspendu ».",
+      "**Do** utiliser les rayons selon la taille : 6 px petits éléments, 8 px contrôles, 12 px conteneurs, pilule pour badges, statuts et compteurs.",
+      "**Do** ouvrir formulaires et secrets dans le tiroir de 400 px à droite, plafonné en hauteur, avec seul le corps qui défile, et y porter le focus.",
+      "**Do** monter tous les contrôles à 44 px sous 768 px et transformer les tableaux en cartes.",
+      "**Do** composer les icônes au trait de 1,75 sur grille de 24, à 16 px, en `currentColor`."
     ],
     "donts": [
-      "Don’t réintroduire les motifs textiles, la police Archivo ou les actions safran de l’ancienne direction.",
-      "Don’t présenter les indicateurs simulés du prototype comme des données connectées.",
-      "Don’t convertir une donnée indisponible ou en erreur en un zéro.",
-      "Don’t ajouter des ombres aux panneaux courants."
+      "**Don't** utiliser le bleu d'accent pour décorer, catégoriser ou teinter une organisation.",
+      "**Don't** utiliser vert ou rouge hors d'un état, ni signaler un état par la seule couleur.",
+      "**Don't** donner à un avatar une teinte verte, rouge ou du bleu d'accent.",
+      "**Don't** employer la police mono hors des identifiants, codes de lieu et secrets.",
+      "**Don't** ajouter tissus, liserés, motifs ou couleur d'organisation en aplat : seul le mot-symbole TRACE·OPS reste de l'identité précédente.",
+      "**Don't** poser d'ombre dure ou décalée en aplat ; les ombres restent floues et sous 15 % d'opacité.",
+      "**Don't** laisser la barre d'outils passer sur deux lignes ni un compteur d'onglet disparaître pendant un chargement."
     ]
   }
 }

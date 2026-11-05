@@ -1,6 +1,6 @@
-# Interface appliquée à l’application React
+# Tableau de bord de l’application React
 
-La direction du prototype est appliquée aux écrans réels servis à `/` : en-tête blanc, navigation bleu nuit, boutons cobalt et fond clair. La connexion, les invitations, les équipes, les sites et les salles conservent leurs appels API et leurs règles d’accès. Le sélecteur de rôle fictif du prototype ne fait pas partie de l’application.
+Le tableau de bord étend le design courant de main (Inter, navigation claire, actions bleues) sans remplacer les écrans de connexion, équipes, sites et salles. Les appels API et droits existants sont conservés.
 
 ## Ouvrir la nouvelle version
 
@@ -13,7 +13,7 @@ git pull --ff-only
 docker compose up -d --build --wait web
 ```
 
-Après fusion, utiliser `git switch main`, puis `git pull --ff-only` et la même commande Docker. Ouvrir **http://localhost:3000**. La page de connexion doit présenter un en-tête blanc et un bouton bleu. Après connexion, la navigation bleu nuit contient Équipe et Sites et salles selon les accès du compte.
+Après fusion, utiliser `git switch main`, puis `git pull --ff-only` et la même commande Docker. Ouvrir **http://localhost:3000**. Après connexion, l’onglet Tableau de bord est sélectionné. Équipe et Sites et salles restent accessibles selon les droits du compte.
 
 Les interventions, affectations, preuves et validations de `prototype.html` restent des simulations : ce lot applique la présentation aux fonctions déjà disponibles. Leurs opérations persistantes restent à développer.
 

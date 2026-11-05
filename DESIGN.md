@@ -1,212 +1,368 @@
 ---
 name: TRACEOPS
-description: Console opérationnelle bleu nuit, blanche et cobalt, adaptée aux accès de chaque compte.
+description: Console d'administration des accès, des équipes et des sites, au standard de la catégorie, en français et en anglais.
 colors:
-  indigo-900: "#152d44"
-  indigo-800: "#213f5b"
-  indigo-700: "#52708b"
-  rail-text: "#f5f8ff"
-  rail-muted: "#bdcfdf"
-  ground: "#f3f5f8"
-  surface: "#ffffff"
-  surface-2: "#f7f9fc"
-  hover: "#e8efff"
-  ink: "#172634"
-  ink-2: "#526781"
-  line: "#d6e0ef"
-  line-strong: "#829aba"
-  saffron: "#2259d5"
-  saffron-hover: "#1747af"
-  saffron-tint: "#eef4ff"
-  saffron-line: "#b6c9ee"
-  vermilion: "#c3361c"
-  vermilion-ink: "#8f2410"
-  vermilion-tint: "#fde8e3"
-  vermilion-line: "#f1b6a7"
-  emerald: "#13774b"
-  emerald-ink: "#0f5f3c"
-  emerald-tint: "#e1f2e9"
-  focus: "#2f4fc4"
-  focus-on-dark: "#d98920"
-  org-ink: "#526781"
-  org-tint: "#e8efff"
-  control-line: "#c5c9dc"
-  navigation-active-ink: "#173e92"
-  action-panel: "#eaf0f8"
+  white: "#ffffff"
+  gray-25: "#fcfcfd"
+  gray-50: "#f9fafb"
+  gray-100: "#f3f4f6"
+  gray-200: "#e5e7eb"
+  gray-300: "#d1d5db"
+  gray-400: "#9ca3af"
+  gray-500: "#6b7280"
+  gray-600: "#4b5563"
+  gray-700: "#374151"
+  gray-800: "#1f2937"
+  gray-900: "#111827"
+  blue-50: "#eff6ff"
+  blue-100: "#dbeafe"
+  blue-600: "#2563eb"
+  blue-700: "#1d4ed8"
+  blue-800: "#1e40af"
+  green-50: "#f0fdf4"
+  green-200: "#bbf7d0"
+  green-700: "#15803d"
+  green-800: "#166534"
+  red-50: "#fef2f2"
+  red-200: "#fecaca"
+  red-700: "#b91c1c"
+  red-800: "#991b1b"
 typography:
-  display:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "2.5rem"
-    fontWeight: 700
-    lineHeight: 1.1
+  wordmark:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 800
+    lineHeight: 1
+    letterSpacing: "0.06em"
   headline:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "2.25rem"
-    fontWeight: 700
-    lineHeight: 1.2
-  title-panel:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 700
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 650
     lineHeight: 1.25
-  body:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
+    letterSpacing: "-0.022em"
+  title:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 650
+    lineHeight: 1.3
+    letterSpacing: "-0.017em"
+  title-sm:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
     fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.5
-  button:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: ".9375rem"
     fontWeight: 600
     lineHeight: 1.4
+    letterSpacing: "-0.011em"
+  body:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.5
+  body-strong:
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 550
+    lineHeight: 1.35
   label:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: ".875rem"
-    fontWeight: 600
+    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 550
     lineHeight: 1.5
-  caption:
-    fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif"
-    fontSize: ".8125rem"
-    fontWeight: 600
+  mono:
+    fontFamily: "ui-monospace, SFMono-Regular, Cascadia Mono, Menlo, Consolas, monospace"
+    fontSize: "0.8125rem"
+    fontWeight: 400
     lineHeight: 1.5
+    fontFeature: "tnum"
 rounded:
-  control: "6px"
-  navigation: "8px"
-  panel: "12px"
+  sm: "6px"
+  md: "8px"
+  lg: "12px"
   full: "999px"
 spacing:
-  space-6: "6px"
-  space-8: "8px"
-  space-10: "10px"
-  space-12: "12px"
-  space-16: "16px"
-  space-18: "18px"
-  space-20: "20px"
-  space-24: "24px"
-  space-28: "28px"
-  space-32: "32px"
-  space-40: "40px"
+  xs: "4px"
+  sm: "8px"
+  md: "12px"
+  lg: "16px"
+  xl: "24px"
+  2xl: "40px"
 components:
   button-primary:
-    backgroundColor: "{colors.saffron}"
-    textColor: "{colors.surface}"
-    typography: "{typography.button}"
-    rounded: "{rounded.control}"
-    padding: "9px 16px"
+    backgroundColor: "{colors.blue-600}"
+    textColor: "{colors.white}"
+    typography: "{typography.body-strong}"
+    rounded: "{rounded.md}"
+    padding: "0 14px"
+    height: "36px"
   button-primary-hover:
-    backgroundColor: "{colors.saffron-hover}"
+    backgroundColor: "{colors.blue-700}"
   button-secondary:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    typography: "{typography.button}"
-    rounded: "{rounded.control}"
-    padding: "9px 16px"
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.gray-900}"
+    typography: "{typography.body-strong}"
+    rounded: "{rounded.md}"
+    padding: "0 14px"
+    height: "36px"
+  button-secondary-hover:
+    backgroundColor: "{colors.gray-50}"
+  button-small:
+    rounded: "{rounded.md}"
+    padding: "0 12px"
+    height: "32px"
+  icon-button:
+    backgroundColor: "transparent"
+    textColor: "{colors.gray-500}"
+    rounded: "{rounded.md}"
+    size: "32px"
+  icon-button-hover:
+    backgroundColor: "{colors.gray-100}"
+    textColor: "{colors.gray-900}"
   input:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.gray-900}"
     typography: "{typography.body}"
-    rounded: "{rounded.control}"
-    padding: "10px 12px"
-  navigation-active:
-    backgroundColor: "{colors.org-tint}"
-    textColor: "{colors.navigation-active-ink}"
-    rounded: "{rounded.navigation}"
-    padding: "14px 12px"
-  panel:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.panel}"
-    padding: "22px 24px 24px"
-  action-panel:
-    backgroundColor: "{colors.action-panel}"
-    rounded: "{rounded.panel}"
+    rounded: "{rounded.md}"
+    padding: "8px 12px"
+    height: "38px"
+  nav-item:
+    backgroundColor: "transparent"
+    textColor: "{colors.gray-700}"
+    rounded: "{rounded.md}"
+    padding: "6px 8px"
+    height: "36px"
+  nav-item-active:
+    backgroundColor: "{colors.white}"
+    textColor: "{colors.gray-900}"
+  tab:
+    textColor: "{colors.gray-600}"
+    padding: "0 2px"
+    height: "42px"
+  tab-active:
+    textColor: "{colors.gray-900}"
+  count:
+    backgroundColor: "{colors.gray-100}"
+    textColor: "{colors.gray-700}"
+    typography: "{typography.label}"
+    rounded: "{rounded.full}"
+    padding: "0 6px"
+    height: "20px"
+  count-active:
+    backgroundColor: "{colors.blue-50}"
+    textColor: "{colors.blue-700}"
+  badge:
+    backgroundColor: "{colors.gray-50}"
+    textColor: "{colors.gray-700}"
+    typography: "{typography.label}"
+    rounded: "{rounded.full}"
+    padding: "1px 8px"
   status-active:
-    backgroundColor: "{colors.emerald-tint}"
-    textColor: "{colors.emerald}"
-    typography: "{typography.caption}"
+    backgroundColor: "{colors.green-50}"
+    textColor: "{colors.green-700}"
+    typography: "{typography.label}"
     rounded: "{rounded.full}"
-    padding: "3px 10px 3px 8px"
+    padding: "1px 8px"
   status-suspended:
-    backgroundColor: "{colors.vermilion-tint}"
-    textColor: "{colors.vermilion}"
-    typography: "{typography.caption}"
+    backgroundColor: "{colors.red-50}"
+    textColor: "{colors.red-700}"
+    typography: "{typography.label}"
     rounded: "{rounded.full}"
-    padding: "3px 10px 3px 8px"
+    padding: "1px 8px"
+  table-card:
+    backgroundColor: "{colors.white}"
+    rounded: "{rounded.lg}"
+  drawer:
+    backgroundColor: "{colors.white}"
+    rounded: "{rounded.lg}"
+    width: "400px"
+  site-item-active:
+    backgroundColor: "{colors.blue-50}"
+    textColor: "{colors.blue-800}"
+    rounded: "{rounded.md}"
+    height: "56px"
+  location-code:
+    backgroundColor: "{colors.gray-50}"
+    textColor: "{colors.gray-800}"
+    typography: "{typography.mono}"
+    rounded: "{rounded.sm}"
+    padding: "1px 6px"
 ---
+
 # Design System: TRACEOPS
 
 ## Overview
 
-**Creative North Star: "La console bleu nuit et cobalt"**
+**Creative North Star: "La console qu'on sait déjà lire"**
 
-La direction adoptée de `docs/ux/prototype.html` s’applique à l’application React servie à `/` : en-tête blanc, navigation bleu nuit, contenu clair et actions cobalt. La présentation reste sobre, lisible et structurée par l’organisation sélectionnée. Cette version remplace l’ancienne direction à motifs textiles ; les fichiers de motifs encore présents ne définissent plus le système.
+TRACEOPS est la console d'administration attendue, exécutée au niveau de finition de Linear, Stripe Dashboard, Vercel et Google Workspace Admin : on sait où tout se trouve avant de remarquer le style. Une barre latérale gris très clair bordée d'un filet, un espace de travail blanc, une encre presque noire, un seul bleu. La qualité tient aux détails d'exécution (graisses intermédiaires d'Inter, ombres à peine visibles, alignements tenus, états toujours nommés), pas au décor.
+
+La densité est celle d'un outil de travail : texte de 14 px sur ordinateur, lignes de tableau de 56 px, contrôles de 36 px. Sur téléphone, l'interface passe en écrans successifs (organisations, organisation, tiroir) avec des cibles de 44 px et un texte de 15 px, pour un usage debout, en circulation, en forte lumière. Thème clair uniquement, contrastes forts.
+
+Le système refuse le décor (tissus, liserés, couleur d'organisation qui envahit l'écran) autant que la console grise négligée. De l'identité précédente, seul le mot-symbole TRACE·OPS subsiste : TRACE en graisse forte, OPS en graisse régulière, suivi d'un point rond bleu.
 
 **Key Characteristics:**
-
-- En-tête blanc et navigation bleu nuit ; organisation active clairement nommée.
-- Surfaces blanches, filets fins et boutons cobalt ; aucun motif textile.
-- Tableau de bord initial commun aux profils, avec contenu et actions selon leurs droits.
-- Sur téléphone, navigation compacte et vues de liste/détail successives.
+- Barre latérale #f9fafb de 256 px, contenu blanc, filets #e5e7eb.
+- Un seul accent bleu pour l'action principale, la sélection et le focus.
+- Vert et rouge réservés aux états, toujours pastille plus mot.
+- Inter Variable à tailles optiques ; mono réservé aux identifiants, codes et secrets.
+- Trois rayons hiérarchisés (6, 8, 12 px) et des ombres douces décalées.
+- Formulaires et secrets dans un tiroir de 400 px à droite, sans perdre la liste.
+- Un seul mouvement signé : le tiroir glisse de 12 px.
 
 ## Colors
 
-Les couleurs du frontmatter suivent les valeurs effectives de `apps/web/src/style.css`, y compris ses règles finales de remplacement.
+Une rampe de gris neutres porte toute l'interface ; un bleu unique signale ce qu'on peut faire et où l'on se trouve ; vert et rouge ne parlent que d'état.
 
-- **Primary — Cobalt :** action principale, survol plus sombre et teinte pâle des résultats à copier. Les noms CSS historiques `saffron`, `saffron-hover`, `saffron-tint` et `saffron-line` désignent maintenant ce bleu ; ils ne prescrivent aucune couleur safran.
-- **Neutral — Bleu nuit :** `indigo-900` porte le rail et le panneau d’introduction de connexion ; `indigo-800` sert au survol sur fond sombre. `rail-text` et `rail-muted` assurent les deux niveaux de lecture.
-- **Neutral — Blanc et gris bleuté :** `ground` porte le contenu, `surface` les cartes et champs, `surface-2` les en-têtes de tableau. `ink` et `ink-2` hiérarchisent les textes ; `line` délimite les surfaces et `line-strong` les champs. `action-panel` distingue les actions et repères.
-- **États :** émeraude pour actif/succès ; vermillon pour suspendu/erreur. Le texte et le point de statut rendent l’information explicite.
-- **Navigation et focus :** bleu pâle pour l’organisation et la rubrique actives ; encre bleue pour la rubrique active. Le focus est bleu sur fond clair et orange (`focus-on-dark`) sur les boutons du rail.
+### Primary
+- **Bleu d'action** (blue-600) : bouton principal, soulignement de l'onglet actif, pastille du mot-symbole, anneau et contour de focus, curseur de saisie, `accent-color`. Survol du bouton principal en **Bleu appuyé** (blue-700), qui sert aussi aux liens texte, au compteur de l'onglet actif et à l'icône du site choisi.
+- **Bleu de sélection** (blue-50) : fond du site choisi et du compteur de l'onglet actif ; le nom du site choisi passe en **Bleu profond** (blue-800). **Bleu de surlignage** (blue-100) : sélection de texte.
 
-Les variables `org-ink` et `org-tint` sont désormais communes aux organisations ; elles ne désignent plus des identités textiles individuelles.
+### Neutral
+- **Encre** (gray-900) : titres, noms, texte principal, avatar actif.
+- **Texte secondaire** (gray-600) : phrases d'aide, méta d'en-tête, description du tiroir, onglets au repos.
+- **Texte tertiaire** (gray-500) : en-têtes de colonnes, libellés de groupe, chemins de lieux, icônes au repos, textes d'aide `small`.
+- **Gris d'icône discrète** (gray-400) : icône de recherche, icônes d'onglet au repos, chevrons ; bordure de champ au survol.
+- **Filet de contrôle** (gray-300) : bordure des boutons et champs, bordure pointillée des états vides.
+- **Filet** (gray-200) : bordures de conteneurs, barre latérale, onglets, tiroir ; trait de chargement du skeleton.
+- **Séparateur de ligne** (gray-100) : lignes de tableau, fonds de compteur, de type de lieu et d'icône de site ; survol des éléments de navigation.
+- **Gris de panneau** (gray-50) : barre latérale, en-têtes de tableau, pied du tiroir, fond des pages de connexion, champs de secret.
+- **Survol de ligne** (gray-25) : survol d'une ligne de membre.
+- **Blanc** : espace de travail, cartes, tiroir, organisation active dans la barre latérale.
+
+### États
+- **Vert d'état** (green-700 sur green-50, filet green-200 ; green-800 dans l'alerte de succès) : « Actif », confirmations, pastille de statut du secret créé.
+- **Rouge d'état** (red-700 sur red-50, filet red-200 ; red-800 dans l'alerte d'erreur) : « Suspendu », erreurs.
+
+### Named Rules
+**The Accent unique Rule.** Le bleu ne désigne que l'action principale, la sélection et le focus. Une vue ne montre qu'un bouton bleu : quand le tiroir s'ouvre, le bouton principal de la barre d'outils redevient secondaire et cède le bleu au bouton du tiroir.
+
+**The État dit Rule.** Vert et rouge ne servent qu'aux états, et un état est toujours une pastille plus un mot, jamais une couleur seule. « Actif » porte une pastille pleine ; « Suspendu » une pastille creuse (anneau de 1,5 px), pour que l'état se lise aussi sans couleur.
+
+**The Teinte muette Rule.** Les avatars à initiales prennent une teinte douce déterministe tirée de l'identifiant, parmi huit (indigo, violet, pourpre, ciel, cyan, ambre, ardoise, pierre). Le jeu exclut le vert, le rouge et le bleu d'accent : une teinte ne porte jamais un état ni un droit, et le nom est toujours écrit à côté.
 
 ## Typography
 
-Une police système sans empattement compose l’interface. Aucun chargement d’Archivo n’est requis par le système adopté. Les déclarations héritées de `font-stretch` ne constituent pas une promesse de police variable ou condensée.
+**Display Font:** Inter Variable (avec ui-sans-serif, system-ui, -apple-system, Segoe UI), auto-hébergée via `@fontsource-variable/inter/opsz.css`, `font-optical-sizing: auto`
+**Body Font:** Inter Variable (même pile)
+**Label/Mono Font:** ui-monospace, SFMono-Regular, Cascadia Mono, Menlo, Consolas, chiffres tabulaires
 
-La revendication de connexion utilise le rôle display ; le titre de page utilise headline. Les titres de panneaux sont plus compacts. Les boutons et tableaux utilisent une taille dense, les libellés restent visibles au-dessus des champs et les métadonnées sont plus discrètes. Les paragraphes sont limités à 68ch. La marque distingue TRACE en graisse 800 et OPS en graisse 400.
+**Character:** Une seule famille, rendue précise par l'axe optique et par des graisses intermédiaires (550, 650) qu'offre la variable : assez de contraste pour hiérarchiser sans jamais crier. Le mono n'apparaît que là où un caractère doit être recopié exactement.
 
-Les identifiants et secrets à copier utilisent `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`. Les compteurs et identifiants utilisent des chiffres tabulaires lorsqu’ils sont définis dans les composants.
+### Hierarchy
+- **Wordmark** (800 puis 400, 17 px, interlettrage 0,06 em) : le mot-symbole TRACE·OPS, en haut de la barre latérale et des pages de connexion.
+- **Headline** (650, 24 px, 1,25, -0,022 em) : nom de l'organisation dans l'en-tête de page, titre de la carte de connexion (22 px sur téléphone, 20 px pour le titre de page).
+- **Title** (650, 20 px, 1,3, -0,017 em) : nom du site choisi.
+- **Title small** (600, 16 px, 1,4, -0,011 em) : titre du tiroir. Les titres d'état vide prennent 600 à 15 px.
+- **Body** (400, 14 px, 1,5) : texte courant, cellules, champs ; 15 px sur téléphone et 16 px dans les champs pour éviter le zoom. Paragraphes limités à 68 ch, titres en `text-wrap: balance`.
+- **Body strong** (550, 14 px) : boutons, noms de membres, de sites et de lieux, nom de l'utilisateur.
+- **Label** (550, 12 px) : en-têtes de colonnes, libellés de groupe de la navigation, badges, statuts, compteurs. Casse de phrase, jamais de capitales.
+- **Mono** (400 à 600, 13 px, chiffres tabulaires) : identifiants de connexion, codes de lieu, secrets à usage unique.
+
+### Named Rules
+**The Mono réservé Rule.** La police mono est réservée aux identifiants, aux codes de lieu et aux secrets à usage unique ; tout ce qui se lit plutôt qu'il ne se recopie reste en Inter.
+
+**The Graisse intermédiaire Rule.** La hiérarchie se fait par 400, 500, 550, 600 et 650, pas par 700. Le gras plein (800) n'appartient qu'au mot-symbole.
 
 ## Layout
 
-L’en-tête blanc couvre toute la largeur (hauteur minimale 78px). Le rail bleu nuit occupe 220px ; le contenu flexible est plafonné à 1500px, avec 40px de marge interne. Le rail contient le choix d’organisation, les rubriques et un repère de contexte. Le compte, la langue et la déconnexion sont dans l’en-tête.
+**Coque.** Grille à deux colonnes : barre latérale collante de 256 px (pleine hauteur, gris de panneau, filet à droite) et contenu blanc limité à 1320 px, avec des marges de 28 × 40 px. La barre latérale empile le mot-symbole (60 px), la navigation « Organisations » groupée en Clients puis Prestataires (libellés de groupe de 12 px, éléments de 36 px séparés de 2 px, 18 px entre groupes), l'action « Créer une organisation » pour l'administrateur, puis le compte (avatar, nom, rôle, déconnexion à côté, sélecteur de langue dessous) au-dessus d'un filet. Sur ordinateur, chaque organisation tient sur une ligne avec points de suspension ; le nom complet est dans l'attribut `title`.
 
-Le tableau de bord est la rubrique initiale pour tous les profils, à la connexion et au changement d’organisation ; il reste visible sans organisation accessible. Sa grille associe les panneaux de périmètre, sites et disponibilité des interventions à un panneau d’actions de 300px, avec un écart de 24px. À 1050px et moins, les actions passent avant les autres panneaux et la grille devient une colonne ; les marges du contenu passent à 28px et le nom du compte disparaît de l’en-tête.
+**En-tête de page.** Avatar carré de 40 px, nom de l'organisation (Headline), puis une ligne de méta : badge de type et rôle de l'utilisateur. 20 px sous l'en-tête, les onglets soulignés (24 px entre onglets, 24 px dessous), puis la barre d'outils : phrase d'aide à gauche, actions à droite.
 
-L’équipe et les sites conservent une composition liste/détail. À partir de 1240px, le volet équipe mesure 300–360px (280–320px jusqu’à 1439px) et peut rester collant à 24px du haut ; les sites ont une liste de 260–340px. En dessous de 1240px, liste, détail et formulaire alternent. Un formulaire de lieu remplace le volet du site et masque sa liste.
+**Espace de travail.** La liste occupe toute la largeur ; dès qu'un formulaire ou un secret s'ouvre, un tiroir de 400 px s'ajoute à droite (24 px d'écart), collant à 24 px du haut. Sites et salles : liste de sites de 320 px et détail du site côte à côte ; un formulaire de site ou de lieu remplace la colonne qu'il ne concerne pas par le tiroir de 400 px. Le site choisi se lit sur la page même, sans carte : en-tête, recherche (360 px max), puis un seul tableau bordé des lieux (colonnes nom, 128 px type, 120 px code).
 
-À 760px et moins, le rail devient une navigation horizontale qui peut revenir à la ligne. Avec plusieurs organisations, la sélection des organisations reste une vue distincte accessible par le retour « Organisations ». Les marges du contenu deviennent 28px 16px ; le titre de page passe à 1.75rem. Le tableau d’équipe devient des cartes empilant nom, identifiant, rôle et accès. Les sites du tableau de bord restent une liste de noms ; l’action d’ouverture du module est dans les actions rapides.
+**Rythme.** Pas de 4 px ; valeurs courantes 4, 8, 12, 16, 24 et 40 px. 16 px entre champs d'un formulaire, 16 px sous une barre d'outils, 12 × 16 px dans les cellules.
 
-La connexion présente un panneau bleu nuit et une carte blanche de 440px maximum dans un ensemble de 1120px maximum. Sur téléphone, la carte précède l’introduction ; la revendication passe à 1.5rem.
+**Points de rupture.**
+- **1280 px et plus** : liste et tiroir (ou liste de sites et site choisi) côte à côte.
+- **Sous 1280 px** : ils alternent ; le tiroir prend la place de la liste (560 px max, hauteur libre) et un lien « retour » ramène à la liste des sites.
+- **Sous 1024 px** : barre latérale de 232 px, marges de 24 × 28 px.
+- **Sous 768 px (téléphone)** : écrans successifs organisations › organisation › tiroir. Une barre supérieure de 56 px porte le mot-symbole, la langue et la déconnexion ; tous les contrôles montent à 44 px. Les onglets se partagent la largeur, la barre d'outils s'empile (action principale en premier, pleine largeur), les tableaux deviennent des cartes, les noms d'organisation passent à la ligne au lieu d'être tronqués, le pied du tiroir empile ses boutons pleine largeur.
+
+### Named Rules
+**The Ligne tenue Rule.** Tant que le tiroir est ouvert, la barre d'outils garde une seule ligne : la phrase d'aide se tronque, les actions ne passent jamais à la ligne, et la liste ne saute pas.
+
+**The Pied visible Rule.** Sur ordinateur, la hauteur du tiroir est plafonnée (`max(360px, 100dvh - 248px)`) : l'en-tête et le pied restent à l'écran, seul le corps défile.
+
+**The Compteur réservé Rule.** L'emplacement du compteur d'onglet ne disparaît jamais : pendant le chargement il affiche un tiret gris, puis le nombre, sans que les onglets bougent.
 
 ## Elevation & Depth
 
-Les cartes sont plates : les fonds, bordures fines et espaces établissent la hiérarchie, sans ombre portée. Les surfaces de formulaire restent intégrées au flux ou au volet de détail. La rubrique active utilise un fond pâle, sans ancien soulignement par ombre intérieure.
+Hybride, majoritairement plat. La profondeur vient d'abord des fonds tonals (barre latérale gris de panneau contre contenu blanc, en-têtes de tableau et pied de tiroir gris) et des filets ; les ombres sont douces, décalées vers le bas, teintées d'un bleu-noir (#101828) à très faible opacité, et ne servent qu'à détacher ce qui est saisissable ou superposé.
+
+### Shadow Vocabulary
+- **Contact** (`box-shadow: 0 1px 2px rgb(16 24 40 / .05)`) : boutons, champs, cartes de tableau, liste de sites, organisation active, cartes de membres sur téléphone.
+- **Carte posée** (`box-shadow: 0 1px 3px rgb(16 24 40 / .08), 0 1px 2px rgb(16 24 40 / .04)`) : carte de connexion ; tiroir sur téléphone.
+- **Tiroir** (`box-shadow: 0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05)`) : le tiroir sur ordinateur, seul élément superposé au travail.
+- **Anneau de focus** (`box-shadow: 0 0 0 3px rgb(37 99 235 / .22)`) : champs au focus, en plus de la bordure bleue.
+- **Reflet du bouton principal** (`inset 0 1px 0 rgb(255 255 255 / .14)`) : liseré de lumière en haut du bouton bleu.
+
+### Named Rules
+**The Ombre douce Rule.** Les ombres sont floues, décalées vers le bas et à moins de 15 % d'opacité ; aucune ombre dure ni décalée en aplat. Plus un élément est superposé, plus son ombre s'élargit, jamais plus sombre.
 
 ## Shapes
 
-Les contrôles ont des coins de 6px, la navigation de 8px et les panneaux de 12px. Les statuts et compteurs sont des capsules ; les avatars sont circulaires. Les panneaux et tableaux sont bordés d’un filet de 1px. Aucun liseré imprimé, pastille textile ou bande de motif n’est rendu par l’application principale.
+Trois rayons hiérarchisés par taille d'objet : 6 px pour les petits éléments (codes de lieu, avatars carrés de 24 et 32 px, contour de focus des onglets), 8 px pour les contrôles (boutons, champs, alertes, icônes de site, tableau des lieux), 12 px pour les conteneurs (carte de tableau, liste de sites, tiroir, carte de connexion, état vide, cartes de membres sur téléphone). Les pastilles d'information (badges, statuts, compteurs, types de lieu) sont entièrement arrondies. Les avatars sont des cercles pour une personne et des carrés arrondis pour une organisation (10 px à 40 px). Bordures de 1 px partout ; seuls l'onglet actif (2 px, coins hauts arrondis) et l'état vide (pointillé) font exception. Icônes au trait de 1,75 sur grille de 24, joints ronds, affichées à 16 px (18 px dans les boutons d'icône).
 
 ## Components
 
-- **Boutons :** primaire cobalt à texte blanc ; secondaire blanc avec contour discret. Le survol modifie la couleur en 150ms. Un bouton désactivé a une opacité de 0.55. Les liens de retour sont soulignés.
-- **Champs :** fond blanc, contour lisible, libellé au-dessus, espacement de 18px entre champs. Le focus utilise un contour de 2px. Les champs de secret sont en chasse fixe et accompagnés d’une action de copie.
-- **Navigation :** organisation active et rubrique active sur bleu pâle ; organisation, type et rôle se lisent dans le rail. Le tableau de bord est toujours proposé ; les autres rubriques suivent les conditions d’accès de l’application.
-- **Panneaux :** blancs avec contour, titres courts et marges internes définies par `panel`. Le résultat d’invitation utilise la teinte cobalt pâle. Les actions rapides et le panneau d’ajout au repos utilisent le gris bleuté `action-panel`.
-- **Équipe :** tableau sur ordinateur, avatars à initiales, statuts texte + point, cartes sur téléphone. Erreur, liste vide et chargement restent distincts.
-- **Sites et salles :** lignes sélectionnables, sélection bleu pâle, recherche de lieux et étiquettes de type/code. Les créations restent soumises aux droits existants.
-- **Tableau de bord :** nombre d’organisations fourni par le contexte réel, liste et nombre de sites issus de l’API lorsque le profil y a accès, profil actif et actions autorisées. Les missions, contrôles et anomalies sont explicitement indisponibles ; aucun indicateur opérationnel fictif n’est présenté. Un site en chargement affiche un texte d’attente ; une valeur indisponible affiche un tiret, jamais un zéro inventé.
+### Buttons
+Sobres, précis, un seul bleu à la fois.
+- **Shape:** coins moyens (8 px), 36 px de haut, 14 px de marge latérale, 550, icône de 16 px à 6 px du texte.
+- **Primary:** fond bleu d'action, bordure bleu appuyé, texte blanc, ombre de contact plus reflet interne ; survol en bleu appuyé.
+- **Secondary (par défaut):** fond blanc, filet de contrôle, ombre de contact, icône gris tertiaire ; survol gris de panneau.
+- **Small:** 32 px, 13 px de texte (réessayer dans une alerte). **Wide:** pleine largeur, 40 px (connexion).
+- **Icon button:** 32 px, transparent, icône de 18 px gris tertiaire ; survol séparateur et encre (fermer le tiroir, déconnexion).
+- **Link button:** texte bleu appuyé souligné à 35 % d'opacité, plein au survol. **Retour:** transparent, gris secondaire, chevron.
+- **Hover / Focus:** transitions de couleur de 150 ms ; focus clavier en contour bleu de 2 px décalé de 2 px. Désactivé à 50 % d'opacité.
 
-Le chargement de l’équipe peut employer un squelette animé (1.4s). `prefers-reduced-motion: reduce` désactive animations et transitions. Les mécanismes de focus, de langue français/anglais et les états d’erreur font partie du comportement des composants.
+### Chips
+- **Badge de type :** pilule gris de panneau, filet, texte gris 700, Label (« Client », « Prestataire »).
+- **Statut :** pilule avec pastille de 6 px puis le mot ; vert pour « Actif » (pastille pleine), rouge pour « Suspendu » (pastille creuse). Le nom d'un membre suspendu passe en gris tertiaire.
+- **Compteur :** pilule de 20 px, chiffres tabulaires ; gris au repos, bleu de sélection et bleu appuyé dans l'onglet actif ; tiret gris en attente.
+- **Type de lieu :** pilule séparateur sans bordure. **Code de lieu :** mono 600 sur gris de panneau, filet, coins de 6 px.
+
+### Cards / Containers
+- **Corner Style:** 12 px (tableau des lieux : 8 px).
+- **Background:** blanc ; en-têtes de tableau et pieds en gris de panneau.
+- **Shadow Strategy:** ombre de contact au repos, ombre du tiroir pour le seul élément superposé (voir Elevation & Depth).
+- **Border:** filet de 1 px ; lignes internes en séparateur.
+- **Internal Padding:** cellules 12 × 16 px, en-têtes 10 × 16 px ; carte de connexion 32 px (24 × 20 sur téléphone).
+- **État vide :** carte pointillée centrée, carré d'icône de 40 px gris, titre 600 et phrase de 46 ch ; aucune action répétée.
+- **Chargement :** lignes skeleton de 56 px avec un disque de 28 px et une barre qui miroite ; spinner bleu de 16 px.
+
+### Inputs / Fields
+- **Style:** fond blanc, filet de contrôle, coins de 8 px, 38 px de haut, 8 × 12 px, ombre de contact ; libellé au-dessus (500, gris 800) à 6 px ; aide en `small` gris tertiaire. Sélecteurs natifs avec chevron dessiné à 10 px du bord. Recherche avec loupe à gauche.
+- **Focus:** bordure bleu d'action plus anneau bleu de 3 px ; survol en bordure gris 400.
+- **Error / Disabled:** les erreurs passent par une alerte rouge (icône, texte rouge 800 sur rouge 50, filet rouge 200) au-dessus du contenu ; les succès par l'alerte verte équivalente.
+
+### Navigation
+- **Barre latérale :** éléments de 36 px transparents, avatar carré de 24 px à 10 px du nom (500, gris 700) et méta de 12 px dessous ; survol séparateur. L'organisation active passe sur blanc avec filet et ombre de contact, en encre. Sur téléphone, éléments de 52 px, avatars de 32 px, noms sur plusieurs lignes.
+- **Onglets :** soulignés, 42 px de haut, icône puis libellé (500, gris secondaire) puis compteur. Survol : encre et trait gris 300 ; actif : encre, icône gris 700, trait bleu de 2 px.
+- **Liste de sites :** conteneur de 12 px, éléments de 56 px avec carré d'icône de 32 px, nom et adresse, chevron ; le site choisi sur bleu de sélection, nom en bleu profond, icône blanche à ombre de contact.
+
+### Tiroir
+Le geste signature du système. Panneau blanc de 400 px, coins de 12 px, ombre de tiroir. En-tête de 60 px (titre Title small, bouton fermer, ou pastille verte cochée pour un secret créé), corps défilant à 16 px d'écart, pied gris de panneau avec les actions alignées à droite, le principal en dernier. À l'ouverture, il glisse de 12 px depuis la droite en fondu (220 ms, `cubic-bezier(.16, 1, .3, 1)`) et le focus passe à son titre. C'est le seul mouvement signé ; les autres transitions sont des changements de couleur de 150 ms, et `prefers-reduced-motion` supprime toute animation et transition.
+
+### Secret à usage unique
+Dans le tiroir : l'identifiant sur une ligne grise bordée (libellé à gauche, code mono 600 à droite), puis le secret dans une zone de texte en lecture seule, mono 14 px sur gris de panneau, ajustée à son contenu. Bouton secondaire « Copier » (devient « Copié » avec une coche) et bouton principal « Terminé ».
+
+### Avatar
+Initiales (deux au plus, 600) sur une teinte douce stable. Tailles 24, 32 et 40 px ; cercle pour une personne, carré arrondi pour une organisation. Toujours décoratif (`aria-hidden`), le nom est écrit à côté.
 
 ## Do's and Don'ts
 
-- Do conserver les libellés de champs visibles et un focus clavier perceptible.
-- Do associer les couleurs d’état à un texte explicite.
-- Do afficher chargement, erreur, absence de données et indisponibilité comme des états distincts.
-- Do limiter les actions rapides aux fonctions autorisées pour le compte.
-- Don’t réintroduire les motifs textiles, la police Archivo ou les actions safran de l’ancienne direction.
-- Don’t présenter les indicateurs simulés du prototype comme des données connectées.
-- Don’t convertir une donnée indisponible ou en erreur en un zéro.
-- Don’t ajouter des ombres aux panneaux courants.
+### Do:
+- **Do** garder un seul bouton bleu par vue, et rendre secondaire l'action de la barre d'outils quand le tiroir apporte la sienne.
+- **Do** écrire chaque état avec une pastille et un mot ; pastille pleine pour « Actif », creuse pour « Suspendu ».
+- **Do** utiliser les rayons selon la taille : 6 px petits éléments, 8 px contrôles, 12 px conteneurs, pilule pour badges, statuts et compteurs.
+- **Do** ouvrir formulaires et secrets dans le tiroir de 400 px à droite, plafonné en hauteur, avec seul le corps qui défile, et y porter le focus.
+- **Do** monter tous les contrôles à 44 px sous 768 px et transformer les tableaux en cartes.
+- **Do** composer les icônes au trait de 1,75 sur grille de 24, à 16 px, en `currentColor`.
+
+### Don't:
+- **Don't** utiliser le bleu d'accent pour décorer, catégoriser ou teinter une organisation.
+- **Don't** utiliser vert ou rouge hors d'un état, ni signaler un état par la seule couleur.
+- **Don't** donner à un avatar une teinte verte, rouge ou du bleu d'accent.
+- **Don't** employer la police mono hors des identifiants, codes de lieu et secrets.
+- **Don't** ajouter tissus, liserés, motifs ou couleur d'organisation en aplat : seul le mot-symbole TRACE·OPS reste de l'identité précédente.
+- **Don't** poser d'ombre dure ou décalée en aplat ; les ombres restent floues et sous 15 % d'opacité.
+- **Don't** laisser la barre d'outils passer sur deux lignes ni un compteur d'onglet disparaître pendant un chargement.
