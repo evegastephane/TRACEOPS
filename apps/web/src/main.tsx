@@ -1,20 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import '@fontsource-variable/archivo/wdth.css';
 import './style.css';
 import { api, ApiError } from './api';
 import { Sites } from './sites';
+import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
-import { Cloth, SampleStrip, Selvedge, orgStyle } from './motif';
 import { BackIcon, CopyIcon, LogoutIcon, PlusIcon, SitesIcon, TeamIcon } from './icons';
 
 type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: string[] };
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Member = { id: string; display_name: string; login: string; roles: string[]; active: boolean };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'team' | 'sites';
+type Section = 'dashboard' | 'team' | 'sites';
 
-const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
+const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span></a>;
 
 function LanguageSelect({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; t: Dict }) {
   return <label className="language">
@@ -43,9 +42,9 @@ function App() {
   const [members, setMembers] = useState<Member[]>([]), [membersLoading, setMembersLoading] = useState(false), [membersError, setMembersError] = useState('');
   const orgRef = useRef(orgId); orgRef.current = orgId;
   const [form, setForm] = useState<'org' | 'agent' | 'invite' | null>(null), [secret, setSecret] = useState<Secret | null>(null), [copied, setCopied] = useState(false);
-  const [section, setSection] = useState<Section>('team');
+  const [section, setSection] = useState<Section>('dashboard');
   // Phone only: with several organisations, the list of organisations is its own screen.
-  const [mobileView, setMobileView] = useState<'orgs' | 'org'>('orgs');
+  const [mobileView, setMobileView] = useState<'orgs' | 'org'>('org');
   const detailHeading = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState(() => new URLSearchParams(location.hash.slice(1)).get('invite') ?? '');
 
@@ -111,7 +110,7 @@ function App() {
         <section className="auth-intro">
           <p className="auth-claim">{t.brandText.split(/(?<=\.)\s+/).map(sentence => <span key={sentence}>{sentence}</span>)}</p>
           <p className="auth-sub">{t.brandSub}</p>
-          <SampleStrip />
+
         </section>
         <section className="auth-card" aria-labelledby="auth-title">
           <h1 id="auth-title">{title}</h1>
@@ -123,7 +122,7 @@ function App() {
               if (token) { await api('auth/accept', { ...data, token }); setToken(''); history.replaceState(null, '', location.pathname); }
               else if (user) await api('auth/password', data);
               else await api('auth/login', data);
-              await refresh();
+              await refresh(); setSection('dashboard');
             });
           }}>
             {token && <Field name="displayName" label={t.displayName} />}
@@ -143,11 +142,11 @@ function App() {
   const kindLabel = (o: Org) => o.kind === 'CLIENT' ? t.client : t.provider;
   const roleLabel = (r: string) => r === 'FIELD_AGENT' ? t.agent : r === 'CLIENT_CONTROLLER' ? t.controller : t.manager;
   const orgMeta = (o: Org) => [kindLabel(o), ...(o.roles?.length ? [o.roles.map(roleLabel).join(', ')] : [])].join(' · ');
-  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); });
+  const signOut = () => void act(async () => { await api('auth/logout', {}); setUser(null); setSecret(null); setOrgs([]); setMembers([]); setSection('dashboard'); });
   const multiOrg = orgs.length > 1;
   // Phone screen: the organisations list, or the active organisation. An admin without any organisation starts on the list, where it can create one.
-  const phoneView = multiOrg ? mobileView : orgs.length ? 'org' : user.admin && form !== 'org' ? 'orgs' : 'org';
-  const chooseOrg = (id: string) => { setOrgId(id); setMobileView('org'); };
+  const phoneView = multiOrg ? mobileView : 'org';
+  const chooseOrg = (id: string) => { setOrgId(id); setSection('dashboard'); setMobileView('org'); };
   const membersCounted = manager && !membersLoading && !membersError;
 
   // Right-hand pane of the team workspace: a one-time secret, an open form, or the team actions.
@@ -204,48 +203,41 @@ function App() {
           </div>
         : null;
 
-  return <div className="app" style={orgStyle(org)} data-view={phoneView}>
-    <div className="orgs-pane">{org && <Selvedge org={org} vertical />}<div className="orgs-inner">
-      <div className="pane-brand"><Brand /></div>
+  const sections = <nav className="section-tabs" aria-label={t.sections}>
+    {(['dashboard', ...(canSeeSections ? ['team','sites'] : [])] as Section[]).map(item => <button key={item} aria-current={section === item ? 'page' : undefined} disabled={busy}
+      onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); setMobileView('org'); }}>
+      {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'dashboard' ? (lang === 'fr' ? 'Tableau de bord' : 'Dashboard') : item === 'team' ? t.team : t.sites}
+    </button>)}
+  </nav>;
+  return <div className="app" data-view={phoneView}>
+    <header className="app-top"><Brand /><div className="top-controls">{language}<span className="top-identity">{user.display_name}</span><button className="logout" onClick={signOut} disabled={busy}><LogoutIcon /><span>{t.logout}</span></button></div></header>
+    <div className="orgs-pane"><div className="orgs-inner">
+      <p className="workspace-label">{user.admin ? t.admin : t.workspace}</p>
       <nav className="org-nav" aria-labelledby="org-nav-title">
         <p className="org-nav-title" id="org-nav-title">{t.orgs}</p>
         {orgs.length
           ? <ul className="org-list">{orgs.map(o => <li key={o.id}>
               <button className="org-item" aria-current={o.id === orgId ? 'true' : undefined} disabled={busy} onClick={() => chooseOrg(o.id)}>
-                <Cloth org={o} className="org-swatch" />
                 <span className="org-item-text"><span className="org-item-name">{o.name}</span><span className="org-item-meta">{orgMeta(o)}</span></span>
               </button>
             </li>)}</ul>
           : <p className="org-nav-empty">{user.admin ? t.emptyOrg : t.noContext}</p>}
         {user.admin && <button className="rail-button" disabled={busy} onClick={() => { setSection('team'); setForm('org'); setSecret(null); setMobileView('org'); }}><PlusIcon />{t.createOrg}</button>}
       </nav>
-      <div className="pane-account">
-        <p className="identity"><span className="identity-name">{user.display_name}</span><span className="identity-role">{user.admin ? t.admin : user.login}</span></p>
-        <div className="account-controls">
-          {language}
-          <button className="logout" onClick={signOut} disabled={busy}><LogoutIcon /><span>{t.logout}</span></button>
-        </div>
-      </div>
+      {sections}
+      <p className="rail-foot">{lang === 'fr' ? 'Une organisation. Des responsabilités claires.' : 'One organization. Clear responsibilities.'}</p>
     </div></div>
 
     <main className="content">
-      {org && <Selvedge org={org} />}
       <div className="content-inner">
         {multiOrg && <button className="back-button orgs-back" disabled={busy} onClick={() => setMobileView('orgs')}><BackIcon />{t.orgs}</button>}
         <header className="page-heading">
-          <h1>{org?.name ?? (user.admin ? t.orgs : t.noContext)}</h1>
-          <p>{org ? <span className="kind-chip">{kindLabel(org)}</span> : user.admin ? t.emptyOrgText : t.noContextText}</p>
+          <h1>{section === 'dashboard' ? (lang === 'fr' ? 'Tableau de bord' : 'Dashboard') : org ? (section === 'sites' ? t.sites : t.team) : (user.admin ? t.orgs : t.noContext)}</h1>
+          <p>{org ? <span>{org.name} · {kindLabel(org)}</span> : user.admin ? t.emptyOrgText : t.noContextText}</p>
         </header>
-        {canSeeSections && <nav className="section-tabs" aria-label={t.sections}>
-          {(['team', 'sites'] as const).map(item => <button key={item} aria-current={section === item ? 'page' : undefined} disabled={busy}
-            onClick={() => { setSection(item); setForm(null); setSecret(null); setError(''); }}>
-            {item === 'team' ? <TeamIcon /> : <SitesIcon />}{item === 'team' ? t.team : t.sites}
-            {item === 'team' && membersCounted && <span className="count" aria-hidden="true">{members.length}</span>}
-          </button>)}
-        </nav>}
         {errorBox}
 
-        {section === 'sites' && org && canSeeSections
+        {section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={()=>{setSection('team');setForm('org');setSecret(null);}} /> : section === 'sites' && org && canSeeSections
           ? <Sites key={orgId} org={org} admin={user.admin} lang={lang} setBusy={setBusy} />
           : <div className={teamDetail ? 'workspace workspace-team has-detail' : 'workspace workspace-team'} data-detail={form || secret ? 'open' : 'closed'}>
               {org && (manager
