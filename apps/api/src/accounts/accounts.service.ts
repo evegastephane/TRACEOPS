@@ -328,10 +328,16 @@ export class AccountsService {
         (SELECT count(*)::int FROM membership m JOIN membership_role r ON r.membership_id=m.id WHERE m.organization_id=o.id AND m.active AND r.role='FIELD_AGENT') AS agents,
         CASE WHEN o.kind='CLIENT' THEN (SELECT count(*)::int FROM site s WHERE s.client_id=o.id AND s.active)
           ELSE (SELECT count(DISTINCT a.site_id)::int FROM service_agreement a WHERE a.provider_id=o.id AND a.active AND (a.ends_at IS NULL OR a.ends_at>now())) END AS sites,
-        (SELECT max(created_at) FROM access_audit x WHERE x.organization_id=o.id) AS last_activity
+        (SELECT max(created_at) FROM access_audit x WHERE x.organization_id=o.id) AS last_activity,
+        (SELECT count(*)::int FROM intervention i WHERE i.client_id=o.id OR i.provider_id=o.id) AS interventions,
+        (SELECT count(*)::int FROM intervention i WHERE (i.client_id=o.id OR i.provider_id=o.id) AND i.status='ACCEPTED') AS accepted
       FROM organization o WHERE o.active ORDER BY o.kind,o.name`)).rows;
     const recent=(await this.auditLog(user,{limit:'8'})).entries;
-    return { totals, organizations, recent };
+    // Platform-wide intervention figures for the administrator's dashboard: counts per status and kind, and per day around today.
+    const statuses=(await this.db.query(`SELECT status,kind,count(*)::int AS n FROM intervention GROUP BY status,kind`)).rows;
+    const days=(await this.db.query(`SELECT to_char(starts_at AT TIME ZONE 'Africa/Douala','YYYY-MM-DD') AS day,status,count(*)::int AS n FROM intervention
+      WHERE starts_at>=now()-interval '28 days' AND starts_at<now()+interval '14 days' GROUP BY 1,2 ORDER BY 1`)).rows;
+    return { totals, organizations, recent, interventions: { statuses, days } };
   }
   async auditActions(user: Identity) {
     await this.admin(user);

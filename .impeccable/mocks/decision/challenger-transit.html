@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>La ligne de service — TRACEOPS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font:400 14px/1.45 "Hanken Grotesk",system-ui,sans-serif;color:#14213d;background:#f6f7f9;display:grid;grid-template-columns:244px 1fr}
+aside{background:#14213d;color:#b9c3d8;padding:22px 0;display:flex;flex-direction:column}
+.brand{font:800 19px/1 "Hanken Grotesk";letter-spacing:.06em;color:#fff;padding:0 22px 24px}.brand span{font-weight:400}
+.org{margin:0 14px 16px;padding:10px 12px;border:1px solid #2a3a5e;border-radius:10px;color:#fff;font-weight:600}.org small{display:block;color:#9aa6c0;font-weight:400}
+nav ul{list-style:none;padding:0 12px}nav li{height:40px;display:flex;align-items:center;gap:11px;padding:0 12px;border-radius:20px;font-weight:500;font-size:15px}
+nav li::before{content:"";width:12px;height:12px;border-radius:50%;border:2.5px solid currentColor;opacity:.75}
+nav li.on{background:#fff;color:#14213d;font-weight:700}nav li.on::before{border-color:#e63946;opacity:1}
+.me{margin-top:auto;padding:14px 22px 0;color:#fff;font-weight:600}.me small{display:block;color:#9aa6c0;font-weight:400}
+main{padding:24px 32px;display:flex;flex-direction:column;gap:16px;min-width:0}
+header{display:flex;justify-content:space-between;align-items:flex-end}
+header p{font-size:13px;font-weight:600;color:#4f5b73}header h1{font-size:30px;font-weight:700;letter-spacing:-.01em}
+.acts{display:flex;gap:10px}.btn{height:38px;padding:0 16px;border-radius:19px;border:1.5px solid #c6cdda;background:#fff;display:flex;align-items:center;font-weight:600}.btn.p{background:#14213d;color:#fff;border-color:#14213d}
+.line{background:#fff;border-radius:14px;padding:18px 24px 14px;box-shadow:0 1px 2px rgb(20 33 61/.06)}
+.line h2,.card h2{font-size:14px;font-weight:700;margin-bottom:6px;display:flex;justify-content:space-between}.line h2 span,.card h2 span{font-weight:500;color:#4f5b73}
+svg text{font-family:"Hanken Grotesk",sans-serif}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px}
+.card{background:#fff;border-radius:14px;padding:16px 20px;box-shadow:0 1px 2px rgb(20 33 61/.06)}
+.row{display:grid;grid-template-columns:86px 1fr 190px;gap:14px;align-items:center;padding:11px 0;border-top:1px solid #edf0f4}.row:first-of-type{border-top:0}
+code{font:700 12.5px ui-monospace,Consolas,monospace}
+.row strong{display:block;font-weight:600}.row small{color:#4f5b73;font-size:12.5px}
+.mini{display:flex;align-items:center}.mini i{width:12px;height:12px;border-radius:50%;border:2.5px solid #14213d;background:#fff}.mini b{flex:1;height:4px;background:#c6cdda}
+.mini i.f{background:#14213d}.mini b.f{background:var(--c)}.mini i.now{border-color:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 25%,#fff)}
+.kpi{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-top:1px solid #edf0f4}.kpi:first-of-type{border-top:0}
+.kpi strong{font-size:30px;font-weight:700;font-variant-numeric:tabular-nums}
+</style></head><body>
+<aside><div class="brand">TRACE<span>OPS</span></div>
+<div class="org">AFISA Food Industry<small>Client · Responsable</small></div>
+<nav><ul><li class="on">Vue d'ensemble</li><li>Planning</li><li>Interventions</li><li>Sites et salles</li><li>Équipe</li><li>Prestataires</li><li>Société</li></ul></nav>
+<div class="me">Carine Ebode<small>c.ebode</small></div></aside>
+<main>
+  <header><div><p>Usine de Bonabéri · mardi 10 novembre 2026</p><h1>Vue d'ensemble</h1></div><div class="acts"><span class="btn">Nouveau programme</span><span class="btn p">Nouvelle demande de maintenance</span></div></header>
+  <section class="line"><h2>Ligne de service <span>91 interventions sur 30 jours</span></h2>
+    <svg viewBox="0 0 1110 190" width="100%" height="190">
+      <path d="M40 92 H250" stroke="#e63946" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M250 92 H470" stroke="#2463eb" stroke-width="10" fill="none"/>
+      <path d="M470 92 H690" stroke="#f2a541" stroke-width="10" fill="none"/>
+      <path d="M690 92 H900" stroke="#e63946" stroke-width="10" fill="none"/>
+      <path d="M900 92 H1070" stroke="#2a9d8f" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M800 92 L760 140 H620 L580 92" stroke="#e63946" stroke-width="5" fill="none" stroke-dasharray="10 7"/>
+      <text x="640" y="160" font-size="12.5" font-weight="600" fill="#b3202c">Reprise · 1</text>
+      <g fill="#fff" stroke="#14213d" stroke-width="4"><circle cx="40" cy="92" r="11"/><circle cx="250" cy="92" r="16"/><circle cx="470" cy="92" r="16"/><circle cx="690" cy="92" r="16"/><circle cx="800" cy="92" r="11"/><circle cx="900" cy="92" r="16"/><circle cx="1070" cy="92" r="11"/></g>
+      <g font-size="13" font-weight="700" fill="#14213d" text-anchor="middle"><text x="40" y="58">Demande</text><text x="250" y="58">Devis</text><text x="470" y="58">Affectation</text><text x="690" y="58">Réalisation</text><text x="800" y="58">Contrôle</text><text x="900" y="58">Décision</text><text x="1070" y="58">Acceptée</text></g>
+      <g font-size="30" font-weight="700" fill="#14213d" text-anchor="middle"><text x="40" y="138">2</text><text x="250" y="138">1</text><text x="470" y="138">8</text><text x="690" y="138">66</text><text x="900" y="138">2</text><text x="1070" y="138">12</text></g>
+      <g font-size="11.5" fill="#4f5b73" text-anchor="middle"><text x="145" y="118">client → prestataire</text><text x="360" y="118">prestataire</text><text x="580" y="118">agent</text><text x="985" y="118">client</text></g>
+    </svg></section>
+  <section class="grid">
+    <div class="card"><h2>À traiter <span>où en est chaque dossier</span></h2>
+      <div class="row"><code>INT-0556</code><div><strong>Remplacement de la sonde de niveau du mélangeur M1</strong><small>MécaTech Industrie · sam. 7 nov., 13:00–15:00</small></div>
+        <div class="mini" style="--c:#e63946"><i class="f"></i><b class="f"></b><i class="f"></i><b class="f"></b><i class="f"></i><b class="f"></b><i class="f"></i><b class="f"></b><i class="now"></i><b></b><i></i></div></div>
+      <div class="row"><code>INT-0553</code><div><strong>Remplacement des roulements du convoyeur ligne 2</strong><small>Devis 850 000 FCFA · MécaTech Industrie</small></div>
+        <div class="mini" style="--c:#2463eb"><i class="f"></i><b class="f"></b><i class="now"></i><b></b><i></i><b></b><i></i><b></b><i></i><b></b><i></i></div></div>
+      <div class="row"><code>INT-0013</code><div><strong>Nettoyage quotidien — conditionnement et sas d'hygiène</strong><small>Reprise demandée · dégraissage sous le carter aval</small></div>
+        <div class="mini" style="--c:#f2a541"><i class="f"></i><b class="f"></b><i class="f"></i><b class="f"></b><i class="f"></i><b class="f"></b><i class="now"></i><b></b><i></i><b></b><i></i></div></div>
+    </div>
+    <div class="card"><h2>Ce mois-ci</h2>
+      <div class="kpi"><span>Acceptées au 1er contrôle</span><strong>92 %</strong></div>
+      <div class="kpi"><span>Passages en retard</span><strong style="color:#c1121f">2</strong></div>
+      <div class="kpi"><span>Délai moyen de contrôle</span><strong>6 h</strong></div>
+      <div class="kpi"><span>Anomalies ouvertes</span><strong>0</strong></div>
+    </div>
+  </section>
+</main>
+</body></html>

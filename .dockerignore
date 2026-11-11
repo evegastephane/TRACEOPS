@@ -13,3 +13,6 @@ coverage
 *.jpg
 *.jpeg
 *.pdf
+demo-accounts.local.json
+demo-accounts.new.json
+demo-accounts.local.md

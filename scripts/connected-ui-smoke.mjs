@@ -30,10 +30,10 @@ await page.getByRole('button',{name:'Se connecter',exact:true}).waitFor();
 await page.screenshot({path:'.impeccable/review/login-desktop.png',fullPage:true});
 await page.getByLabel('Identifiant',{exact:true}).fill('test');await page.getByLabel('Mot de passe',{exact:true}).fill('testpass');await page.getByRole('button',{name:'Se connecter',exact:true}).click();
 await page.getByRole('button',{name:'Vue d’ensemble',exact:true}).waitFor();
-await page.locator('.work-list').getByText('Nettoyage quotidien — test',{exact:true}).first().waitFor();
+await page.locator('.sign-table').getByText('Nettoyage quotidien — test',{exact:true}).first().waitFor();
 await page.getByRole('button',{name:'Planning',exact:true}).click();await page.locator('.visit').first().waitFor();
 await page.getByRole('button',{name:'Interventions',exact:true}).click();await page.getByRole('cell',{name:/Nettoyage quotidien — test/}).waitFor();
-assert.equal(await page.getByRole('button',{name:'Équipe',exact:true}).count(),0);await page.getByRole('button',{name:'Paramètres',exact:true}).click();
+assert.equal(await page.getByRole('button',{name:'Paramètres',exact:true}).count(),0);await page.getByRole('button',{name:'Équipe',exact:true}).waitFor();
 await page.screenshot({path:'.impeccable/review/dashboard-desktop.png',fullPage:true});
 await page.setViewportSize({width:390,height:844});await page.screenshot({path:'.impeccable/review/dashboard-mobile.png',fullPage:true});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);await page.setViewportSize({width:1440,height:1000});
 await page.getByRole('button',{name:'Équipe',exact:true}).click();
@@ -47,7 +47,7 @@ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=inner
 await page.getByRole('button',{name:'Équipe',exact:true}).click();await page.getByLabel('Langue',{exact:true}).selectOption('en');await page.getByRole('button',{name:'Team',exact:true}).waitFor();await page.screenshot({path:'.impeccable/review/mobile.png',fullPage:true});
 await page.setViewportSize({width:360,height:800});assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
 for(const [kind,roles,isAdmin] of [['PROVIDER',['PROVIDER_MANAGER'],false],['CLIENT',['CLIENT_CONTROLLER'],false],['PROVIDER',['FIELD_AGENT'],false],['CLIENT',[],true]]) {
- org.kind=kind;org.roles=roles;admin=isAdmin;await page.reload();await page.getByRole('button',{name:'Overview',exact:true}).first().waitFor();
+ org.kind=kind;org.roles=roles;admin=isAdmin;await page.reload();await page.getByRole('button',{name:roles.includes('FIELD_AGENT')?'My missions':'Overview',exact:true}).first().waitFor();
  assert.equal(await page.getByRole('button',{name:'Interventions',exact:true}).count(),1);
  assert.equal(await page.getByRole('button',{name:'Activity log',exact:true}).count(),isAdmin?1:0);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

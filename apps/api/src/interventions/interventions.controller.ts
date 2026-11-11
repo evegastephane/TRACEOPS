@@ -122,6 +122,12 @@ export class InterventionsController {
     const scope = await this.scope(req);
     const from = query.from && !Number.isNaN(Date.parse(query.from)) ? query.from : null, to = query.to && !Number.isNaN(Date.parse(query.to)) ? query.to : null;
     const rows = (await this.db.query(`SELECT i.id,i.number,i.kind,i.title,i.status,i.priority,i.starts_at,i.ends_at,i.programme_id,i.quote_required,i.round,
+        i.started_at,i.submitted_at,i.accepted_at,i.created_at,
+        (SELECT u.display_name FROM app_user u WHERE u.id=i.created_by) AS created_by_name,
+        -- The latest author and date of each signed step, for the visa band of list rows.
+        (SELECT json_object_agg(x.action,json_build_object('by',x.name,'at',x.at)) FROM (SELECT DISTINCT ON (e.action) e.action,u.display_name AS name,e.created_at AS at
+          FROM intervention_event e JOIN app_user u ON u.id=e.actor_id WHERE e.intervention_id=i.id AND e.action IN ('REQUESTED','SCHEDULED','QUOTE_ACCEPTED','ASSIGNED','SUBMITTED','RESUBMITTED','ACCEPTED','REWORK_REQUESTED')
+          ORDER BY e.action,e.created_at DESC) x) AS visas,
         s.name AS site_name,s.timezone,c.name AS client_name,p.name AS provider_name,
         COALESCE((SELECT json_agg(json_build_object('name',u.display_name,'lead',a.lead) ORDER BY a.lead DESC,u.display_name) FROM intervention_agent a JOIN membership m ON m.id=a.membership_id JOIN app_user u ON u.id=m.user_id WHERE a.intervention_id=i.id),'[]') AS agents,
         COALESCE((SELECT json_agg(z.name ORDER BY z.code) FROM intervention_zone iz JOIN zone z ON z.id=iz.zone_id WHERE iz.intervention_id=i.id),'[]') AS zones,

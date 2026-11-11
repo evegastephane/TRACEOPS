@@ -1,368 +1,371 @@
 ---
 name: TRACEOPS
-description: Console d'administration des accès, des équipes et des sites, au standard de la catégorie, en français et en anglais.
+description: Suivi et contrôle d'interventions de nettoyage et de maintenance, lu comme un rapport d'audit signé.
 colors:
-  white: "#ffffff"
-  gray-25: "#fcfcfd"
-  gray-50: "#f9fafb"
-  gray-100: "#f3f4f6"
-  gray-200: "#e5e7eb"
-  gray-300: "#d1d5db"
-  gray-400: "#9ca3af"
-  gray-500: "#6b7280"
-  gray-600: "#4b5563"
-  gray-700: "#374151"
-  gray-800: "#1f2937"
-  gray-900: "#111827"
-  blue-50: "#eff6ff"
-  blue-100: "#dbeafe"
-  blue-600: "#2563eb"
-  blue-700: "#1d4ed8"
-  blue-800: "#1e40af"
-  green-50: "#f0fdf4"
-  green-200: "#bbf7d0"
-  green-700: "#15803d"
-  green-800: "#166534"
-  red-50: "#fef2f2"
-  red-200: "#fecaca"
-  red-700: "#b91c1c"
-  red-800: "#991b1b"
+  shell: "#0e4a5c"
+  shell-hover: "#135a6e"
+  shell-active: "#1c687d"
+  shell-ink: "#ffffff"
+  shell-ink-2: "#cfe0e5"
+  shell-ink-3: "#a9c6cd"
+  page: "#f1f4f5"
+  sheet: "#ffffff"
+  sheet-2: "#f6f8f9"
+  sheet-3: "#eaf0f2"
+  rule: "#c9d5d9"
+  rule-2: "#e0e7e9"
+  rule-3: "#a7b9bf"
+  ink: "#17262c"
+  ink-2: "#3f5058"
+  ink-3: "#55656c"
+  petrol: "#0e4a5c"
+  petrol-hover: "#0a3a49"
+  petrol-tint: "#e4eef1"
+  petrol-tint-2: "#cfe1e7"
+  focus: "#155f75"
+  ok: "#226b43"
+  ok-mark: "#2e8b57"
+  ok-tint: "#eaf5ee"
+  ok-rule: "#9dccb0"
+  warn: "#8a5d0c"
+  warn-mark: "#d99a1e"
+  warn-tint: "#fdf5e4"
+  warn-rule: "#e6c88a"
+  bad: "#b3261e"
+  bad-mark: "#c8372d"
+  bad-tint: "#fbecea"
+  bad-rule: "#eaa8a2"
+  info: "#1f5566"
+  info-tint: "#e7f0f3"
+  info-rule: "#a9c6cd"
+  series-accepted: "#2e8b57"
+  series-review: "#d99a1e"
+  series-alert: "#c8372d"
+  series-planned: "#336f85"
+  series-assign: "#6aa1b4"
+  ordinal-1: "#93bccb"
+  ordinal-2: "#6aa1b4"
+  ordinal-3: "#4b879c"
+  ordinal-4: "#336f85"
+  ordinal-5: "#1e5b70"
+  ordinal-6: "#0e4a5c"
 typography:
-  wordmark:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.0625rem"
-    fontWeight: 800
-    lineHeight: 1
-    letterSpacing: "0.06em"
+  display:
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "52px"
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "-0.02em"
+    fontFeature: "tnum"
   headline:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.5rem"
-    fontWeight: 650
-    lineHeight: 1.25
-    letterSpacing: "-0.022em"
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "28px"
+    fontWeight: 700
+    lineHeight: 1.15
+    letterSpacing: "-0.012em"
+  kpi:
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "30px"
+    fontWeight: 700
+    lineHeight: 1.05
+    letterSpacing: "-0.01em"
+    fontFeature: "tnum"
   title:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 650
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "15.5px"
+    fontWeight: 700
     lineHeight: 1.3
-    letterSpacing: "-0.017em"
-  title-sm:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 600
-    lineHeight: 1.4
-    letterSpacing: "-0.011em"
   body:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.875rem"
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "14px"
     fontWeight: 400
     lineHeight: 1.5
-  body-strong:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 550
-    lineHeight: 1.35
+    fontFeature: "lnum"
   label:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 550
-    lineHeight: 1.5
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "11px"
+    fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "0.07em"
+  meta:
+    fontFamily: "Source Sans 3 Variable, Source Sans 3, ui-sans-serif, system-ui, Segoe UI, sans-serif"
+    fontSize: "12.5px"
+    fontWeight: 600
+    lineHeight: 1.35
   mono:
-    fontFamily: "ui-monospace, SFMono-Regular, Cascadia Mono, Menlo, Consolas, monospace"
-    fontSize: "0.8125rem"
-    fontWeight: 400
-    lineHeight: 1.5
+    fontFamily: "Source Code Pro Variable, Source Code Pro, ui-monospace, Consolas, Cascadia Mono, monospace"
+    fontSize: "12.5px"
+    fontWeight: 600
+    lineHeight: 1.3
     fontFeature: "tnum"
 rounded:
-  sm: "6px"
-  md: "8px"
-  lg: "12px"
-  full: "999px"
+  r-1: "2px"
+  r-2: "3px"
+  pill: "999px"
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
+  xs: "6px"
+  sm: "10px"
+  md: "14px"
   lg: "16px"
-  xl: "24px"
-  2xl: "40px"
+  xl: "18px"
+  page-x: "32px"
 components:
   button-primary:
-    backgroundColor: "{colors.blue-600}"
-    textColor: "{colors.white}"
-    typography: "{typography.body-strong}"
-    rounded: "{rounded.md}"
+    backgroundColor: "{colors.petrol}"
+    textColor: "{colors.shell-ink}"
+    rounded: "{rounded.r-2}"
     padding: "0 14px"
     height: "36px"
   button-primary-hover:
-    backgroundColor: "{colors.blue-700}"
+    backgroundColor: "{colors.petrol-hover}"
   button-secondary:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.gray-900}"
-    typography: "{typography.body-strong}"
-    rounded: "{rounded.md}"
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.r-2}"
     padding: "0 14px"
     height: "36px"
   button-secondary-hover:
-    backgroundColor: "{colors.gray-50}"
-  button-small:
-    rounded: "{rounded.md}"
-    padding: "0 12px"
-    height: "32px"
-  icon-button:
-    backgroundColor: "transparent"
-    textColor: "{colors.gray-500}"
-    rounded: "{rounded.md}"
-    size: "32px"
-  icon-button-hover:
-    backgroundColor: "{colors.gray-100}"
-    textColor: "{colors.gray-900}"
-  input:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.gray-900}"
-    typography: "{typography.body}"
-    rounded: "{rounded.md}"
-    padding: "8px 12px"
-    height: "38px"
-  nav-item:
-    backgroundColor: "transparent"
-    textColor: "{colors.gray-700}"
-    rounded: "{rounded.md}"
-    padding: "6px 8px"
+    backgroundColor: "{colors.sheet-2}"
+  button-danger:
+    backgroundColor: "{colors.bad}"
+    textColor: "{colors.shell-ink}"
+    rounded: "{rounded.r-2}"
+    padding: "0 14px"
     height: "36px"
+  input:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.r-2}"
+    padding: "7px 10px"
+    height: "38px"
+  sheet:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.r-1}"
+    padding: "12px 18px 16px"
+  cartouche-label:
+    textColor: "{colors.ink-3}"
+    typography: "{typography.label}"
+  state-chip-green:
+    backgroundColor: "{colors.ok-tint}"
+    textColor: "{colors.ok}"
+    rounded: "{rounded.r-1}"
+    padding: "2px 7px"
+  state-chip-amber:
+    backgroundColor: "{colors.warn-tint}"
+    textColor: "{colors.warn}"
+    rounded: "{rounded.r-1}"
+    padding: "2px 7px"
+  state-chip-red:
+    backgroundColor: "{colors.bad-tint}"
+    textColor: "{colors.bad}"
+    rounded: "{rounded.r-1}"
+    padding: "2px 7px"
+  state-chip-info:
+    backgroundColor: "{colors.info-tint}"
+    textColor: "{colors.info}"
+    rounded: "{rounded.r-1}"
+    padding: "2px 7px"
+  nav-item:
+    backgroundColor: "{colors.shell}"
+    textColor: "{colors.shell-ink-2}"
+    rounded: "{rounded.r-2}"
+    padding: "0 10px"
+    height: "38px"
   nav-item-active:
-    backgroundColor: "{colors.white}"
-    textColor: "{colors.gray-900}"
-  tab:
-    textColor: "{colors.gray-600}"
-    padding: "0 2px"
-    height: "42px"
-  tab-active:
-    textColor: "{colors.gray-900}"
-  count:
-    backgroundColor: "{colors.gray-100}"
-    textColor: "{colors.gray-700}"
-    typography: "{typography.label}"
-    rounded: "{rounded.full}"
-    padding: "0 6px"
-    height: "20px"
-  count-active:
-    backgroundColor: "{colors.blue-50}"
-    textColor: "{colors.blue-700}"
-  badge:
-    backgroundColor: "{colors.gray-50}"
-    textColor: "{colors.gray-700}"
-    typography: "{typography.label}"
-    rounded: "{rounded.full}"
-    padding: "1px 8px"
-  status-active:
-    backgroundColor: "{colors.green-50}"
-    textColor: "{colors.green-700}"
-    typography: "{typography.label}"
-    rounded: "{rounded.full}"
-    padding: "1px 8px"
-  status-suspended:
-    backgroundColor: "{colors.red-50}"
-    textColor: "{colors.red-700}"
-    typography: "{typography.label}"
-    rounded: "{rounded.full}"
-    padding: "1px 8px"
-  table-card:
-    backgroundColor: "{colors.white}"
-    rounded: "{rounded.lg}"
-  drawer:
-    backgroundColor: "{colors.white}"
-    rounded: "{rounded.lg}"
-    width: "400px"
-  site-item-active:
-    backgroundColor: "{colors.blue-50}"
-    textColor: "{colors.blue-800}"
-    rounded: "{rounded.md}"
-    height: "56px"
-  location-code:
-    backgroundColor: "{colors.gray-50}"
-    textColor: "{colors.gray-800}"
-    typography: "{typography.mono}"
-    rounded: "{rounded.sm}"
-    padding: "1px 6px"
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.petrol}"
+  visa-cell:
+    backgroundColor: "{colors.sheet}"
+    textColor: "{colors.ink}"
+    padding: "10px 14px 12px"
+    height: "92px"
+  visa-cell-mine:
+    backgroundColor: "{colors.warn-tint}"
+    textColor: "{colors.warn}"
+  segmented-active:
+    backgroundColor: "{colors.petrol}"
+    textColor: "{colors.shell-ink}"
+    height: "30px"
 ---
 
 # Design System: TRACEOPS
 
 ## Overview
 
-**Creative North Star: "La console qu'on sait déjà lire"**
+**Creative North Star: "Le rapport d'audit"**
 
-TRACEOPS est la console d'administration attendue, exécutée au niveau de finition de Linear, Stripe Dashboard, Vercel et Google Workspace Admin : on sait où tout se trouve avant de remarquer le style. Une barre latérale gris très clair bordée d'un filet, un espace de travail blanc, une encre presque noire, un seul bleu. La qualité tient aux détails d'exécution (graisses intermédiaires d'Inter, ombres à peine visibles, alignements tenus, états toujours nommés), pas au décor.
+Chaque intervention se lit comme un rapport qualité signé. Une coque pétrole pleine hauteur porte le mot-symbole, l'organisation et les rubriques à plat ; le contenu est posé sur un fond gris document, en feuilles blanches à filets fins et coins presque droits. En tête de chaque écran, un cartouche à cellules filetées donne les faits (organisation, site, période, édité le … par …) comme l'en-tête d'un rapport. Le geste signature est la bande de visa (demandé, devis, affecté, réalisé, contrôlé) : chaque case signée porte un nom et une date, la case vide dit qui doit agir.
 
-La densité est celle d'un outil de travail : texte de 14 px sur ordinateur, lignes de tableau de 56 px, contrôles de 36 px. Sur téléphone, l'interface passe en écrans successifs (organisations, organisation, tiroir) avec des cibles de 44 px et un texte de 15 px, pour un usage debout, en circulation, en forte lumière. Thème clair uniquement, contrastes forts.
+La densité est celle d'un registre : lignes de tableau serrées, chiffres tabulaires, libellés de champ en petites majuscules espacées, hiérarchie portée par la graisse et la taille plutôt que par la couleur. Le pétrole est la seule couleur d'identité ; vert, ambre et rouge n'apparaissent que pour dire un état, toujours accompagnés d'un mot. Les graphiques sont sobres : grilles en filet, étiquettes de valeur au-dessus des colonnes, données consultables en tableau.
 
-Le système refuse le décor (tissus, liserés, couleur d'organisation qui envahit l'écran) autant que la console grise négligée. De l'identité précédente, seul le mot-symbole TRACE·OPS subsiste : TRACE en graisse forte, OPS en graisse régulière, suivi d'un point rond bleu.
+Le système refuse deux pentes : la console grise à un seul bleu de la catégorie (le monde précédent, retiré), et le document costumé (texture papier, tampons, sceaux, faux manuscrit). Le rapport est évoqué par la structure (cartouche, cellules, visas), jamais par un décor. Thème clair uniquement : bureaux et sites en plein jour.
 
 **Key Characteristics:**
-- Barre latérale #f9fafb de 256 px, contenu blanc, filets #e5e7eb.
-- Un seul accent bleu pour l'action principale, la sélection et le focus.
-- Vert et rouge réservés aux états, toujours pastille plus mot.
-- Inter Variable à tailles optiques ; mono réservé aux identifiants, codes et secrets.
-- Trois rayons hiérarchisés (6, 8, 12 px) et des ombres douces décalées.
-- Formulaires et secrets dans un tiroir de 400 px à droite, sans perdre la liste.
-- Un seul mouvement signé : le tiroir glisse de 12 px.
+- Coque pétrole pleine hauteur (240 px, repliable à 68 px), feuilles blanches à filets sur gris document.
+- Cartouche en tête d'écran : titre 28 px, cellules à libellé en petites majuscules.
+- Bande de visa en grand sur le dossier, compacte dans les listes, en mini-bande de cinq carrés ailleurs.
+- Couleurs de conformité réservées aux états, toujours doublées d'un mot.
+- Une famille, Source Sans 3 ; Source Code Pro seulement pour références, codes, identifiants et secrets.
+- Un seul mouvement signé : le coup de tampon de la case de visa ; plus le glissement du panneau latéral.
 
 ## Colors
 
-Une rampe de gris neutres porte toute l'interface ; un bleu unique signale ce qu'on peut faire et où l'on se trouve ; vert et rouge ne parlent que d'état.
+Un pétrole profond unique sur des gris bleutés de document, plus trois couleurs de conformité tenues en réserve.
 
 ### Primary
-- **Bleu d'action** (blue-600) : bouton principal, soulignement de l'onglet actif, pastille du mot-symbole, anneau et contour de focus, curseur de saisie, `accent-color`. Survol du bouton principal en **Bleu appuyé** (blue-700), qui sert aussi aux liens texte, au compteur de l'onglet actif et à l'icône du site choisi.
-- **Bleu de sélection** (blue-50) : fond du site choisi et du compteur de l'onglet actif ; le nom du site choisi passe en **Bleu profond** (blue-800). **Bleu de surlignage** (blue-100) : sélection de texte.
+- **Pétrole de coque** (shell / petrol): fond de la barre latérale et de la colonne d'accueil de connexion, bouton principal, segment actif, jour courant du planning, cases signées de la bande de visa, titres de feuille, courbe du taux, valeur héroïque des indicateurs. Survol des boutons en **pétrole nuit** (petrol-hover).
+- **Pétrole survol / actif de coque** (shell-hover, shell-active): survol des rubriques et organisation sélectionnée dans la coque.
+- **Teintes pétrole** (petrol-tint, petrol-tint-2): ligne ou site sélectionné, case cochée, fond de jauge, sélection de texte.
+- **Pétrole de focus** (focus): anneau de focus de 2 px décalé de 2 px partout ; blanc dans la coque.
+
+### Secondary (conformité, réservée aux états)
+- **Vert conforme** (ok-mark pour les marques, ok pour le texte, ok-tint et ok-rule pour les fonds et filets): accepté, effectué, actif, jauge de conformité.
+- **Ambre observation** (warn-mark, warn, warn-tint, warn-rule): à contrôler, en attente de votre visa, « à vous de viser ».
+- **Rouge non-conformité** (bad-mark, bad, bad-tint, bad-rule): reprise, retard, refus, tâche impossible, erreur, action destructrice.
+- **Bleu information** (info, info-tint, info-rule): état neutre-actif (planifiée) sur les puces et les passages du planning ; c'est un pétrole désaturé, pas un second accent.
+
+### Tertiary (graphiques)
+- **Séries de résultats** (series-accepted, series-review, series-alert): les résultats prennent les teintes de conformité.
+- **Séries en attente** (series-planned, series-assign): les étapes en attente (planifiées, à affecter ou à chiffrer) prennent la rampe ordinale pétrole.
+- **Rampe ordinale pétrole** (ordinal-1 à ordinal-6): étapes successives de la chaîne dans le registre des étapes, du plus clair (demande) au pétrole de coque (acceptées).
 
 ### Neutral
-- **Encre** (gray-900) : titres, noms, texte principal, avatar actif.
-- **Texte secondaire** (gray-600) : phrases d'aide, méta d'en-tête, description du tiroir, onglets au repos.
-- **Texte tertiaire** (gray-500) : en-têtes de colonnes, libellés de groupe, chemins de lieux, icônes au repos, textes d'aide `small`.
-- **Gris d'icône discrète** (gray-400) : icône de recherche, icônes d'onglet au repos, chevrons ; bordure de champ au survol.
-- **Filet de contrôle** (gray-300) : bordure des boutons et champs, bordure pointillée des états vides.
-- **Filet** (gray-200) : bordures de conteneurs, barre latérale, onglets, tiroir ; trait de chargement du skeleton.
-- **Séparateur de ligne** (gray-100) : lignes de tableau, fonds de compteur, de type de lieu et d'icône de site ; survol des éléments de navigation.
-- **Gris de panneau** (gray-50) : barre latérale, en-têtes de tableau, pied du tiroir, fond des pages de connexion, champs de secret.
-- **Survol de ligne** (gray-25) : survol d'une ligne de membre.
-- **Blanc** : espace de travail, cartes, tiroir, organisation active dans la barre latérale.
-
-### États
-- **Vert d'état** (green-700 sur green-50, filet green-200 ; green-800 dans l'alerte de succès) : « Actif », confirmations, pastille de statut du secret créé.
-- **Rouge d'état** (red-700 sur red-50, filet red-200 ; red-800 dans l'alerte d'erreur) : « Suspendu », erreurs.
+- **Gris document** (page): fond de page sous les feuilles.
+- **Feuille** (sheet, sheet-2, sheet-3): feuille blanche ; en-têtes de tableau, pieds de panneau et survols ; fonds de squelette et de photo.
+- **Filets** (rule, rule-2, rule-3): filet de feuille et de cellule ; séparateur interne de ligne ; bord de champ et de bouton secondaire.
+- **Encres** (ink, ink-2, ink-3): texte principal ; texte secondaire et libellés de formulaire ; méta, libellés de cellule, axes.
+- **Encres de coque** (shell-ink, shell-ink-2, shell-ink-3): texte blanc, rubriques au repos, méta dans la coque.
 
 ### Named Rules
-**The Accent unique Rule.** Le bleu ne désigne que l'action principale, la sélection et le focus. Une vue ne montre qu'un bouton bleu : quand le tiroir s'ouvre, le bouton principal de la barre d'outils redevient secondaire et cède le bleu au bouton du tiroir.
+**La règle des états réservés.** Vert, ambre et rouge ne servent qu'à dire un état (conforme, observation ou attente, non-conformité, retard, erreur) et sont toujours accompagnés d'un mot. Aucun avatar, aucune décoration, aucun graphique d'étape en attente ne les emprunte.
 
-**The État dit Rule.** Vert et rouge ne servent qu'aux états, et un état est toujours une pastille plus un mot, jamais une couleur seule. « Actif » porte une pastille pleine ; « Suspendu » une pastille creuse (anneau de 1,5 px), pour que l'état se lise aussi sans couleur.
+**La règle d'une seule voix.** Le pétrole est la seule couleur d'identité. Pas de second accent : le bleu information reste un pétrole désaturé.
 
-**The Teinte muette Rule.** Les avatars à initiales prennent une teinte douce déterministe tirée de l'identifiant, parmi huit (indigo, violet, pourpre, ciel, cyan, ambre, ardoise, pierre). Le jeu exclut le vert, le rouge et le bleu d'accent : une teinte ne porte jamais un état ni un droit, et le nom est toujours écrit à côté.
+**La règle de la rampe ordinale.** Ce qui est une étape de la chaîne prend la rampe pétrole ordonnée ; ce qui est un résultat prend la teinte de conformité.
 
 ## Typography
 
-**Display Font:** Inter Variable (avec ui-sans-serif, system-ui, -apple-system, Segoe UI), auto-hébergée via `@fontsource-variable/inter/opsz.css`, `font-optical-sizing: auto`
-**Body Font:** Inter Variable (même pile)
-**Label/Mono Font:** ui-monospace, SFMono-Regular, Cascadia Mono, Menlo, Consolas, chiffres tabulaires
+**Display Font:** Source Sans 3 Variable (avec ui-sans-serif, system-ui, Segoe UI)
+**Body Font:** Source Sans 3 Variable
+**Label/Mono Font:** Source Code Pro Variable (avec ui-monospace, Consolas, Cascadia Mono)
 
-**Character:** Une seule famille, rendue précise par l'axe optique et par des graisses intermédiaires (550, 650) qu'offre la variable : assez de contraste pour hiérarchiser sans jamais crier. Le mono n'apparaît que là où un caractère doit être recopié exactement.
+**Character:** une humaniste de rapport technique, nette en petite taille et en chiffres tabulaires ; la monospace marque ce qu'on recopie (numéro d'intervention, code de lieu, identifiant, mot de passe temporaire).
 
 ### Hierarchy
-- **Wordmark** (800 puis 400, 17 px, interlettrage 0,06 em) : le mot-symbole TRACE·OPS, en haut de la barre latérale et des pages de connexion.
-- **Headline** (650, 24 px, 1,25, -0,022 em) : nom de l'organisation dans l'en-tête de page, titre de la carte de connexion (22 px sur téléphone, 20 px pour le titre de page).
-- **Title** (650, 20 px, 1,3, -0,017 em) : nom du site choisi.
-- **Title small** (600, 16 px, 1,4, -0,011 em) : titre du tiroir. Les titres d'état vide prennent 600 à 15 px.
-- **Body** (400, 14 px, 1,5) : texte courant, cellules, champs ; 15 px sur téléphone et 16 px dans les champs pour éviter le zoom. Paragraphes limités à 68 ch, titres en `text-wrap: balance`.
-- **Body strong** (550, 14 px) : boutons, noms de membres, de sites et de lieux, nom de l'utilisateur.
-- **Label** (550, 12 px) : en-têtes de colonnes, libellés de groupe de la navigation, badges, statuts, compteurs. Casse de phrase, jamais de capitales.
-- **Mono** (400 à 600, 13 px, chiffres tabulaires) : identifiants de connexion, codes de lieu, secrets à usage unique.
+- **Display** (700, 52 px, 1.05, -0.02em, chiffres tabulaires): la seule valeur héroïque d'un tableau de bord (conformité au premier contrôle), en pétrole ; 44 px sur téléphone.
+- **Headline** (700, 28 px, 1.15, -0.012em): titre du cartouche, un par écran ; 22 px sur téléphone. Le titre de connexion est à 24 px, l'accroche de la colonne pétrole à 30 px.
+- **KPI** (700, 30 px, 1.05): valeurs de la bande d'indicateurs, rouge seulement pour « en retard » ; 26 px sur téléphone.
+- **Title** (700, 15.5 px, 1.3): titres de feuille en pétrole ; titres de panneau 16 px en encre ; nom de visa 15 px.
+- **Body** (400, 14 px, 1.5): texte courant ; 15 px sur téléphone, champs à 16 px pour éviter le zoom. Introductions limitées à 72ch.
+- **Meta** (600 ou 400, 12.5 à 13.5 px): méta de feuille, en-têtes de tableau, puces d'état, légendes.
+- **Label** (700, 11 px, 0.07em, majuscules): libellés de cellule du cartouche, étapes de visa, faits du dossier, libellés de carte mobile ; 10 px dans la bande compacte.
+- **Mono** (600, 12.5 px): références INT-…, codes de lieu, identifiants, secrets.
 
 ### Named Rules
-**The Mono réservé Rule.** La police mono est réservée aux identifiants, aux codes de lieu et aux secrets à usage unique ; tout ce qui se lit plutôt qu'il ne se recopie reste en Inter.
+**La règle de la monospace réservée.** Source Code Pro ne sert qu'aux références, codes, identifiants et secrets. Jamais aux titres, aux chiffres d'indicateurs ni aux libellés.
 
-**The Graisse intermédiaire Rule.** La hiérarchie se fait par 400, 500, 550, 600 et 650, pas par 700. Le gras plein (800) n'appartient qu'au mot-symbole.
+**La règle du libellé de champ.** Les petites majuscules espacées étiquettent un champ ou une cellule (Site, Période, Demandé par). Elles ne surmontent jamais un titre comme surtitre.
+
+**La règle des chiffres tabulaires.** Tout chiffre qui se compare (indicateurs, compteurs, heures, dates de visa, colonnes de tableau) est en chiffres tabulaires.
 
 ## Layout
 
-**Coque.** Grille à deux colonnes : barre latérale collante de 256 px (pleine hauteur, gris de panneau, filet à droite) et contenu blanc limité à 1320 px, avec des marges de 28 × 40 px. La barre latérale empile le mot-symbole (60 px), la navigation « Organisations » groupée en Clients puis Prestataires (libellés de groupe de 12 px, éléments de 36 px séparés de 2 px, 18 px entre groupes), l'action « Créer une organisation » pour l'administrateur, puis le compte (avatar, nom, rôle, déconnexion à côté, sélecteur de langue dessous) au-dessus d'un filet. Sur ordinateur, chaque organisation tient sur une ligne avec points de suspension ; le nom complet est dans l'attribut `title`.
+Grille d'application à deux colonnes : coque de 240 px (68 px repliée, 216 px sous 1024 px) et contenu centré limité à 1440 px, marges de 22 × 32 px (18 × 22 px sous 1024 px, 14 × 16 px au téléphone). Les blocs d'un tableau de bord s'empilent avec un pas de 16 px : cartouche, bande d'indicateurs (héros 1,55 fraction puis quatre colonnes égales), paires de feuilles (1,25 / 1 ou 1,6 / 1), tableaux pleine largeur.
 
-**En-tête de page.** Avatar carré de 40 px, nom de l'organisation (Headline), puis une ligne de méta : badge de type et rôle de l'utilisateur. 20 px sous l'en-tête, les onglets soulignés (24 px entre onglets, 24 px dessous), puis la barre d'outils : phrase d'aide à gauche, actions à droite.
+Dossier : colonne principale et colonne latérale de 360 px (320 px sous 1280 px, empilées sous 1024 px). Panneau latéral d'édition de 420 px, collant, à côté de la liste ; sous 1280 px il remplace la liste. Planning : grille horaire 56 px + sept jours, 56 px par heure ; au téléphone, liste par jour.
 
-**Espace de travail.** La liste occupe toute la largeur ; dès qu'un formulaire ou un secret s'ouvre, un tiroir de 400 px s'ajoute à droite (24 px d'écart), collant à 24 px du haut. Sites et salles : liste de sites de 320 px et détail du site côte à côte ; un formulaire de site ou de lieu remplace la colonne qu'il ne concerne pas par le tiroir de 400 px. Le site choisi se lit sur la page même, sans carte : en-tête, recherche (360 px max), puis un seul tableau bordé des lieux (colonnes nom, 128 px type, 120 px code).
+Rythme interne : cellules et feuilles à 18 px de marge latérale, 10 à 14 px verticale ; lignes de tableau à 10 × 12 px (en-tête 9 px) ; écarts de 6, 8, 10, 12, 14, 16 px.
 
-**Rythme.** Pas de 4 px ; valeurs courantes 4, 8, 12, 16, 24 et 40 px. 16 px entre champs d'un formulaire, 16 px sous une barre d'outils, 12 × 16 px dans les cellules.
+Points de rupture : 1279 px (panneau à la place de la liste, indicateurs sur trois colonnes), 1023 px (grilles de feuilles en une colonne, bande de visa en tuiles, indicateurs sur deux colonnes), 767 px (coque en barre supérieure avec rubriques défilantes, tableaux en cartes à libellés, cibles de 44 px, bande de visa en une colonne et compacte en deux). Les tableaux s'adaptent aussi par requêtes de conteneur (colonnes secondaires masquées sous 900 et 760 px).
 
-**Points de rupture.**
-- **1280 px et plus** : liste et tiroir (ou liste de sites et site choisi) côte à côte.
-- **Sous 1280 px** : ils alternent ; le tiroir prend la place de la liste (560 px max, hauteur libre) et un lien « retour » ramène à la liste des sites.
-- **Sous 1024 px** : barre latérale de 232 px, marges de 24 × 28 px.
-- **Sous 768 px (téléphone)** : écrans successifs organisations › organisation › tiroir. Une barre supérieure de 56 px porte le mot-symbole, la langue et la déconnexion ; tous les contrôles montent à 44 px. Les onglets se partagent la largeur, la barre d'outils s'empile (action principale en premier, pleine largeur), les tableaux deviennent des cartes, les noms d'organisation passent à la ligne au lieu d'être tronqués, le pied du tiroir empile ses boutons pleine largeur.
-
-### Named Rules
-**The Ligne tenue Rule.** Tant que le tiroir est ouvert, la barre d'outils garde une seule ligne : la phrase d'aide se tronque, les actions ne passent jamais à la ligne, et la liste ne saute pas.
-
-**The Pied visible Rule.** Sur ordinateur, la hauteur du tiroir est plafonnée (`max(360px, 100dvh - 248px)`) : l'en-tête et le pied restent à l'écran, seul le corps défile.
-
-**The Compteur réservé Rule.** L'emplacement du compteur d'onglet ne disparaît jamais : pendant le chargement il affiche un tiret gris, puis le nombre, sans que les onglets bougent.
+**La règle de la navigation à plat.** Chaque rubrique est un onglet de la coque ; aucun groupe repliable, aucun sous-menu, y compris la liste des organisations.
 
 ## Elevation & Depth
 
-Hybride, majoritairement plat. La profondeur vient d'abord des fonds tonals (barre latérale gris de panneau contre contenu blanc, en-têtes de tableau et pied de tiroir gris) et des filets ; les ombres sont douces, décalées vers le bas, teintées d'un bleu-noir (#101828) à très faible opacité, et ne servent qu'à détacher ce qui est saisissable ou superposé.
+Système plat à filets. La profondeur vient du contraste gris document / feuille blanche et des filets ; l'ombre est un souffle presque invisible sur les feuilles et ne devient réelle que pour ce qui flotte.
 
 ### Shadow Vocabulary
-- **Contact** (`box-shadow: 0 1px 2px rgb(16 24 40 / .05)`) : boutons, champs, cartes de tableau, liste de sites, organisation active, cartes de membres sur téléphone.
-- **Carte posée** (`box-shadow: 0 1px 3px rgb(16 24 40 / .08), 0 1px 2px rgb(16 24 40 / .04)`) : carte de connexion ; tiroir sur téléphone.
-- **Tiroir** (`box-shadow: 0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05)`) : le tiroir sur ordinateur, seul élément superposé au travail.
-- **Anneau de focus** (`box-shadow: 0 0 0 3px rgb(37 99 235 / .22)`) : champs au focus, en plus de la bordure bleue.
-- **Reflet du bouton principal** (`inset 0 1px 0 rgb(255 255 255 / .14)`) : liseré de lumière en haut du bouton bleu.
+- **Feuille** (`box-shadow: 0 1px 2px rgb(14 74 92 / .05)`): feuilles, cartouche, bande d'indicateurs, tableaux, bande de visa pleine.
+- **Panneau** (`box-shadow: 0 14px 30px -12px rgb(14 74 92 / .24), 0 2px 6px rgb(14 74 92 / .06)`): panneau latéral et infobulle de graphique uniquement.
 
 ### Named Rules
-**The Ombre douce Rule.** Les ombres sont floues, décalées vers le bas et à moins de 15 % d'opacité ; aucune ombre dure ni décalée en aplat. Plus un élément est superposé, plus son ombre s'élargit, jamais plus sombre.
+**La règle du filet d'abord.** Une séparation se fait par un filet de 1 px (rule entre feuilles et cellules, rule-2 entre lignes), jamais par une ombre ni par un fond coloré.
 
 ## Shapes
 
-Trois rayons hiérarchisés par taille d'objet : 6 px pour les petits éléments (codes de lieu, avatars carrés de 24 et 32 px, contour de focus des onglets), 8 px pour les contrôles (boutons, champs, alertes, icônes de site, tableau des lieux), 12 px pour les conteneurs (carte de tableau, liste de sites, tiroir, carte de connexion, état vide, cartes de membres sur téléphone). Les pastilles d'information (badges, statuts, compteurs, types de lieu) sont entièrement arrondies. Les avatars sont des cercles pour une personne et des carrés arrondis pour une organisation (10 px à 40 px). Bordures de 1 px partout ; seuls l'onglet actif (2 px, coins hauts arrondis) et l'état vide (pointillé) font exception. Icônes au trait de 1,75 sur grille de 24, joints ronds, affichées à 16 px (18 px dans les boutons d'icône).
+Coins presque droits : 2 px (r-1) pour les feuilles, cartouches, tableaux, puces d'état et numéros d'étape ; 3 px (r-2) pour les contrôles (boutons, champs, segments, rubriques, cases, photos). Les seules formes rondes sont les avatars ronds, la pastille d'agent (999 px), les points de chronologie et de statut, et le point du mot-symbole. Filets pleins de 1 px partout ; le pointillé est réservé à ce qui manque encore : case de visa en attente (trait pointillé en pied de case), mini-visa en attente, « sans photo », ajout d'organisation, zone d'indication vide.
 
 ## Components
 
 ### Buttons
-Sobres, précis, un seul bleu à la fois.
-- **Shape:** coins moyens (8 px), 36 px de haut, 14 px de marge latérale, 550, icône de 16 px à 6 px du texte.
-- **Primary:** fond bleu d'action, bordure bleu appuyé, texte blanc, ombre de contact plus reflet interne ; survol en bleu appuyé.
-- **Secondary (par défaut):** fond blanc, filet de contrôle, ombre de contact, icône gris tertiaire ; survol gris de panneau.
-- **Small:** 32 px, 13 px de texte (réessayer dans une alerte). **Wide:** pleine largeur, 40 px (connexion).
-- **Icon button:** 32 px, transparent, icône de 18 px gris tertiaire ; survol séparateur et encre (fermer le tiroir, déconnexion).
-- **Link button:** texte bleu appuyé souligné à 35 % d'opacité, plein au survol. **Retour:** transparent, gris secondaire, chevron.
-- **Hover / Focus:** transitions de couleur de 150 ms ; focus clavier en contour bleu de 2 px décalé de 2 px. Désactivé à 50 % d'opacité.
+Fermes et sobres, une seule action principale par étape.
+- **Shape:** coins de 3 px, hauteur 36 px (32 px petit, 42 px large, 44 px au téléphone), graisse 600, icône de 16 px et écart de 7 px.
+- **Primary:** fond pétrole, texte blanc ; survol pétrole nuit.
+- **Secondary:** fond feuille, filet rule-3, encre ; survol feuille-2 et filet ink-3.
+- **Danger:** fond rouge plein pour la confirmation destructrice ; variante contour rouge et lien rouge souligné pour l'amorce.
+- **Link button:** pétrole souligné à 35 % d'opacité, plein au survol.
+- **Focus:** anneau pétrole de 2 px décalé de 2 px ; transitions de couleur de 150 ms.
 
 ### Chips
-- **Badge de type :** pilule gris de panneau, filet, texte gris 700, Label (« Client », « Prestataire »).
-- **Statut :** pilule avec pastille de 6 px puis le mot ; vert pour « Actif » (pastille pleine), rouge pour « Suspendu » (pastille creuse). Le nom d'un membre suspendu passe en gris tertiaire.
-- **Compteur :** pilule de 20 px, chiffres tabulaires ; gris au repos, bleu de sélection et bleu appuyé dans l'onglet actif ; tiret gris en attente.
-- **Type de lieu :** pilule séparateur sans bordure. **Code de lieu :** mono 600 sur gris de panneau, filet, coins de 6 px.
+- **État:** puce à coins de 2 px, 12,5 px graisse 600, fond teinte + filet + texte foncé de la même famille (vert, ambre, rouge, information, neutre). Toujours un mot ; icône de 13 px facultative.
+- **Statut d'accès:** même puce précédée d'un point plein (actif) ou d'un anneau (suspendu).
+- **Code de lieu:** monospace 12 px dans un cadre filet sur feuille-2.
+- **Compteur de rubrique:** pastille translucide dans la coque, pétrole sur teinte quand la rubrique est active.
 
 ### Cards / Containers
-- **Corner Style:** 12 px (tableau des lieux : 8 px).
-- **Background:** blanc ; en-têtes de tableau et pieds en gris de panneau.
-- **Shadow Strategy:** ombre de contact au repos, ombre du tiroir pour le seul élément superposé (voir Elevation & Depth).
-- **Border:** filet de 1 px ; lignes internes en séparateur.
-- **Internal Padding:** cellules 12 × 16 px, en-têtes 10 × 16 px ; carte de connexion 32 px (24 × 20 sur téléphone).
-- **État vide :** carte pointillée centrée, carré d'icône de 40 px gris, titre 600 et phrase de 46 ch ; aucune action répétée.
-- **Chargement :** lignes skeleton de 56 px avec un disque de 28 px et une barre qui miroite ; spinner bleu de 16 px.
+- **Corner Style:** 2 px.
+- **Background:** feuille blanche sur gris document.
+- **Shadow Strategy:** ombre « Feuille » (voir Elevation & Depth).
+- **Border:** filet rule ; filet rouge et titre rouge pour une feuille d'alerte (à reprendre, en retard) ; filet ambre et bandeau ambre pâle de 3 px en tête pour la feuille « Prochaine étape » quand une action vous attend.
+- **Internal Padding:** en-tête 13 × 18 px, corps 12 × 18 × 16 px ; sous-section séparée par un filet rule-2.
 
 ### Inputs / Fields
-- **Style:** fond blanc, filet de contrôle, coins de 8 px, 38 px de haut, 8 × 12 px, ombre de contact ; libellé au-dessus (500, gris 800) à 6 px ; aide en `small` gris tertiaire. Sélecteurs natifs avec chevron dessiné à 10 px du bord. Recherche avec loupe à gauche.
-- **Focus:** bordure bleu d'action plus anneau bleu de 3 px ; survol en bordure gris 400.
-- **Error / Disabled:** les erreurs passent par une alerte rouge (icône, texte rouge 800 sur rouge 50, filet rouge 200) au-dessus du contenu ; les succès par l'alerte verte équivalente.
+- **Style:** filet rule-3, fond feuille, coins de 3 px, 38 px de haut, libellé persistant au-dessus (13 px, 600, ink-2) et aide en 12,5 px.
+- **Focus:** filet pétrole et halo de 3 px à 16 % de pétrole.
+- **Error / Disabled:** lecture seule sur feuille-2 ; désactivé à 50 % d'opacité ; erreurs dans une alerte rouge à icône. Secrets en monospace sur feuille-2.
 
 ### Navigation
-- **Barre latérale :** éléments de 36 px transparents, avatar carré de 24 px à 10 px du nom (500, gris 700) et méta de 12 px dessous ; survol séparateur. L'organisation active passe sur blanc avec filet et ombre de contact, en encre. Sur téléphone, éléments de 52 px, avatars de 32 px, noms sur plusieurs lignes.
-- **Onglets :** soulignés, 42 px de haut, icône puis libellé (500, gris secondaire) puis compteur. Survol : encre et trait gris 300 ; actif : encre, icône gris 700, trait bleu de 2 px.
-- **Liste de sites :** conteneur de 12 px, éléments de 56 px avec carré d'icône de 32 px, nom et adresse, chevron ; le site choisi sur bleu de sélection, nom en bleu profond, icône blanche à ombre de contact.
+- **Coque:** fond pétrole, mot-symbole blanc, carte d'organisation filetée, rubriques de 38 px à 14,5 px graisse 500 en shell-ink-2 avec icône de 17 px ; survol shell-hover ; rubrique active en feuille blanche, texte et icône pétrole, graisse 700. Entre le mot-symbole et le pied, organisation, rubriques et liste des organisations défilent en une seule colonne (fondu de 20 px en bas) : rien ne s'écrase sur un écran bas. Le libellé « Plateforme » n'existe que pour l'administrateur. En pied, le bloc du compte est l'onglet « Mon profil » (avatar, nom, « Mon profil »), actif en feuille blanche comme une rubrique ; langue et déconnexion dessous. Sur téléphone, « Mon profil » rejoint la bande d'onglets.
+- **Téléphone:** barre pétrole de 56 px, rubriques défilant horizontalement, langue et déconnexion en haut à droite.
 
-### Tiroir
-Le geste signature du système. Panneau blanc de 400 px, coins de 12 px, ombre de tiroir. En-tête de 60 px (titre Title small, bouton fermer, ou pastille verte cochée pour un secret créé), corps défilant à 16 px d'écart, pied gris de panneau avec les actions alignées à droite, le principal en dernier. À l'ouverture, il glisse de 12 px depuis la droite en fondu (220 ms, `cubic-bezier(.16, 1, .3, 1)`) et le focus passe à son titre. C'est le seul mouvement signé ; les autres transitions sont des changements de couleur de 150 ms, et `prefers-reduced-motion` supprime toute animation et transition.
+### Cartouche (signature)
+En-tête de chaque écran : feuille pleine largeur, titre 28 px et sous-titre, actions à droite ; dessous, une rangée de cellules filetées (minimum 180 px) à libellé en petites majuscules et valeur 14 px graisse 600. Ne contient que des faits ; le sélecteur de période 7 / 30 / 90 j est un contrôle segmenté dans la cellule Période.
 
-### Secret à usage unique
-Dans le tiroir : l'identifiant sur une ligne grise bordée (libellé à gauche, code mono 600 à droite), puis le secret dans une zone de texte en lecture seule, mono 14 px sur gris de panneau, ajustée à son contenu. Bouton secondaire « Copier » (devient « Copié » avec une coche) et bouton principal « Terminé ».
+### Bande de visa (signature)
+Cinq cases filetées dans une feuille à filet rule-3. Chaque case : étape en petites majuscules avec numéro carré, nom 15 px graisse 700, date en chiffres tabulaires, note. **Signée** : numéro plein pétrole et coche pétrole en haut à droite. **En attente** : nom en ink-2 et trait pointillé en pied. **À vous** : fond ambre pâle, nom ambre. **Reprise / refus** : fond rouge pâle, nom et note rouges. **À venir** : nom en ink-3. Variante **compacte** dans les tableaux (cases 5 × 9 px, nom 13 px, étape 10 px, coche 14 px, sans numéro) et **mini-bande** de cinq carrés de 11 px dans les listes.
+- **Motion:** une case qui vient d'être signée reçoit le coup de tampon : la coche entre en 180 ms (échelle 1,35 et rotation -8° vers repos), puis son trait se dessine en 320 ms après 120 ms.
 
-### Avatar
-Initiales (deux au plus, 600) sur une teinte douce stable. Tailles 24, 32 et 40 px ; cercle pour une personne, carré arrondi pour une organisation. Toujours décoratif (`aria-hidden`), le nom est écrit à côté.
+### Registre et tableaux
+En-tête sur feuille-2 à 12,5 px graisse 600, lignes séparées par rule-2, survol presque blanc, ligne sélectionnée en teinte pétrole ; références en monospace dans la première colonne. Le tableau de conformité du dossier numérote chaque tâche dans un carré (vert effectué, rouge impossible), avec résultat, auteur et date, photos avant / après de 88 × 66 px ou « sans photo » pointillé. Au téléphone, chaque ligne devient une carte à libellés en petites majuscules.
+
+### Indicateurs et graphiques
+Bande d'indicateurs en une feuille découpée par filets ; jauge de 6 px verte sur teinte pétrole. Colonnes empilées, courbe de taux pétrole de 2 px à points cerclés, registre des étapes en barres horizontales de 14 px sur la rampe ordinale avec numéro d'étape, barres classées segmentées de 8 px. Grilles en rule-2, axes en rule-3, étiquettes 11 px tabulaires ; la période à venir est grisée et nommée. Infobulle en feuille avec ombre « Panneau » ; légende à carrés de 10 px avec effectifs ; chaque graphique a sa table de données.
+
+### Panneau latéral
+Feuille de 420 px à ombre « Panneau », en-tête de 56 px, pied sur feuille-2 avec actions à droite (empilées pleine largeur au téléphone). Entre en glissant de 8 px avec fondu en 220 ms.
+
+### Mes missions (agent)
+Lignes de mission larges : heure en 20 px pétrole graisse 700, titre 15 px, lieu, progression des tâches en jauge ; feuilles d'alerte rouges en tête pour les reprises et les retards.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** garder un seul bouton bleu par vue, et rendre secondaire l'action de la barre d'outils quand le tiroir apporte la sienne.
-- **Do** écrire chaque état avec une pastille et un mot ; pastille pleine pour « Actif », creuse pour « Suspendu ».
-- **Do** utiliser les rayons selon la taille : 6 px petits éléments, 8 px contrôles, 12 px conteneurs, pilule pour badges, statuts et compteurs.
-- **Do** ouvrir formulaires et secrets dans le tiroir de 400 px à droite, plafonné en hauteur, avec seul le corps qui défile, et y porter le focus.
-- **Do** monter tous les contrôles à 44 px sous 768 px et transformer les tableaux en cartes.
-- **Do** composer les icônes au trait de 1,75 sur grille de 24, à 16 px, en `currentColor`.
+- **Do** ouvrir chaque écran par le cartouche, avec des faits seulement (organisation, site, période, édité le … par …).
+- **Do** montrer la bande de visa partout où une intervention apparaît : pleine sur le dossier, compacte dans les tableaux, mini-bande dans les listes ; la case vide nomme qui doit agir.
+- **Do** doubler chaque couleur d'état d'un mot (« À contrôler », « En retard », « sans photo »).
+- **Do** donner aux étapes en attente la rampe ordinale pétrole et réserver vert, ambre, rouge aux résultats dans les graphiques.
+- **Do** séparer par des filets de 1 px et garder les coins à 2 px (feuilles) et 3 px (contrôles).
+- **Do** mettre en chiffres tabulaires tout chiffre comparable, et en monospace les seules références, codes, identifiants et secrets.
+- **Do** viser des cibles de 44 px au téléphone et un anneau de focus pétrole de 2 px partout.
+- **Do** supprimer toute animation et transition sous prefers-reduced-motion.
 
 ### Don't:
-- **Don't** utiliser le bleu d'accent pour décorer, catégoriser ou teinter une organisation.
-- **Don't** utiliser vert ou rouge hors d'un état, ni signaler un état par la seule couleur.
-- **Don't** donner à un avatar une teinte verte, rouge ou du bleu d'accent.
-- **Don't** employer la police mono hors des identifiants, codes de lieu et secrets.
-- **Don't** ajouter tissus, liserés, motifs ou couleur d'organisation en aplat : seul le mot-symbole TRACE·OPS reste de l'identité précédente.
-- **Don't** poser d'ombre dure ou décalée en aplat ; les ombres restent floues et sous 15 % d'opacité.
-- **Don't** laisser la barre d'outils passer sur deux lignes ni un compteur d'onglet disparaître pendant un chargement.
+- **Don't** revenir à la console grise à un seul bleu de la catégorie, ni à Inter.
+- **Don't** costumer le rapport : pas de texture papier, de tampon encré, de sceau ni de faux manuscrit ; le « coup de tampon » reste une coche pétrole.
+- **Don't** poser un surtitre en petites majuscules au-dessus d'un titre, ni une bande colorée latérale sur une feuille ou une ligne, ni une numérotation décorative (les numéros d'étape et de tâche sont des données).
+- **Don't** utiliser vert, ambre ou rouge pour décorer, distinguer des personnes ou colorer un avatar.
+- **Don't** afficher un objectif, une référence de document ou un chiffre que le produit ne calcule pas réellement.
+- **Don't** ajouter un mouvement signé autre que le coup de tampon de visa et le glissement du panneau.
+- **Don't** introduire un thème sombre : le système est clair uniquement.
+- **Don't** regrouper des rubriques dans un menu repliable ou un sous-menu.

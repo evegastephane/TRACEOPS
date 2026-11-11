@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>Le classeur — TRACEOPS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{width:1440px;height:900px;overflow:hidden;font:400 14px/1.45 Barlow,system-ui,sans-serif;color:#14213d;background:#eef0f3;display:grid;grid-template-columns:248px 1fr}
+.cond{font-family:"Barlow Condensed",Barlow,sans-serif}
+aside{background:#1d3461;color:#c9d3e6;display:flex;flex-direction:column;padding:22px 0 18px}
+.brand{font:800 19px/1 Barlow;letter-spacing:.06em;color:#fff;padding:0 22px 22px}.brand span{font-weight:400}.brand i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#d9a441;margin-left:4px;vertical-align:middle}
+.org{margin:0 14px 18px;padding:10px 12px;border-radius:6px;background:#26406f;display:flex;gap:10px;align-items:center}
+.org b{display:grid;place-items:center;width:30px;height:30px;border-radius:5px;background:#d9a441;color:#1d3461;font:700 12px Barlow}
+.org strong{display:block;color:#fff;font-weight:600}.org small{font-size:12px;color:#9fb0cf}
+nav ul{list-style:none;padding:0 14px 0 14px}nav li{height:40px;display:flex;align-items:center;gap:11px;padding:0 12px;border-radius:5px;font-weight:500;font-size:15px;margin-bottom:2px;position:relative}
+nav li::before{content:"";width:16px;height:16px;border:1.6px solid currentColor;border-radius:4px;opacity:.7}
+nav li.on{background:#fff;color:#1d3461;font-weight:600;margin-right:-14px;border-radius:5px 0 0 5px}
+nav li.on::after{content:"";position:absolute;right:0;top:6px;bottom:6px;width:6px;background:#d9a441;border-radius:3px 0 0 3px}
+.foot{margin-top:auto;padding:14px 22px 0;border-top:1px solid #2c4778;display:flex;gap:10px;align-items:center}
+.av{width:32px;height:32px;border-radius:50%;background:#7a5bc7;color:#fff;display:grid;place-items:center;font:600 12px Barlow}
+.foot strong{display:block;color:#fff;font-weight:600}.foot small{color:#9fb0cf;font-size:12px}
+main{padding:26px 34px;display:flex;flex-direction:column;gap:18px;min-width:0}
+header{display:flex;align-items:flex-end;justify-content:space-between}
+.kicker{font:600 12px/1 "Barlow Condensed";letter-spacing:.14em;color:#5a6478;text-transform:uppercase;margin-bottom:8px}
+h1{font:600 36px/1 "Barlow Condensed";letter-spacing:.005em}
+.acts{display:flex;gap:10px;align-items:center}
+.sel,.btn{height:38px;padding:0 14px;border-radius:6px;border:1px solid #c5ccd8;background:#fff;display:flex;align-items:center;font-weight:600;gap:8px}
+.btn.p{background:#1d3461;border-color:#1d3461;color:#fff}
+.pile{display:flex;gap:6px;align-items:flex-end;padding-top:18px}
+.tab{position:relative;background:#fff;border-radius:0 6px 6px 6px;padding:14px 14px 12px;min-width:118px;border-top:5px solid var(--h);box-shadow:0 1px 0 rgb(20 33 61/.06)}
+.tab .lab{position:absolute;top:-25px;left:var(--o,0);height:22px;padding:0 10px;border-radius:5px 5px 0 0;background:var(--h);color:#fff;font:600 13px/22px "Barlow Condensed";letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.tab .n{font:600 46px/1 "Barlow Condensed";font-variant-numeric:tabular-nums}
+.tab small{display:block;color:#5a6478;font-size:12.5px;margin-top:4px}
+.grid{display:grid;grid-template-columns:2fr 1fr;gap:16px;min-height:0}
+.card{background:#fff;border-radius:8px;padding:16px 18px;box-shadow:0 1px 0 rgb(20 33 61/.06)}
+.card h2{font:600 15px/1 "Barlow Condensed";letter-spacing:.12em;text-transform:uppercase;color:#14213d;margin-bottom:14px;display:flex;justify-content:space-between}
+.card h2 span{font:500 13px Barlow;letter-spacing:0;text-transform:none;color:#5a6478}
+.bars{height:178px;display:flex;align-items:flex-end;gap:7px;border-bottom:1px solid #d7dce4;position:relative;padding-left:4px}
+.bars div{flex:1;display:flex;flex-direction:column-reverse;border-radius:3px 3px 0 0;overflow:hidden}
+.bars i{display:block}
+.today{position:absolute;top:-6px;bottom:-18px;border-left:2px dashed #1d3461}
+.today em{position:absolute;bottom:-2px;left:6px;font:600 11px "Barlow Condensed";letter-spacing:.08em;color:#1d3461;font-style:normal}
+.axis{display:flex;justify-content:space-between;color:#5f687a;font-size:11.5px;margin-top:6px}
+.legend{display:flex;gap:14px;margin-top:10px;font-size:12.5px;color:#5a6478}.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.big{font:600 64px/1 "Barlow Condensed";font-variant-numeric:tabular-nums}
+.side{display:flex;flex-direction:column;gap:16px}
+.spark{height:44px;margin-top:10px}
+.late{display:flex;gap:12px;align-items:center}.late .big{font-size:48px;color:#e0442b}
+.row3{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.item{display:grid;grid-template-columns:6px 92px 1fr 150px 116px;align-items:center;gap:14px;padding:11px 0;border-top:1px solid #eef0f3}
+.item:first-of-type{border-top:0}.edge{height:34px;border-radius:3px;background:var(--h)}
+code{font:600 12.5px ui-monospace,Consolas,monospace;color:#14213d;background:#f1f3f7;border-radius:4px;padding:2px 6px}
+.item strong{display:block;font-weight:600}.item small{color:#5a6478;font-size:12.5px}
+.chip{justify-self:start;font:600 12.5px Barlow;padding:3px 9px;border-radius:999px;background:color-mix(in srgb,var(--h) 14%,#fff);color:color-mix(in srgb,var(--h) 70%,#000)}
+.prov{margin-bottom:14px}.prov p{display:flex;justify-content:space-between;font-weight:600;margin-bottom:6px}.prov p span{font-weight:500;color:#5a6478}
+.stack{display:flex;height:12px;border-radius:3px;overflow:hidden;gap:2px}
+</style></head><body>
+<aside>
+  <div class="brand">TRACE<span>OPS</span><i></i></div>
+  <div class="org"><b>AF</b><div><strong>AFISA Food Industry</strong><small>Client · Responsable</small></div></div>
+  <nav><ul><li class="on">Vue d'ensemble</li><li>Planning</li><li>Interventions</li><li>Sites et salles</li><li>Équipe</li><li>Prestataires</li><li>Société</li></ul></nav>
+  <div class="foot"><span class="av">CE</span><div><strong>Carine Ebode</strong><small>c.ebode</small></div></div>
+</aside>
+<main>
+  <header><div><p class="kicker">Usine de Bonabéri · semaine du 9 novembre 2026</p><h1>Vue d'ensemble</h1></div>
+    <div class="acts"><span class="sel">30 derniers jours ▾</span><span class="btn">Nouveau programme</span><span class="btn p">Nouvelle demande de maintenance</span></div></header>
+  <section class="pile">
+    <div class="tab" style="--h:#9a6d1c;--o:0;flex:2"><span class="lab">Demande</span><div class="n">2</div><small>dont 1 urgente</small></div>
+    <div class="tab" style="--h:#b25a1e;--o:22px;flex:1.4"><span class="lab">Devis</span><div class="n">1</div><small>850 000 FCFA à valider</small></div>
+    <div class="tab" style="--h:#2f6fd6;--o:44px;flex:3"><span class="lab">À affecter</span><div class="n">8</div><small>chambres froides, sam.</small></div>
+    <div class="tab" style="--h:#13807a;--o:66px;flex:9"><span class="lab">Réalisation</span><div class="n">66</div><small>passages planifiés · 2 en retard</small></div>
+    <div class="tab" style="--h:#7a5bc7;--o:30px;flex:2.2"><span class="lab">Contrôle</span><div class="n">2</div><small>1 à contrôler · <b style="color:#e0442b">1 reprise</b></small></div>
+    <div class="tab" style="--h:#2f7f3b;--o:52px;flex:4"><span class="lab">Acceptées</span><div class="n">12</div><small>depuis le 27 oct.</small></div>
+  </section>
+  <section class="grid">
+    <div class="card"><h2>Passages par jour <span>27 oct. – 17 nov.</span></h2>
+      <div class="bars">
+        <div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i><i style="height:52px;background:#2f7f3b;opacity:.55"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div></div>
+        <div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i></div><div><i style="height:34px;background:#2f7f3b"></i><i style="height:52px;background:#2f7f3b;opacity:.55"></i></div><div><i style="height:34px;background:#e0442b"></i></div><div><i style="height:34px;background:#7a5bc7"></i><i style="height:52px;background:#7a5bc7;opacity:.55"></i></div><div></div>
+        <div><i style="height:34px;background:#e0442b;opacity:.75"></i></div><div><i style="height:34px;background:#e0442b;opacity:.75"></i></div><div><i style="height:34px;background:#13807a;opacity:.45"></i></div><div><i style="height:34px;background:#13807a;opacity:.45"></i></div><div><i style="height:34px;background:#13807a;opacity:.45"></i></div><div><i style="height:34px;background:#13807a;opacity:.45"></i><i style="height:52px;background:#2f6fd6;opacity:.5"></i></div><div></div>
+        <span class="today" style="left:66.5%"><em>AUJOURD'HUI</em></span>
+      </div>
+      <div class="axis"><span>lun. 27 oct.</span><span>lun. 3 nov.</span><span>lun. 10 nov.</span><span>dim. 16 nov.</span></div>
+      <div class="legend"><span><b style="background:#2f7f3b"></b>Acceptés</span><span><b style="background:#7a5bc7"></b>À contrôler</span><span><b style="background:#e0442b"></b>Reprise ou en retard</span><span><b style="background:#13807a;opacity:.45"></b>Planifiés</span><span><b style="background:#2f6fd6;opacity:.5"></b>À affecter</span></div>
+    </div>
+    <div class="side">
+      <div class="card"><h2>Acceptés au 1er contrôle</h2><div class="big">92 %</div><small style="color:#5a6478">12 sur 13 contrôles · 1 reprise ciblée</small>
+        <svg class="spark" viewBox="0 0 300 44" width="100%"><polyline fill="none" stroke="#2f7f3b" stroke-width="2.5" points="0,10 40,10 80,10 120,10 160,10 200,30 240,18 300,14"/><circle cx="300" cy="14" r="4" fill="#2f7f3b"/></svg></div>
+      <div class="card"><h2>En retard</h2><div class="late"><span class="big">2</span><small style="color:#5a6478">passages non démarrés à l'heure prévue, lun. 9 et mar. 10 nov.</small></div></div>
+    </div>
+  </section>
+  <section class="row3">
+    <div class="card"><h2>À traiter <span>3 dossiers</span></h2>
+      <div class="item" style="--h:#7a5bc7"><span class="edge"></span><code>INT-0556</code><div><strong>Remplacement de la sonde de niveau du mélangeur M1</strong><small>MécaTech Industrie · Mélangeur M1 (500 L)</small></div><small>sam. 7 nov. · 13:00–15:00</small><span class="chip">À contrôler</span></div>
+      <div class="item" style="--h:#b25a1e"><span class="edge"></span><code>INT-0553</code><div><strong>Remplacement des roulements du convoyeur ligne 2</strong><small>MécaTech Industrie · Convoyeur ligne 2</small></div><small>mer. 11 nov. · 08:00–12:00</small><span class="chip">Devis à valider</span></div>
+    </div>
+    <div class="card"><h2>Par prestataire</h2>
+      <div class="prov"><p>Hygiène Plus Services <span>84</span></p><div class="stack"><i style="flex:10;background:#2f7f3b"></i><i style="flex:2;background:#7a5bc7"></i><i style="flex:64;background:#13807a;opacity:.45"></i><i style="flex:8;background:#2f6fd6"></i></div></div>
+      <div class="prov"><p>MécaTech Industrie <span>7</span></p><div class="stack"><i style="flex:2;background:#2f7f3b"></i><i style="flex:1;background:#7a5bc7"></i><i style="flex:2;background:#13807a;opacity:.45"></i><i style="flex:2;background:#9a6d1c"></i></div></div>
+    </div>
+  </section>
+</main>
+</body></html>

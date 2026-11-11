@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { api } from './api';
-type Org = {id:string;name:string;kind:string;roles?:string[]};
-export function Dashboard({org,admin,lang,orgCount,onNavigate}:{org?:Org;admin:boolean;lang:'fr'|'en';orgCount:number;onNavigate:(s:'team'|'sites')=>void;onCreateOrg?:()=>void}) {
- const fr=lang==='fr';const manager=Boolean(admin||org?.roles?.some(r=>r.endsWith('_MANAGER')));const controller=Boolean(org?.roles?.includes('CLIENT_CONTROLLER'));const canSites=manager||controller;
- const [sites,setSites]=useState<{id:string;name:string;sector:string}[]>([]),[state,setState]=useState('loading'),[attempt,setAttempt]=useState(0);
- useEffect(()=>{let active=true;setSites([]);setState('loading');if(!org||!canSites){setState('unavailable');return;}api('sites',undefined,org.id).then(v=>{if(active){setSites(v);setState('ready');}}).catch(()=>{if(active)setState('error');});return()=>{active=false};},[org?.id,canSites,attempt]);
- const role=admin?(fr?'Administrateur':'Administrator'):manager?(org?.kind==='CLIENT'?(fr?'Responsable client':'Client manager'):(fr?'Responsable prestataire':'Provider manager')):controller?(fr?'Contrôleur client':'Client controller'):(fr?'Agent terrain':'Field agent');
- return <div className="dashboard">
- <section className="dashboard-intro"><h2>{fr?'Bienvenue dans votre espace':'Welcome to your workspace'}</h2><p>{role} · {org?.name??(fr?'Administration de la plateforme':'Platform administration')}</p><p>{fr?'Retrouvez votre périmètre et les actions disponibles pour votre compte.':'See your scope and the actions available to your account.'}</p></section>
- <div className="dashboard-columns"><div>
- <section className="dashboard-panel"><h2>{fr?'Votre périmètre':'Your scope'}</h2><dl className="dashboard-facts"><div><dt>{fr?'Organisations accessibles':'Accessible organizations'}</dt><dd>{orgCount}</dd></div><div><dt>{fr?'Sites accessibles':'Accessible sites'}</dt><dd>{state==='ready'?sites.length:state==='loading'?(fr?'Chargement…':'Loading…'):'—'}</dd></div><div><dt>{fr?'Profil actif':'Active profile'}</dt><dd>{role}</dd></div></dl>{state==='error'&&<div role="alert"><p>{fr?'Impossible de charger les sites.':'Unable to load sites.'}</p><button onClick={()=>setAttempt(x=>x+1)}>{fr?'Réessayer':'Retry'}</button></div>}</section>
- <section className="dashboard-panel"><h2>{fr?'Sites de votre organisation':'Your organization’s sites'}</h2>{state==='loading'?<p role="status">{fr?'Chargement…':'Loading…'}</p>:state==='ready'?sites.length?<ul className="dashboard-sites">{sites.map(s=><li key={s.id}><strong>{s.name}</strong></li>)}</ul>:<p>{fr?'Aucun site accessible pour cette organisation.':'No accessible sites for this organization.'}</p>:<p>{fr?'Les sites seront présentés selon les habilitations de votre compte.':'Sites are shown according to your account permissions.'}</p>}</section>
- <section className="dashboard-panel"><h2>{fr?'Suivi des interventions':'Intervention tracking'}</h2><p>{fr?'Les missions, comptes rendus à contrôler et anomalies ne sont pas encore disponibles dans cette version. Aucun indicateur opérationnel n’est calculé pour le moment.':'Missions, reports awaiting review and anomalies are not available in this release. Operational indicators are not yet calculated.'}</p></section>
- </div><aside className="dashboard-panel dashboard-actions"><h2>{fr?'Actions rapides':'Quick actions'}</h2>{org&&manager&&<button className="primary" onClick={()=>onNavigate('team')}>{fr?'Gérer mon équipe':'Manage my team'}</button>}{org&&canSites&&<button onClick={()=>onNavigate('sites')}>{fr?'Ouvrir les sites et salles':'Open sites and rooms'}</button>}{!manager&&!controller&&<p>{fr?'Vos missions apparaîtront ici lorsque le module interventions sera disponible. Votre compte reste rattaché à votre prestataire.':'Your missions will appear here when intervention tracking is available. Your account remains linked to your provider.'}</p>}<h3>{fr?'Repères':'Your workspace'}</h3><p>{fr?'Le tableau de bord reflète l’organisation sélectionnée. Changez d’organisation dans la navigation pour consulter un autre périmètre.':'This dashboard reflects the selected organization. Select another organization in the navigation to change scope.'}</p></aside></div></div>;
+import React from 'react';
+import { PlusIcon, SitesIcon } from './icons';
+import { Empty, PageHead } from './ui';
+
+type Org = { id: string; name: string; kind: string; roles?: string[] };
+
+/** Home without any organisation: the administrator creates the first one, anyone else is told why the space is empty. */
+export function Dashboard({ admin, lang, orgCount, onCreateOrg }: { org?: Org; admin: boolean; lang: 'fr' | 'en'; orgCount: number; onNavigate: (s: 'team' | 'sites') => void; onCreateOrg?: () => void }) {
+  const fr = lang === 'fr';
+  return <section className="dashboard">
+    <PageHead title={fr ? 'Vue d’ensemble' : 'Overview'} subtitle={admin ? (fr ? 'Administration de la plateforme' : 'Platform administration') : (fr ? 'Aucune organisation' : 'No organization')}
+      cells={[{ label: fr ? 'Organisations accessibles' : 'Accessible organizations', value: String(orgCount) }]} />
+    <div className="sheet">
+      <Empty icon={<SitesIcon />} title={admin ? (fr ? 'Aucune organisation pour le moment' : 'No organization yet') : (fr ? 'Votre compte n’est rattaché à aucune organisation' : 'Your account is not linked to any organization')}
+        action={admin && onCreateOrg ? <button className="primary" onClick={onCreateOrg}><PlusIcon />{fr ? 'Créer une organisation' : 'Create an organization'}</button> : undefined}>
+        {admin ? (fr ? 'Créez un client ou un prestataire : ses rubriques apparaîtront ici.' : 'Create a client or a provider: its sections will appear here.')
+          : (fr ? 'Demandez à votre responsable une invitation : votre espace s’affichera dès qu’elle sera acceptée.' : 'Ask your manager for an invitation: your workspace appears once it is accepted.')}
+      </Empty>
+    </div>
+  </section>;
 }

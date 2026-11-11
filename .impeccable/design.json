@@ -1,522 +1,815 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-05T07:10:42.469875+00:00",
+  "generatedAt": "2026-11-11T09:21:33+00:00",
   "title": "Design System: TRACEOPS",
   "extensions": {
     "colorMeta": {
-      "white": {
+      "shell": {
+        "role": "primary",
+        "displayName": "Pétrole de coque",
+        "canonical": "#0e4a5c",
+        "tonalRamp": [
+          "#172f36",
+          "#11596f",
+          "#187d9b",
+          "#1ea0c7",
+          "#41bde2",
+          "#7ad1eb",
+          "#b9e2ef",
+          "#edf5f7"
+        ]
+      },
+      "shell-hover": {
+        "role": "primary",
+        "displayName": "Pétrole survol de coque",
+        "canonical": "#135a6e",
+        "tonalRamp": [
+          "#172f35",
+          "#13596d",
+          "#1a7d98",
+          "#22a0c4",
+          "#44bddf",
+          "#7dd1e8",
+          "#bae2ee",
+          "#edf5f7"
+        ]
+      },
+      "shell-active": {
+        "role": "primary",
+        "displayName": "Pétrole actif de coque",
+        "canonical": "#1c687d",
+        "tonalRamp": [
+          "#192e34",
+          "#175768",
+          "#217992",
+          "#2a9cbc",
+          "#4cb9d7",
+          "#82cee3",
+          "#bce1eb",
+          "#eef5f7"
+        ]
+      },
+      "shell-ink": {
         "role": "neutral",
-        "displayName": "Blanc de travail",
+        "displayName": "Blanc de coque",
         "canonical": "#ffffff",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#919191",
+          "#b2b2b2",
+          "#d4d4d4",
+          "#f2f2f2"
         ]
       },
-      "gray-25": {
+      "shell-ink-2": {
         "role": "neutral",
-        "displayName": "Survol de ligne",
-        "canonical": "#fcfcfd",
+        "displayName": "Encre claire de coque",
+        "canonical": "#cfe0e5",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#202a2d",
+          "#2d4a53",
+          "#3f6874",
+          "#518595",
+          "#71a3b2",
+          "#9cbfc9",
+          "#c9dadf",
+          "#f0f3f4"
         ]
       },
-      "gray-50": {
+      "shell-ink-3": {
         "role": "neutral",
-        "displayName": "Gris de panneau",
-        "canonical": "#f9fafb",
+        "displayName": "Méta de coque",
+        "canonical": "#a9c6cd",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#212a2c",
+          "#2f4a51",
+          "#426871",
+          "#548591",
+          "#74a3ae",
+          "#9ebfc7",
+          "#cadadd",
+          "#f0f3f4"
         ]
       },
-      "gray-100": {
+      "page": {
         "role": "neutral",
-        "displayName": "Séparateur de ligne",
-        "canonical": "#f3f4f6",
+        "displayName": "Gris document",
+        "canonical": "#f1f4f5",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#23282a",
+          "#35454a",
+          "#4a6168",
+          "#607c86",
+          "#7f9aa4",
+          "#a6b9bf",
+          "#ced7da",
+          "#f1f3f3"
         ]
       },
-      "gray-200": {
+      "sheet": {
         "role": "neutral",
-        "displayName": "Filet",
-        "canonical": "#e5e7eb",
+        "displayName": "Feuille",
+        "canonical": "#ffffff",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#262626",
+          "#404040",
+          "#595959",
+          "#737373",
+          "#919191",
+          "#b2b2b2",
+          "#d4d4d4",
+          "#f2f2f2"
         ]
       },
-      "gray-300": {
+      "sheet-2": {
+        "role": "neutral",
+        "displayName": "Feuille voilée",
+        "canonical": "#f6f8f9",
+        "tonalRamp": [
+          "#22282a",
+          "#33444c",
+          "#475f6b",
+          "#5c7a8a",
+          "#7b99a7",
+          "#a3b8c2",
+          "#ccd6db",
+          "#f1f3f4"
+        ]
+      },
+      "sheet-3": {
+        "role": "neutral",
+        "displayName": "Feuille grise",
+        "canonical": "#eaf0f2",
+        "tonalRamp": [
+          "#21292b",
+          "#31474f",
+          "#44646e",
+          "#58808e",
+          "#789eab",
+          "#a0bcc4",
+          "#cbd8dc",
+          "#f1f3f4"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Filet de feuille",
+        "canonical": "#c9d5d9",
+        "tonalRamp": [
+          "#23282a",
+          "#35454b",
+          "#4a6169",
+          "#5f7d87",
+          "#7e9ba4",
+          "#a5b9c0",
+          "#cdd7da",
+          "#f1f3f3"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Filet de ligne",
+        "canonical": "#e0e7e9",
+        "tonalRamp": [
+          "#23282a",
+          "#35464b",
+          "#4a6268",
+          "#5f7e86",
+          "#7f9ca4",
+          "#a6babf",
+          "#cdd7da",
+          "#f1f3f3"
+        ]
+      },
+      "rule-3": {
         "role": "neutral",
         "displayName": "Filet de contrôle",
-        "canonical": "#d1d5db",
+        "canonical": "#a7b9bf",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#23282a",
+          "#36454a",
+          "#4b6067",
+          "#617c85",
+          "#809aa3",
+          "#a6b9bf",
+          "#ced7d9",
+          "#f1f3f3"
         ]
       },
-      "gray-400": {
-        "role": "neutral",
-        "displayName": "Gris d'icône discrète",
-        "canonical": "#9ca3af",
-        "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
-        ]
-      },
-      "gray-500": {
-        "role": "neutral",
-        "displayName": "Texte tertiaire",
-        "canonical": "#6b7280",
-        "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
-        ]
-      },
-      "gray-600": {
-        "role": "neutral",
-        "displayName": "Texte secondaire",
-        "canonical": "#4b5563",
-        "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
-        ]
-      },
-      "gray-700": {
-        "role": "neutral",
-        "displayName": "Gris de libellé",
-        "canonical": "#374151",
-        "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
-        ]
-      },
-      "gray-800": {
-        "role": "neutral",
-        "displayName": "Gris de champ",
-        "canonical": "#1f2937",
-        "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
-        ]
-      },
-      "gray-900": {
+      "ink": {
         "role": "neutral",
         "displayName": "Encre",
-        "canonical": "#111827",
+        "canonical": "#17262c",
         "tonalRamp": [
-          "#111827",
-          "#1f2937",
-          "#374151",
-          "#4b5563",
-          "#6b7280",
-          "#9ca3af",
-          "#d1d5db",
-          "#f3f4f6"
+          "#20292d",
+          "#2c4854",
+          "#3d6575",
+          "#4f8297",
+          "#6fa0b4",
+          "#9bbdca",
+          "#c8d9df",
+          "#f0f3f4"
         ]
       },
-      "blue-50": {
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Encre secondaire",
+        "canonical": "#3f5058",
+        "tonalRamp": [
+          "#23282a",
+          "#35444a",
+          "#4a5f68",
+          "#607a86",
+          "#7f98a4",
+          "#a6b7bf",
+          "#ced6da",
+          "#f1f3f3"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Encre de méta",
+        "canonical": "#55656c",
+        "tonalRamp": [
+          "#242729",
+          "#384347",
+          "#4f5d64",
+          "#657880",
+          "#84969e",
+          "#a9b6bc",
+          "#cfd5d8",
+          "#f1f3f3"
+        ]
+      },
+      "petrol": {
         "role": "primary",
-        "displayName": "Bleu de sélection",
-        "canonical": "#eff6ff",
+        "displayName": "Pétrole",
+        "canonical": "#0e4a5c",
         "tonalRamp": [
-          "#1e3a8a",
-          "#1e40af",
-          "#1d4ed8",
-          "#2563eb",
-          "#60a5fa",
-          "#bfdbfe",
-          "#dbeafe",
-          "#eff6ff"
+          "#172f36",
+          "#11596f",
+          "#187d9b",
+          "#1ea0c7",
+          "#41bde2",
+          "#7ad1eb",
+          "#b9e2ef",
+          "#edf5f7"
         ]
       },
-      "blue-100": {
+      "petrol-hover": {
         "role": "primary",
-        "displayName": "Bleu de surlignage",
-        "canonical": "#dbeafe",
+        "displayName": "Pétrole nuit",
+        "canonical": "#0a3a49",
         "tonalRamp": [
-          "#1e3a8a",
-          "#1e40af",
-          "#1d4ed8",
-          "#2563eb",
-          "#60a5fa",
-          "#bfdbfe",
-          "#dbeafe",
-          "#eff6ff"
+          "#162f36",
+          "#0f5970",
+          "#167d9d",
+          "#1ca0ca",
+          "#3ebde5",
+          "#78d1ed",
+          "#b8e2f0",
+          "#edf5f8"
         ]
       },
-      "blue-600": {
+      "petrol-tint": {
         "role": "primary",
-        "displayName": "Bleu d'action",
-        "canonical": "#2563eb",
+        "displayName": "Teinte pétrole",
+        "canonical": "#e4eef1",
         "tonalRamp": [
-          "#1e3a8a",
-          "#1e40af",
-          "#1d4ed8",
-          "#2563eb",
-          "#60a5fa",
-          "#bfdbfe",
-          "#dbeafe",
-          "#eff6ff"
+          "#202a2d",
+          "#2c4b54",
+          "#3d6876",
+          "#4e8697",
+          "#6fa4b4",
+          "#9ac0cb",
+          "#c8dadf",
+          "#f0f3f4"
         ]
       },
-      "blue-700": {
+      "petrol-tint-2": {
         "role": "primary",
-        "displayName": "Bleu appuyé",
-        "canonical": "#1d4ed8",
+        "displayName": "Teinte pétrole soutenue",
+        "canonical": "#cfe1e7",
         "tonalRamp": [
-          "#1e3a8a",
-          "#1e40af",
-          "#1d4ed8",
-          "#2563eb",
-          "#60a5fa",
-          "#bfdbfe",
-          "#dbeafe",
-          "#eff6ff"
+          "#1f2a2d",
+          "#2b4a55",
+          "#3c6877",
+          "#4d8699",
+          "#6da4b6",
+          "#99bfcc",
+          "#c7dae0",
+          "#f0f3f5"
         ]
       },
-      "blue-800": {
+      "focus": {
         "role": "primary",
-        "displayName": "Bleu profond",
-        "canonical": "#1e40af",
+        "displayName": "Pétrole de focus",
+        "canonical": "#155f75",
         "tonalRamp": [
-          "#1e3a8a",
-          "#1e40af",
-          "#1d4ed8",
-          "#2563eb",
-          "#60a5fa",
-          "#bfdbfe",
-          "#dbeafe",
-          "#eff6ff"
+          "#182e35",
+          "#13586c",
+          "#1b7b97",
+          "#239ec3",
+          "#45bbde",
+          "#7dcfe8",
+          "#bae2ed",
+          "#edf5f7"
         ]
       },
-      "green-50": {
-        "role": "state",
-        "displayName": "Fond vert d'état",
-        "canonical": "#f0fdf4",
+      "ok": {
+        "role": "secondary",
+        "displayName": "Vert conforme (texte)",
+        "canonical": "#226b43",
         "tonalRamp": [
-          "#14532d",
-          "#166534",
-          "#15803d",
-          "#16a34a",
-          "#4ade80",
-          "#86efac",
-          "#bbf7d0",
-          "#f0fdf4"
+          "#1b3125",
+          "#1f613d",
+          "#2b8755",
+          "#37ae6d",
+          "#59ca8c",
+          "#8bdaaf",
+          "#c1e7d2",
+          "#eff6f2"
         ]
       },
-      "green-200": {
-        "role": "state",
-        "displayName": "Filet vert d'état",
-        "canonical": "#bbf7d0",
+      "ok-mark": {
+        "role": "secondary",
+        "displayName": "Vert conforme",
+        "canonical": "#2e8b57",
         "tonalRamp": [
-          "#14532d",
-          "#166534",
-          "#15803d",
-          "#16a34a",
-          "#4ade80",
-          "#86efac",
-          "#bbf7d0",
-          "#f0fdf4"
+          "#1c3125",
+          "#20603c",
+          "#2c8654",
+          "#39ac6c",
+          "#5ac88b",
+          "#8cd9ae",
+          "#c1e6d1",
+          "#eff6f2"
         ]
       },
-      "green-700": {
-        "role": "state",
-        "displayName": "Vert d'état",
-        "canonical": "#15803d",
+      "ok-tint": {
+        "role": "secondary",
+        "displayName": "Fond conforme",
+        "canonical": "#eaf5ee",
         "tonalRamp": [
-          "#14532d",
-          "#166534",
-          "#15803d",
-          "#16a34a",
-          "#4ade80",
-          "#86efac",
-          "#bbf7d0",
-          "#f0fdf4"
+          "#1f2e24",
+          "#29563a",
+          "#3a7951",
+          "#4a9b68",
+          "#6ab887",
+          "#97ceab",
+          "#c7e1d0",
+          "#f0f5f2"
         ]
       },
-      "green-800": {
-        "role": "state",
-        "displayName": "Vert d'alerte",
-        "canonical": "#166534",
+      "ok-rule": {
+        "role": "secondary",
+        "displayName": "Filet conforme",
+        "canonical": "#9dccb0",
         "tonalRamp": [
-          "#14532d",
-          "#166534",
-          "#15803d",
-          "#16a34a",
-          "#4ade80",
-          "#86efac",
-          "#bbf7d0",
-          "#f0fdf4"
+          "#202d25",
+          "#2c543c",
+          "#3d7554",
+          "#4f976c",
+          "#6fb48b",
+          "#9acbae",
+          "#c8dfd1",
+          "#f0f4f2"
         ]
       },
-      "red-50": {
-        "role": "state",
-        "displayName": "Fond rouge d'état",
-        "canonical": "#fef2f2",
+      "warn": {
+        "role": "secondary",
+        "displayName": "Ambre observation (texte)",
+        "canonical": "#8a5d0c",
         "tonalRamp": [
-          "#7f1d1d",
-          "#991b1b",
-          "#b91c1c",
-          "#dc2626",
-          "#f87171",
-          "#fca5a5",
-          "#fecaca",
-          "#fef2f2"
+          "#382b15",
+          "#754f0a",
+          "#a46f0e",
+          "#d38e12",
+          "#edac35",
+          "#f3c572",
+          "#f3dcb5",
+          "#f8f4ec"
         ]
       },
-      "red-200": {
-        "role": "state",
-        "displayName": "Filet rouge d'état",
-        "canonical": "#fecaca",
+      "warn-mark": {
+        "role": "secondary",
+        "displayName": "Ambre observation",
+        "canonical": "#d99a1e",
         "tonalRamp": [
-          "#7f1d1d",
-          "#991b1b",
-          "#b91c1c",
-          "#dc2626",
-          "#f87171",
-          "#fca5a5",
-          "#fecaca",
-          "#fef2f2"
+          "#362b16",
+          "#704f0f",
+          "#9d6f16",
+          "#ca8f1c",
+          "#e4ac3e",
+          "#ecc579",
+          "#f0ddb8",
+          "#f8f4ed"
         ]
       },
-      "red-700": {
-        "role": "state",
-        "displayName": "Rouge d'état",
-        "canonical": "#b91c1c",
+      "warn-tint": {
+        "role": "secondary",
+        "displayName": "Fond observation",
+        "canonical": "#fdf5e4",
         "tonalRamp": [
-          "#7f1d1d",
-          "#991b1b",
-          "#b91c1c",
-          "#dc2626",
-          "#f87171",
-          "#fca5a5",
-          "#fecaca",
-          "#fef2f2"
+          "#382d14",
+          "#775409",
+          "#a6750c",
+          "#d69610",
+          "#f0b333",
+          "#f4ca71",
+          "#f3dfb4",
+          "#f8f4ec"
         ]
       },
-      "red-800": {
-        "role": "state",
-        "displayName": "Rouge d'alerte",
-        "canonical": "#991b1b",
+      "warn-rule": {
+        "role": "secondary",
+        "displayName": "Filet observation",
+        "canonical": "#e6c88a",
         "tonalRamp": [
-          "#7f1d1d",
-          "#991b1b",
-          "#b91c1c",
-          "#dc2626",
-          "#f87171",
-          "#fca5a5",
-          "#fecaca",
-          "#fef2f2"
+          "#342b19",
+          "#694e16",
+          "#936d1f",
+          "#bd8d28",
+          "#d8aa4a",
+          "#e4c481",
+          "#ecdcbc",
+          "#f7f4ee"
+        ]
+      },
+      "bad": {
+        "role": "secondary",
+        "displayName": "Rouge non-conformité (texte)",
+        "canonical": "#b3261e",
+        "tonalRamp": [
+          "#351917",
+          "#6d1712",
+          "#99201a",
+          "#c52a21",
+          "#e04c43",
+          "#e9827c",
+          "#eebcb9",
+          "#f7eeed"
+        ]
+      },
+      "bad-mark": {
+        "role": "secondary",
+        "displayName": "Rouge non-conformité",
+        "canonical": "#c8372d",
+        "tonalRamp": [
+          "#341b19",
+          "#681d17",
+          "#922821",
+          "#bb342a",
+          "#d7554c",
+          "#e38882",
+          "#ebbfbc",
+          "#f7eeee"
+        ]
+      },
+      "bad-tint": {
+        "role": "secondary",
+        "displayName": "Fond non-conformité",
+        "canonical": "#fbecea",
+        "tonalRamp": [
+          "#351b18",
+          "#6b1f14",
+          "#962b1d",
+          "#c13725",
+          "#dc5847",
+          "#e78b7e",
+          "#edc0bb",
+          "#f7efed"
+        ]
+      },
+      "bad-rule": {
+        "role": "secondary",
+        "displayName": "Filet non-conformité",
+        "canonical": "#eaa8a2",
+        "tonalRamp": [
+          "#341b19",
+          "#681e17",
+          "#922a21",
+          "#bb362a",
+          "#d7584c",
+          "#e38a82",
+          "#ebc0bc",
+          "#f7efee"
+        ]
+      },
+      "info": {
+        "role": "secondary",
+        "displayName": "Pétrole information",
+        "canonical": "#1f5566",
+        "tonalRamp": [
+          "#1b2c31",
+          "#1e5162",
+          "#2a7289",
+          "#3593b0",
+          "#57b0cc",
+          "#8ac8db",
+          "#c0dee7",
+          "#eff4f6"
+        ]
+      },
+      "info-tint": {
+        "role": "secondary",
+        "displayName": "Fond information",
+        "canonical": "#e7f0f3",
+        "tonalRamp": [
+          "#1f2a2d",
+          "#2b4a55",
+          "#3c6877",
+          "#4d8699",
+          "#6da4b6",
+          "#99bfcc",
+          "#c7dae0",
+          "#f0f3f5"
+        ]
+      },
+      "info-rule": {
+        "role": "secondary",
+        "displayName": "Filet information",
+        "canonical": "#a9c6cd",
+        "tonalRamp": [
+          "#212a2c",
+          "#2f4a51",
+          "#426871",
+          "#548591",
+          "#74a3ae",
+          "#9ebfc7",
+          "#cadadd",
+          "#f0f3f4"
+        ]
+      },
+      "series-accepted": {
+        "role": "tertiary",
+        "displayName": "Série acceptées",
+        "canonical": "#2e8b57",
+        "tonalRamp": [
+          "#1c3125",
+          "#20603c",
+          "#2c8654",
+          "#39ac6c",
+          "#5ac88b",
+          "#8cd9ae",
+          "#c1e6d1",
+          "#eff6f2"
+        ]
+      },
+      "series-review": {
+        "role": "tertiary",
+        "displayName": "Série à contrôler",
+        "canonical": "#d99a1e",
+        "tonalRamp": [
+          "#362b16",
+          "#704f0f",
+          "#9d6f16",
+          "#ca8f1c",
+          "#e4ac3e",
+          "#ecc579",
+          "#f0ddb8",
+          "#f8f4ed"
+        ]
+      },
+      "series-alert": {
+        "role": "tertiary",
+        "displayName": "Série reprise ou retard",
+        "canonical": "#c8372d",
+        "tonalRamp": [
+          "#341b19",
+          "#681d17",
+          "#922821",
+          "#bb342a",
+          "#d7554c",
+          "#e38882",
+          "#ebbfbc",
+          "#f7eeee"
+        ]
+      },
+      "series-planned": {
+        "role": "tertiary",
+        "displayName": "Série planifiées",
+        "canonical": "#336f85",
+        "tonalRamp": [
+          "#1d2b30",
+          "#234d5c",
+          "#316c81",
+          "#408aa6",
+          "#60a8c2",
+          "#90c2d5",
+          "#c3dbe4",
+          "#eff4f5"
+        ]
+      },
+      "series-assign": {
+        "role": "tertiary",
+        "displayName": "Série à affecter ou à chiffrer",
+        "canonical": "#6aa1b4",
+        "tonalRamp": [
+          "#1f2a2d",
+          "#2b4a55",
+          "#3c6877",
+          "#4d8599",
+          "#6da3b6",
+          "#99bfcc",
+          "#c7dae0",
+          "#f0f3f5"
+        ]
+      },
+      "ordinal-1": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 1",
+        "canonical": "#93bccb",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
+        ]
+      },
+      "ordinal-2": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 2",
+        "canonical": "#6aa1b4",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
+        ]
+      },
+      "ordinal-3": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 3",
+        "canonical": "#4b879c",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
+        ]
+      },
+      "ordinal-4": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 4",
+        "canonical": "#336f85",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
+        ]
+      },
+      "ordinal-5": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 5",
+        "canonical": "#1e5b70",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
+        ]
+      },
+      "ordinal-6": {
+        "role": "tertiary",
+        "displayName": "Rampe ordinale pétrole 6",
+        "canonical": "#0e4a5c",
+        "tonalRamp": [
+          "#0e4a5c",
+          "#1e5b70",
+          "#336f85",
+          "#4b879c",
+          "#6aa1b4",
+          "#93bccb",
+          "#c3d9e1",
+          "#e4eef1"
         ]
       }
     },
     "typographyMeta": {
-      "wordmark": {
-        "displayName": "Mot-symbole",
-        "purpose": "TRACE·OPS uniquement : TRACE en 800, OPS en 400, point rond bleu."
+      "display": {
+        "displayName": "Valeur héroïque",
+        "purpose": "La seule valeur héroïque d'un tableau de bord (conformité au premier contrôle), en pétrole ; 44 px sur téléphone."
       },
       "headline": {
-        "displayName": "Titre de page",
-        "purpose": "Nom de l'organisation dans l'en-tête, titre de la carte de connexion."
+        "displayName": "Titre de cartouche",
+        "purpose": "Titre du cartouche, un par écran ; 22 px sur téléphone."
+      },
+      "kpi": {
+        "displayName": "Indicateur",
+        "purpose": "Valeurs de la bande d'indicateurs, rouge seulement pour « en retard » ; 26 px sur téléphone."
       },
       "title": {
-        "displayName": "Titre de détail",
-        "purpose": "Nom du site choisi."
-      },
-      "title-sm": {
-        "displayName": "Titre de tiroir",
-        "purpose": "Titre du tiroir ; 15 px en 600 pour les titres d'état vide."
+        "displayName": "Titre de feuille",
+        "purpose": "Titres de feuille en pétrole ; titres de panneau 16 px en encre ; nom de visa 15 px."
       },
       "body": {
         "displayName": "Texte courant",
-        "purpose": "Texte, cellules, champs ; 15 px sur téléphone, 16 px dans les champs."
-      },
-      "body-strong": {
-        "displayName": "Texte appuyé",
-        "purpose": "Boutons, noms de membres, de sites, de lieux et de l'utilisateur."
+        "purpose": "Texte courant ; 15 px sur téléphone, champs à 16 px. Introductions limitées à 72ch."
       },
       "label": {
-        "displayName": "Libellé",
-        "purpose": "En-têtes de colonnes, libellés de groupe, badges, statuts, compteurs ; casse de phrase."
+        "displayName": "Libellé de champ",
+        "purpose": "Petites majuscules espacées : cellules du cartouche, étapes de visa, faits du dossier, libellés de carte mobile. Jamais en surtitre."
+      },
+      "meta": {
+        "displayName": "Méta",
+        "purpose": "Méta de feuille, en-têtes de tableau, puces d'état, légendes."
       },
       "mono": {
-        "displayName": "Mono",
-        "purpose": "Identifiants, codes de lieu et secrets à usage unique uniquement."
+        "displayName": "Référence",
+        "purpose": "Références INT-…, codes de lieu, identifiants, secrets. Rien d'autre."
       }
     },
-    "avatarTones": [
-      {
-        "bg": "#e0e7ff",
-        "fg": "#3730a3"
-      },
-      {
-        "bg": "#ede9fe",
-        "fg": "#5b21b6"
-      },
-      {
-        "bg": "#f3e8ff",
-        "fg": "#6b21a8"
-      },
-      {
-        "bg": "#e0f2fe",
-        "fg": "#075985"
-      },
-      {
-        "bg": "#cffafe",
-        "fg": "#155e75"
-      },
-      {
-        "bg": "#fef3c7",
-        "fg": "#92400e"
-      },
-      {
-        "bg": "#f1f5f9",
-        "fg": "#334155"
-      },
-      {
-        "bg": "#f5f5f4",
-        "fg": "#44403c"
-      }
-    ],
     "shadows": [
       {
-        "name": "shadow-xs",
-        "value": "0 1px 2px rgb(16 24 40 / .05)",
-        "purpose": "Contact : boutons, champs, cartes de tableau, liste de sites, organisation active."
+        "name": "shadow-sheet",
+        "value": "0 1px 2px rgb(14 74 92 / .05)",
+        "purpose": "Feuilles, cartouche, bande d'indicateurs, tableaux, bande de visa pleine."
       },
       {
-        "name": "shadow-sm",
-        "value": "0 1px 3px rgb(16 24 40 / .08), 0 1px 2px rgb(16 24 40 / .04)",
-        "purpose": "Carte posée : carte de connexion ; tiroir sur téléphone."
+        "name": "shadow-panel",
+        "value": "0 14px 30px -12px rgb(14 74 92 / .24), 0 2px 6px rgb(14 74 92 / .06)",
+        "purpose": "Panneau latéral et infobulle de graphique uniquement."
       },
       {
-        "name": "shadow-lg",
-        "value": "0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05)",
-        "purpose": "Tiroir sur ordinateur, seul élément superposé."
+        "name": "focus-ring",
+        "value": "outline: 2px solid #155f75; outline-offset: 2px",
+        "purpose": "Focus clavier partout ; blanc dans la coque."
       },
       {
-        "name": "ring",
-        "value": "0 0 0 3px rgb(37 99 235 / .22)",
-        "purpose": "Anneau de focus des champs, avec la bordure bleue."
-      },
-      {
-        "name": "primary-highlight",
-        "value": "inset 0 1px 0 rgb(255 255 255 / .14)",
-        "purpose": "Reflet en haut du bouton principal."
+        "name": "field-focus",
+        "value": "0 0 0 3px rgb(14 74 92 / .16)",
+        "purpose": "Halo des champs au focus, avec filet pétrole."
       }
     ],
     "motion": [
       {
-        "name": "ease-out",
-        "value": "cubic-bezier(.16, 1, .3, 1)",
-        "purpose": "Courbe du seul mouvement signé."
+        "name": "ease",
+        "value": "cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "Courbe unique des transitions et animations."
       },
       {
-        "name": "panel-in",
-        "value": "opacity 0 → 1, translateX(12px) → 0, 220ms ease-out",
-        "purpose": "Ouverture du tiroir ; le focus passe ensuite à son titre."
+        "name": "visa-stamp",
+        "value": "180ms; scale(1.35) rotate(-8deg) -> none, opacity 0 -> .9",
+        "purpose": "Coup de tampon de la coche d'une case de visa qui vient d'être signée ; seul mouvement signé."
+      },
+      {
+        "name": "visa-tick",
+        "value": "320ms, délai 120ms; stroke-dashoffset 20 -> 0",
+        "purpose": "Tracé de la coche après le coup de tampon."
+      },
+      {
+        "name": "drawer",
+        "value": "220ms; translateX(8px) -> none, opacity 0 -> 1",
+        "purpose": "Entrée du panneau latéral."
       },
       {
         "name": "state-transition",
         "value": "150ms",
-        "purpose": "Changements de couleur, de bordure et d'ombre des contrôles et onglets."
-      },
-      {
-        "name": "loading",
-        "value": "shimmer 1.4s linear infinite ; spin .8s linear infinite",
-        "purpose": "Indicateurs de chargement fonctionnels (skeleton, spinner), non décoratifs."
+        "purpose": "Changements de couleur au survol des boutons, champs, rubriques."
       },
       {
         "name": "reduced-motion",
-        "value": "prefers-reduced-motion: reduce → animations et transitions supprimées",
-        "purpose": "Préférence système toujours honorée."
+        "value": "animation: none; transition: none",
+        "purpose": "prefers-reduced-motion supprime tout mouvement."
       }
     ],
     "breakpoints": [
       {
-        "name": "wide",
-        "value": "1280px",
-        "purpose": "À partir de 1280 px, liste et tiroir côte à côte ; en dessous, ils alternent."
+        "name": "panel",
+        "value": "1279px"
       },
       {
         "name": "tablet",
-        "value": "1024px",
-        "purpose": "En dessous : barre latérale de 232 px, marges de 24 × 28 px."
+        "value": "1023px"
       },
       {
         "name": "phone",
-        "value": "768px",
-        "purpose": "En dessous (max-width 767px) : écrans successifs, barre supérieure, contrôles de 44 px, tableaux en cartes."
+        "value": "767px"
       }
     ]
   },
@@ -525,142 +818,139 @@
       "name": "Bouton principal",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "L'unique action bleue de la vue.",
-      "html": "<button class=\"ds-btn ds-btn-primary\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Créer un site</button>",
-      "css": ".ds-btn { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; color:#111827; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; transition:background-color .15s, border-color .15s, color .15s; } .ds-icon { width:16px; height:16px; } .ds-btn-primary { background:#2563eb; border-color:#1d4ed8; color:#fff; box-shadow:0 1px 2px rgb(16 24 40 / .05), inset 0 1px 0 rgb(255 255 255 / .14); } .ds-btn-primary:hover { background:#1d4ed8; } .ds-btn:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }"
+      "description": "Une seule action principale par étape.",
+      "html": "<button class=\"ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Nouvelle demande de maintenance</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 14px; border: 1px solid #0e4a5c; border-radius: 3px; background: #0e4a5c; color: #fff; font: 600 14px/1.2 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; cursor: pointer; transition: background-color .15s cubic-bezier(.2,.8,.2,1), border-color .15s cubic-bezier(.2,.8,.2,1); } .ds-btn-primary:hover { background: #0a3a49; border-color: #0a3a49; } .ds-btn-primary:focus-visible { outline: 2px solid #155f75; outline-offset: 2px; }"
     },
     {
       "name": "Bouton secondaire",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Bouton par défaut : blanc, filet de contrôle, ombre de contact.",
-      "html": "<button class=\"ds-btn2\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1\"/><path d=\"M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1\"/></svg>Créer une invitation</button>",
-      "css": ".ds-btn2 { display:inline-flex; align-items:center; gap:6px; min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; color:#111827; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; transition:background-color .15s, border-color .15s, color .15s; } .ds-btn2 .ds-icon { width:16px; height:16px; color:#6b7280; } .ds-btn2:hover { background:#f9fafb; } .ds-btn2:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }"
+      "description": "Actions annexes, sur feuille blanche à filet.",
+      "html": "<button class=\"ds-btn-secondary\">Afficher les données</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 7px; min-height: 36px; padding: 0 14px; border: 1px solid #a7b9bf; border-radius: 3px; background: #fff; color: #17262c; font: 600 14px/1.2 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s; } .ds-btn-secondary:hover { background: #f6f8f9; border-color: #55656c; } .ds-btn-secondary:focus-visible { outline: 2px solid #155f75; outline-offset: 2px; }"
     },
     {
       "name": "Champ",
       "kind": "input",
       "refersTo": "input",
-      "description": "Libellé au-dessus ; bordure bleue et anneau au focus.",
-      "html": "<label class=\"ds-field\">Nom du lieu<input class=\"ds-input\" placeholder=\"Bloc opératoire\"></label>",
-      "css": ".ds-field { display:grid; gap:6px; font:500 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#1f2937; } .ds-input { min-height:38px; padding:8px 12px; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; background:#fff; border:1px solid #d1d5db; border-radius:8px; box-shadow:0 1px 2px rgb(16 24 40 / .05); caret-color:#2563eb; transition:border-color .15s, box-shadow .15s; } .ds-input::placeholder { color:#6b7280; } .ds-input:hover { border-color:#9ca3af; } .ds-input:focus { outline:none; border-color:#2563eb; box-shadow:0 1px 2px rgb(16 24 40 / .05), 0 0 0 3px rgb(37 99 235 / .22); }"
+      "description": "Libellé persistant au-dessus, filet pétrole et halo au focus.",
+      "html": "<label class=\"ds-field\">Motif<input class=\"ds-input\" placeholder=\"Saisir le motif\"></label>",
+      "css": ".ds-field { display: grid; gap: 5px; font: 600 13px 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; color: #3f5058; max-width: 320px; } .ds-input { min-height: 38px; padding: 7px 10px; border: 1px solid #a7b9bf; border-radius: 3px; background: #fff; color: #17262c; font: 400 14px 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; transition: border-color .15s, box-shadow .15s; } .ds-input:hover { border-color: #55656c; } .ds-input:focus { outline: none; border-color: #0e4a5c; box-shadow: 0 0 0 3px rgb(14 74 92 / .16); } .ds-input::placeholder { color: #6b7b82; }"
     },
     {
-      "name": "Navigation des organisations",
+      "name": "Rubriques de la coque",
       "kind": "nav",
-      "refersTo": "nav-item-active",
-      "description": "Barre latérale groupée Clients / Prestataires ; l'active sur blanc à ombre de contact, noms sur une ligne.",
-      "html": "<nav class=\"ds-side\"><p class=\"ds-navlabel\">Clients</p><button class=\"ds-org ds-org-on\" title=\"Client de démonstration\"><span class=\"ds-av\" style=\"background:#e0f2fe;color:#075985\">CD</span><span class=\"ds-org-name\">Client de démonstration</span></button><button class=\"ds-org\" title=\"Clinique du Plateau\"><span class=\"ds-av\" style=\"background:#fef3c7;color:#92400e\">CP</span><span class=\"ds-org-name\">Clinique du Plateau</span></button></nav>",
-      "css": ".ds-side { display:grid; gap:2px; width:232px; padding:12px; background:#f9fafb; font-family:\"Inter Variable\", system-ui, sans-serif; } .ds-navlabel { margin:0 0 4px; padding:0 8px; font-size:12px; font-weight:550; color:#6b7280; } .ds-org { display:flex; align-items:center; gap:10px; min-height:36px; padding:6px 8px; border:1px solid transparent; border-radius:8px; background:transparent; color:#374151; font:500 14px/1.35 \"Inter Variable\", system-ui, sans-serif; text-align:left; cursor:pointer; } .ds-org:hover { background:#f3f4f6; color:#111827; } .ds-org-on, .ds-org-on:hover { background:#fff; border-color:#e5e7eb; box-shadow:0 1px 2px rgb(16 24 40 / .05); color:#111827; } .ds-org-name { overflow:hidden; white-space:nowrap; text-overflow:ellipsis; } .ds-av { display:inline-grid; place-items:center; flex:none; width:24px; height:24px; border-radius:6px; font-size:10px; font-weight:600; } .ds-org:focus-visible { outline:2px solid #2563eb; outline-offset:0; }"
+      "refersTo": "nav-item",
+      "description": "Navigation à plat sur fond pétrole ; rubrique active en feuille blanche.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-brand\">TRACE<span>OPS</span><i></i></a><button class=\"ds-nav-item\" aria-current=\"page\">Vue d'ensemble</button><button class=\"ds-nav-item\">Planning</button><button class=\"ds-nav-item\">Interventions <b>2</b></button></nav>",
+      "css": ".ds-nav { display: grid; gap: 1px; width: 240px; padding: 14px 10px; background: #0e4a5c; font-family: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; } .ds-nav-brand { display: inline-flex; align-items: center; padding: 0 10px 14px; color: #fff; font-weight: 800; font-size: 18px; letter-spacing: .06em; } .ds-nav-brand span { font-weight: 400; } .ds-nav-brand i { width: 6px; height: 6px; margin-left: 5px; border-radius: 50%; background: currentColor; } .ds-nav-item { display: flex; align-items: center; gap: 11px; min-height: 38px; padding: 0 10px; border: 0; border-radius: 3px; background: transparent; color: #cfe0e5; font: 500 14.5px inherit; font-family: inherit; text-align: left; cursor: pointer; transition: background-color .15s, color .15s; } .ds-nav-item b { margin-left: auto; min-width: 22px; padding: 0 6px; border-radius: 2px; background: rgb(255 255 255 / .13); font-size: 12px; text-align: center; } .ds-nav-item:hover:not([aria-current]) { background: #135a6e; color: #fff; } .ds-nav-item[aria-current=page] { background: #fff; color: #0e4a5c; font-weight: 700; } .ds-nav-item:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }"
     },
     {
-      "name": "Onglets soulignés",
-      "kind": "nav",
-      "refersTo": "tab-active",
-      "description": "Trait bleu de 2 px sous l'onglet actif ; l'emplacement du compteur ne disparaît jamais.",
-      "html": "<nav class=\"ds-tabs\"><button class=\"ds-tab ds-tab-on\">Équipe<span class=\"ds-count\">2</span></button><button class=\"ds-tab\">Sites et salles</button></nav>",
-      "css": ".ds-tabs { display:flex; gap:24px; border-bottom:1px solid #e5e7eb; } .ds-tab { position:relative; display:inline-flex; align-items:center; gap:8px; min-height:42px; padding:0 2px; border:0; background:transparent; color:#4b5563; font:500 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; } .ds-tab::after { content:\"\"; position:absolute; left:0; right:0; bottom:-1px; height:2px; border-radius:2px 2px 0 0; background:transparent; transition:background-color .15s; } .ds-tab:hover { color:#111827; } .ds-tab:hover::after { background:#d1d5db; } .ds-tab-on { color:#111827; } .ds-tab-on::after, .ds-tab-on:hover::after { background:#2563eb; } .ds-count { min-width:20px; padding:0 6px; border-radius:999px; background:#f3f4f6; color:#374151; font-size:12px; font-weight:550; line-height:20px; text-align:center; font-variant-numeric:tabular-nums; } .ds-tab-on .ds-count { background:#eff6ff; color:#1d4ed8; } .ds-tab:focus-visible { outline:2px solid #2563eb; outline-offset:-2px; border-radius:6px; }"
-    },
-    {
-      "name": "Statut d'accès",
+      "name": "Puces d'état",
       "kind": "chip",
-      "refersTo": "status-active",
-      "description": "Toujours pastille plus mot ; pastille creuse pour Suspendu.",
-      "html": "<span class=\"ds-status ds-on\">Actif</span> <span class=\"ds-status ds-off\">Suspendu</span>",
-      "css": ".ds-status { display:inline-flex; align-items:center; gap:6px; padding:1px 8px; border:1px solid; border-radius:999px; font:550 12px/18px \"Inter Variable\", system-ui, sans-serif; } .ds-status::before { content:\"\"; width:6px; height:6px; border-radius:50%; background:currentColor; } .ds-on { background:#f0fdf4; border-color:#bbf7d0; color:#15803d; } .ds-off { background:#fef2f2; border-color:#fecaca; color:#b91c1c; } .ds-off::before { background:transparent; box-shadow:inset 0 0 0 1.5px currentColor; }"
+      "refersTo": "state-chip-green",
+      "description": "Couleur de conformité toujours doublée d'un mot.",
+      "html": "<span class=\"ds-state ds-ok\">Acceptée</span> <span class=\"ds-state ds-warn\">À contrôler</span> <span class=\"ds-state ds-bad\">En retard</span> <span class=\"ds-state ds-info\">Planifiée</span>",
+      "css": ".ds-state { display: inline-flex; align-items: center; padding: 2px 7px; border: 1px solid; border-radius: 2px; font: 600 12.5px/1.25 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; white-space: nowrap; } .ds-ok { background: #eaf5ee; border-color: #9dccb0; color: #226b43; } .ds-warn { background: #fdf5e4; border-color: #e6c88a; color: #8a5d0c; } .ds-bad { background: #fbecea; border-color: #eaa8a2; color: #b3261e; } .ds-info { background: #e7f0f3; border-color: #a9c6cd; color: #1f5566; }"
     },
     {
-      "name": "Tableau des membres",
+      "name": "Cartouche",
       "kind": "card",
-      "refersTo": "table-card",
-      "description": "Conteneur de 12 px, en-tête gris, identifiants en mono, statut pastille plus mot.",
-      "html": "<div class=\"ds-tcard\"><table class=\"ds-table\"><thead><tr><th>Nom complet</th><th>Identifiant</th><th>Accès</th></tr></thead><tbody><tr><td><b>Contrôleur démo</b></td><td><code>demo.controleur</code></td><td><span class=\"ds-st\">Actif</span></td></tr></tbody></table></div>",
-      "css": ".ds-tcard { background:#fff; border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 1px 2px rgb(16 24 40 / .05); overflow:hidden; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; } .ds-table { width:100%; border-collapse:collapse; text-align:left; } .ds-table th { padding:10px 16px; background:#f9fafb; border-bottom:1px solid #e5e7eb; color:#6b7280; font-size:12px; font-weight:550; } .ds-table td { padding:12px 16px; } .ds-table b { font-weight:550; } .ds-table tbody tr:hover td { background:#fcfcfd; } .ds-table code { font:13px ui-monospace, SFMono-Regular, Consolas, monospace; color:#4b5563; } .ds-st { display:inline-flex; align-items:center; gap:6px; padding:1px 8px; border:1px solid #bbf7d0; border-radius:999px; background:#f0fdf4; color:#15803d; font-size:12px; font-weight:550; line-height:18px; } .ds-st::before { content:\"\"; width:6px; height:6px; border-radius:50%; background:currentColor; }"
+      "refersTo": "sheet",
+      "description": "En-tête de chaque écran : titre et cellules de faits filetées.",
+      "html": "<header class=\"ds-cart\"><div class=\"ds-cart-main\"><h1>Vue d'ensemble</h1><p>AFISA Food Industry · Client · Responsable</p></div><dl class=\"ds-cart-cells\"><div><dt>Site</dt><dd>Usine de Bonabéri</dd></div><div><dt>Période</dt><dd>12 oct. – 11 nov. 2026</dd></div><div><dt>Édité</dt><dd>11 nov. 2026 · Carine Ebode</dd></div></dl></header>",
+      "css": ".ds-cart { background: #fff; border: 1px solid #c9d5d9; border-radius: 2px; box-shadow: 0 1px 2px rgb(14 74 92 / .05); font-family: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; color: #17262c; } .ds-cart-main { padding: 14px 18px 13px; } .ds-cart-main h1 { margin: 0; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -.012em; } .ds-cart-main p { margin: 3px 0 0; font-size: 13.5px; color: #3f5058; } .ds-cart-cells { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin: 0; border-top: 1px solid #c9d5d9; } .ds-cart-cells div { padding: 9px 18px 10px; border-left: 1px solid #c9d5d9; } .ds-cart-cells div:first-child { border-left: 0; } .ds-cart-cells dt { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #55656c; } .ds-cart-cells dd { margin: 2px 0 0; font-size: 14px; font-weight: 600; }"
     },
     {
-      "name": "Tiroir",
+      "name": "Bande de visa",
       "kind": "custom",
-      "refersTo": "drawer",
-      "description": "Panneau de 400 px à droite ; glisse de 12 px en 220 ms ; pied gris, principal en dernier.",
-      "html": "<div class=\"ds-drawer\"><div class=\"ds-dhead\"><h2>Créer une invitation</h2></div><div class=\"ds-dbody\"><p>Un lien à usage unique, valable 48 heures.</p></div><div class=\"ds-dfoot\"><button class=\"ds-b\">Annuler</button><button class=\"ds-b ds-bp\">Créer</button></div></div>",
-      "css": ".ds-drawer { width:400px; display:flex; flex-direction:column; background:#fff; border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 12px 32px -8px rgb(16 24 40 / .14), 0 4px 8px -2px rgb(16 24 40 / .05); overflow:hidden; font:400 14px/1.5 \"Inter Variable\", system-ui, sans-serif; color:#111827; animation:ds-in .22s cubic-bezier(.16, 1, .3, 1); } @keyframes ds-in { from { opacity:0; transform:translateX(12px); } } .ds-dhead { min-height:60px; display:flex; align-items:center; padding:14px 14px 0 20px; } .ds-dhead h2 { margin:0; font-size:16px; font-weight:600; letter-spacing:-.011em; } .ds-dbody { padding:12px 20px 22px; } .ds-dbody p { margin:0; color:#4b5563; } .ds-dfoot { display:flex; justify-content:flex-end; gap:8px; padding:14px 20px; background:#f9fafb; border-top:1px solid #e5e7eb; } .ds-b { min-height:36px; padding:0 14px; border:1px solid #d1d5db; border-radius:8px; background:#fff; box-shadow:0 1px 2px rgb(16 24 40 / .05); font:550 14px/1.25 \"Inter Variable\", system-ui, sans-serif; cursor:pointer; } .ds-b:hover { background:#f9fafb; } .ds-bp { background:#2563eb; border-color:#1d4ed8; color:#fff; } .ds-bp:hover { background:#1d4ed8; } .ds-b:focus-visible { outline:2px solid #2563eb; outline-offset:2px; } @media (prefers-reduced-motion: reduce) { .ds-drawer { animation:none; } }"
+      "refersTo": "visa-cell",
+      "description": "Geste signature : chaque case signée porte un nom et une date, la case vide dit qui doit agir.",
+      "html": "<ol class=\"ds-visa\"><li class=\"is-signed\"><span class=\"ds-step\">Demandé par</span><strong>C. Ebode</strong><small>3 nov.</small><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8 12.5 2.8 2.8L16 10\"/></svg></li><li class=\"is-signed\"><span class=\"ds-step\">Affecté par</span><strong>G. Talla</strong><small>6 nov.</small><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8 12.5 2.8 2.8L16 10\"/></svg></li><li class=\"is-signed\"><span class=\"ds-step\">Réalisé par</span><strong>Y. Nganou</strong><small>7 nov.</small><svg viewBox=\"0 0 24 24\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"m8 12.5 2.8 2.8L16 10\"/></svg></li><li class=\"is-mine\"><span class=\"ds-step\">Contrôlé par</span><strong>À vous de viser</strong></li></ol>",
+      "css": ".ds-visa { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; background: #fff; border: 1px solid #a7b9bf; border-radius: 2px; box-shadow: 0 1px 2px rgb(14 74 92 / .05); font-family: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; } .ds-visa li { position: relative; display: grid; align-content: start; gap: 2px; min-height: 92px; padding: 10px 14px 12px; border-left: 1px solid #c9d5d9; } .ds-visa li:first-child { border-left: 0; } .ds-step { margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #55656c; } .ds-visa strong { font-size: 15px; font-weight: 700; color: #17262c; } .ds-visa small { font-size: 12.5px; color: #3f5058; font-variant-numeric: tabular-nums; } .ds-visa svg { position: absolute; top: 9px; right: 10px; width: 22px; height: 22px; fill: none; stroke: #0e4a5c; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .9; animation: ds-stamp .18s cubic-bezier(.2,.8,.2,1) both; } .ds-visa .is-mine { background-color: #fdf5e4; background-image: repeating-linear-gradient(90deg, #a7b9bf 0 5px, transparent 5px 9px); background-size: calc(100% - 28px) 1px; background-position: 14px calc(100% - 9px); background-repeat: no-repeat; } .ds-visa .is-mine strong { color: #8a5d0c; } @keyframes ds-stamp { from { transform: scale(1.35) rotate(-8deg); opacity: 0; } to { transform: none; opacity: .9; } } @media (prefers-reduced-motion: reduce) { .ds-visa svg { animation: none; } }"
+    },
+    {
+      "name": "Indicateur héroïque",
+      "kind": "custom",
+      "refersTo": "sheet",
+      "description": "Conformité au premier contrôle en grand, avec jauge et justification.",
+      "html": "<dl class=\"ds-kpi\"><dt>Conformité au premier contrôle</dt><dd><span>92 %</span><small>12 acceptées sans reprise sur 13 contrôlées</small><i><b style=\"width:92%\"></b></i></dd></dl>",
+      "css": ".ds-kpi { display: grid; gap: 6px; max-width: 320px; margin: 0; padding: 14px 18px 15px; background: #fff; border: 1px solid #c9d5d9; border-radius: 2px; font-family: 'Source Sans 3 Variable', 'Source Sans 3', system-ui, sans-serif; } .ds-kpi dt { font-size: 12.5px; font-weight: 600; color: #3f5058; } .ds-kpi dd { display: grid; gap: 5px; margin: 0; } .ds-kpi span { font-size: 52px; line-height: 1.05; font-weight: 700; letter-spacing: -.02em; color: #0e4a5c; font-variant-numeric: tabular-nums; } .ds-kpi small { font-size: 12.5px; color: #55656c; } .ds-kpi i { display: block; height: 6px; border-radius: 3px; background: #e4eef1; overflow: hidden; } .ds-kpi b { display: block; height: 100%; border-radius: 3px; background: #2e8b57; }"
     }
   ],
   "narrative": {
-    "northStar": "La console qu'on sait déjà lire",
-    "overview": "TRACEOPS est la console d'administration attendue, exécutée au niveau de finition de Linear, Stripe Dashboard, Vercel et Google Workspace Admin : on sait où tout se trouve avant de remarquer le style. Une barre latérale gris très clair bordée d'un filet, un espace de travail blanc, une encre presque noire, un seul bleu. La qualité tient aux détails d'exécution (graisses intermédiaires d'Inter, ombres à peine visibles, alignements tenus, états toujours nommés), pas au décor.\n\nLa densité est celle d'un outil de travail : texte de 14 px sur ordinateur, lignes de tableau de 56 px, contrôles de 36 px. Sur téléphone, l'interface passe en écrans successifs (organisations, organisation, tiroir) avec des cibles de 44 px et un texte de 15 px, pour un usage debout, en circulation, en forte lumière. Thème clair uniquement, contrastes forts.\n\nLe système refuse le décor (tissus, liserés, couleur d'organisation qui envahit l'écran) autant que la console grise négligée. De l'identité précédente, seul le mot-symbole TRACE·OPS subsiste : TRACE en graisse forte, OPS en graisse régulière, suivi d'un point rond bleu.",
+    "northStar": "Le rapport d'audit",
+    "overview": "Chaque intervention se lit comme un rapport qualité signé. Une coque pétrole pleine hauteur porte le mot-symbole, l'organisation et les rubriques à plat ; le contenu est posé sur un fond gris document, en feuilles blanches à filets fins et coins presque droits. En tête de chaque écran, un cartouche à cellules filetées donne les faits (organisation, site, période, édité le … par …) comme l'en-tête d'un rapport. Le geste signature est la bande de visa (demandé, devis, affecté, réalisé, contrôlé) : chaque case signée porte un nom et une date, la case vide dit qui doit agir.\n\nLa densité est celle d'un registre : lignes de tableau serrées, chiffres tabulaires, libellés de champ en petites majuscules espacées, hiérarchie portée par la graisse et la taille plutôt que par la couleur. Le pétrole est la seule couleur d'identité ; vert, ambre et rouge n'apparaissent que pour dire un état, toujours accompagnés d'un mot. Les graphiques sont sobres : grilles en filet, étiquettes de valeur au-dessus des colonnes, données consultables en tableau.\n\nLe système refuse deux pentes : la console grise à un seul bleu de la catégorie (le monde précédent, retiré), et le document costumé (texture papier, tampons, sceaux, faux manuscrit). Le rapport est évoqué par la structure (cartouche, cellules, visas), jamais par un décor. Thème clair uniquement : bureaux et sites en plein jour.",
     "keyCharacteristics": [
-      "Barre latérale #f9fafb de 256 px, contenu blanc, filets #e5e7eb.",
-      "Un seul accent bleu pour l'action principale, la sélection et le focus.",
-      "Vert et rouge réservés aux états, toujours pastille plus mot.",
-      "Inter Variable à tailles optiques ; mono réservé aux identifiants, codes et secrets.",
-      "Trois rayons hiérarchisés (6, 8, 12 px) et des ombres douces décalées.",
-      "Formulaires et secrets dans un tiroir de 400 px à droite, sans perdre la liste.",
-      "Un seul mouvement signé : le tiroir glisse de 12 px."
+      "Coque pétrole pleine hauteur (240 px, repliable à 68 px), feuilles blanches à filets sur gris document.",
+      "Cartouche en tête d'écran : titre 28 px, cellules à libellé en petites majuscules.",
+      "Bande de visa en grand sur le dossier, compacte dans les listes, en mini-bande de cinq carrés ailleurs.",
+      "Couleurs de conformité réservées aux états, toujours doublées d'un mot.",
+      "Une famille, Source Sans 3 ; Source Code Pro seulement pour références, codes, identifiants et secrets.",
+      "Un seul mouvement signé : le coup de tampon de la case de visa ; plus le glissement du panneau latéral."
     ],
     "rules": [
       {
-        "name": "The Accent unique Rule",
-        "body": "Le bleu ne désigne que l'action principale, la sélection et le focus. Une vue ne montre qu'un bouton bleu : quand le tiroir s'ouvre, le bouton principal de la barre d'outils redevient secondaire et cède le bleu au bouton du tiroir.",
+        "name": "La règle des états réservés",
+        "body": "Vert, ambre et rouge ne servent qu'à dire un état (conforme, observation ou attente, non-conformité, retard, erreur) et sont toujours accompagnés d'un mot. Aucun avatar, aucune décoration, aucun graphique d'étape en attente ne les emprunte.",
         "section": "colors"
       },
       {
-        "name": "The État dit Rule",
-        "body": "Vert et rouge ne servent qu'aux états, et un état est toujours une pastille plus un mot, jamais une couleur seule. « Actif » porte une pastille pleine ; « Suspendu » une pastille creuse (anneau de 1,5 px), pour que l'état se lise aussi sans couleur.",
+        "name": "La règle d'une seule voix",
+        "body": "Le pétrole est la seule couleur d'identité. Pas de second accent : le bleu information reste un pétrole désaturé.",
         "section": "colors"
       },
       {
-        "name": "The Teinte muette Rule",
-        "body": "Les avatars à initiales prennent une teinte douce déterministe tirée de l'identifiant, parmi huit (indigo, violet, pourpre, ciel, cyan, ambre, ardoise, pierre). Le jeu exclut le vert, le rouge et le bleu d'accent : une teinte ne porte jamais un état ni un droit, et le nom est toujours écrit à côté.",
+        "name": "La règle de la rampe ordinale",
+        "body": "Ce qui est une étape de la chaîne prend la rampe pétrole ordonnée ; ce qui est un résultat prend la teinte de conformité.",
         "section": "colors"
       },
       {
-        "name": "The Mono réservé Rule",
-        "body": "La police mono est réservée aux identifiants, aux codes de lieu et aux secrets à usage unique ; tout ce qui se lit plutôt qu'il ne se recopie reste en Inter.",
+        "name": "La règle de la monospace réservée",
+        "body": "Source Code Pro ne sert qu'aux références, codes, identifiants et secrets. Jamais aux titres, aux chiffres d'indicateurs ni aux libellés.",
         "section": "typography"
       },
       {
-        "name": "The Graisse intermédiaire Rule",
-        "body": "La hiérarchie se fait par 400, 500, 550, 600 et 650, pas par 700. Le gras plein (800) n'appartient qu'au mot-symbole.",
+        "name": "La règle du libellé de champ",
+        "body": "Les petites majuscules espacées étiquettent un champ ou une cellule (Site, Période, Demandé par). Elles ne surmontent jamais un titre comme surtitre.",
         "section": "typography"
       },
       {
-        "name": "The Ligne tenue Rule",
-        "body": "Tant que le tiroir est ouvert, la barre d'outils garde une seule ligne : la phrase d'aide se tronque, les actions ne passent jamais à la ligne, et la liste ne saute pas.",
+        "name": "La règle des chiffres tabulaires",
+        "body": "Tout chiffre qui se compare (indicateurs, compteurs, heures, dates de visa, colonnes de tableau) est en chiffres tabulaires.",
+        "section": "typography"
+      },
+      {
+        "name": "La règle de la navigation à plat",
+        "body": "Chaque rubrique est un onglet de la coque ; aucun groupe repliable, aucun sous-menu, y compris la liste des organisations.",
         "section": "layout"
       },
       {
-        "name": "The Pied visible Rule",
-        "body": "Sur ordinateur, la hauteur du tiroir est plafonnée (`max(360px, 100dvh - 248px)`) : l'en-tête et le pied restent à l'écran, seul le corps défile.",
-        "section": "layout"
-      },
-      {
-        "name": "The Compteur réservé Rule",
-        "body": "L'emplacement du compteur d'onglet ne disparaît jamais : pendant le chargement il affiche un tiret gris, puis le nombre, sans que les onglets bougent.",
-        "section": "layout"
-      },
-      {
-        "name": "The Ombre douce Rule",
-        "body": "Les ombres sont floues, décalées vers le bas et à moins de 15 % d'opacité ; aucune ombre dure ni décalée en aplat. Plus un élément est superposé, plus son ombre s'élargit, jamais plus sombre.",
+        "name": "La règle du filet d'abord",
+        "body": "Une séparation se fait par un filet de 1 px (rule entre feuilles et cellules, rule-2 entre lignes), jamais par une ombre ni par un fond coloré.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** garder un seul bouton bleu par vue, et rendre secondaire l'action de la barre d'outils quand le tiroir apporte la sienne.",
-      "**Do** écrire chaque état avec une pastille et un mot ; pastille pleine pour « Actif », creuse pour « Suspendu ».",
-      "**Do** utiliser les rayons selon la taille : 6 px petits éléments, 8 px contrôles, 12 px conteneurs, pilule pour badges, statuts et compteurs.",
-      "**Do** ouvrir formulaires et secrets dans le tiroir de 400 px à droite, plafonné en hauteur, avec seul le corps qui défile, et y porter le focus.",
-      "**Do** monter tous les contrôles à 44 px sous 768 px et transformer les tableaux en cartes.",
-      "**Do** composer les icônes au trait de 1,75 sur grille de 24, à 16 px, en `currentColor`."
+      "Do ouvrir chaque écran par le cartouche, avec des faits seulement (organisation, site, période, édité le … par …).",
+      "Do montrer la bande de visa partout où une intervention apparaît : pleine sur le dossier, compacte dans les tableaux, mini-bande dans les listes ; la case vide nomme qui doit agir.",
+      "Do doubler chaque couleur d'état d'un mot (« À contrôler », « En retard », « sans photo »).",
+      "Do donner aux étapes en attente la rampe ordinale pétrole et réserver vert, ambre, rouge aux résultats dans les graphiques.",
+      "Do séparer par des filets de 1 px et garder les coins à 2 px (feuilles) et 3 px (contrôles).",
+      "Do mettre en chiffres tabulaires tout chiffre comparable, et en monospace les seules références, codes, identifiants et secrets.",
+      "Do viser des cibles de 44 px au téléphone et un anneau de focus pétrole de 2 px partout.",
+      "Do supprimer toute animation et transition sous prefers-reduced-motion."
     ],
     "donts": [
-      "**Don't** utiliser le bleu d'accent pour décorer, catégoriser ou teinter une organisation.",
-      "**Don't** utiliser vert ou rouge hors d'un état, ni signaler un état par la seule couleur.",
-      "**Don't** donner à un avatar une teinte verte, rouge ou du bleu d'accent.",
-      "**Don't** employer la police mono hors des identifiants, codes de lieu et secrets.",
-      "**Don't** ajouter tissus, liserés, motifs ou couleur d'organisation en aplat : seul le mot-symbole TRACE·OPS reste de l'identité précédente.",
-      "**Don't** poser d'ombre dure ou décalée en aplat ; les ombres restent floues et sous 15 % d'opacité.",
-      "**Don't** laisser la barre d'outils passer sur deux lignes ni un compteur d'onglet disparaître pendant un chargement."
+      "Don't revenir à la console grise à un seul bleu de la catégorie, ni à Inter.",
+      "Don't costumer le rapport : pas de texture papier, de tampon encré, de sceau ni de faux manuscrit ; le « coup de tampon » reste une coche pétrole.",
+      "Don't poser un surtitre en petites majuscules au-dessus d'un titre, ni une bande colorée latérale sur une feuille ou une ligne, ni une numérotation décorative (les numéros d'étape et de tâche sont des données).",
+      "Don't utiliser vert, ambre ou rouge pour décorer, distinguer des personnes ou colorer un avatar.",
+      "Don't afficher un objectif, une référence de document ou un chiffre que le produit ne calcule pas réellement.",
+      "Don't ajouter un mouvement signé autre que le coup de tampon de visa et le glissement du panneau.",
+      "Don't introduire un thème sombre : le système est clair uniquement.",
+      "Don't regrouper des rubriques dans un menu repliable ou un sous-menu."
     ]
   }
 }

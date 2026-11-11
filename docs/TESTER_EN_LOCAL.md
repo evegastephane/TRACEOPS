@@ -38,6 +38,17 @@ Toutes les données sont fictives. Les comptes agents doivent changer leur mot d
 
 Les mots de passe sont différents pour chaque installation. Aucun compte de production n’est créé. L’initialisation refuse une base contenant déjà des utilisateurs ou organisations : elle ne remplace pas vos données et ne réinitialise aucun mot de passe.
 
+### Installation existante : ajouter AFISA sans rien effacer
+
+Si votre base contient déjà des données (par exemple l’ancienne démonstration « hôpital »), ajoutez le jeu de présentation sans la vider :
+
+```sh
+docker compose build
+docker compose run --rm setup node dist/src/demo-enrich.js
+```
+
+Le script ajoute **AFISA Food Industry** (usine de Bonabéri, ses lieux et équipements) avec **Hygiène Plus Services** (nettoyage sous contrat) et **MécaTech Industrie** (maintenance), les deux parcours à chaque étape, ainsi que d’autres clients et prestataires fictifs de différents secteurs. Il renomme les anciens libellés « démonstration », ne supprime aucune de vos données et ignore ce qui existe déjà : on peut le relancer. Il affiche **une seule fois**, au format JSON, les identifiants et mots de passe des comptes qu’il crée : conservez-les. Comptes AFISA : `c.ebode` (responsable services généraux), `l.tchamba` (contrôleuse qualité), `m.ekollo` et `g.talla` (responsables Hygiène Plus et MécaTech), `j.bilong`, `a.ndoumbe` et `y.nganou` (agents et technicien, mot de passe à changer à la première connexion).
+
 ## 3. Ouvrir l’interface
 
 ```sh
@@ -50,7 +61,7 @@ Le serveur écoute uniquement sur votre ordinateur. Il ne fournit pas de lien pu
 
 ## 4. Parcours conseillé
 
-Le menu principal tient en trois pages : **Vue d’ensemble**, **Planning** et **Interventions**. Équipe, Sites et salles, Prestataires et Société sont rangés sous **Paramètres** (groupe replié).
+Le menu est à plat, sans sous-menu : **Vue d’ensemble**, **Planning**, **Interventions**, **Sites et salles**, **Équipe**, **Prestataires** et **Société** sont chacun un onglet, selon les droits du compte.
 
 **Nettoyage régulier sous contrat**
 
@@ -117,7 +128,7 @@ La commande affiche le nouveau mot de passe de 8 caractères, invalide les sessi
 
 ### Repartir de zéro, uniquement si vous voulez effacer tous vos essais
 
-Une installation existante garde l’ancienne démonstration (hôpital) : pour obtenir le jeu AFISA, il faut repartir de zéro avec les commandes ci-dessous.
+Une installation existante garde l’ancienne démonstration (hôpital) : pour obtenir le jeu AFISA sans rien perdre, utilisez plutôt `demo-enrich.js` (voir « Installation existante » plus haut). Repartir de zéro reste possible avec les commandes ci-dessous.
 
 Les commandes suivantes suppriment **toute la base de démonstration locale**, y compris les comptes, sites et salles ajoutés. Elles servent notamment si vous avez perdu tous les mots de passe. Ne pas les utiliser pour une simple mise à jour.
 

@@ -1,12 +1,12 @@
 # Sites et salles
 
-Mode : Operate. Rubrique de la console TRACEOPS ; elle suit le monde visuel de la console défini dans apps-web-src-main-tsx.md.
+Mode : Operate. Rubrique de la console TRACEOPS ; elle suit le monde visuel « Le rapport d'audit » défini dans apps-web-src-main-tsx.md (refonte du 10 novembre 2026).
 
 ## Objectif
 Un responsable client définit un site et ses lieux ; un contrôleur habilité ou un responsable prestataire consulte les lieux de son périmètre. L’administrateur renseigne un motif pour chaque création.
 
 ## Direction
-Le monde visuel suit la console (direction « standard de la catégorie », voir apps-web-src-main-tsx.md) ; les formulaires s'ouvrent dans le tiroir de droite, sans fenêtre modale. Ajouter deux rubriques explicites : Équipe et Sites et salles, avec état actif. Dans la première vue, afficher les sites accessibles ou l’action pour créer le premier site. Dans le détail, montrer le nom du site, les lieux, leurs codes et leurs chemins de rattachement. Une liste à plat avec chemins lisibles évite une indentation trop profonde sur téléphone. La recherche porte aussi sur les ancêtres.
+Le monde visuel suit la console (direction « Le rapport d'audit », voir apps-web-src-main-tsx.md) ; les formulaires s'ouvrent dans le panneau de droite, sans fenêtre modale. Équipe et Sites et salles sont deux rubriques distinctes de la barre latérale à plat, avec état actif. Dans la première vue, afficher les sites accessibles ou l’action pour créer le premier site. Dans le détail, montrer le nom du site, les lieux, leurs codes et leurs chemins de rattachement. Une liste à plat avec chemins lisibles évite une indentation trop profonde sur téléphone. La recherche porte aussi sur les ancêtres.
 
 ## Comportements attendus
 Chargement, erreur avec relance et absence de données sont distincts. La saisie reste visible après une erreur de création. Changer de type réinitialise le parent proposé. Une mutation bloque temporairement le changement d’organisation et de rubrique. Le changement d’organisation efface les données de détail du contexte précédent. Les permissions restent contrôlées par le backend.
@@ -15,7 +15,7 @@ Chargement, erreur avec relance et absence de données sont distincts. La saisie
 Création et consultation uniquement. Rattachements prestataires et habilitations des contrôleurs disponibles par API. Archivage, modification, déplacement et suppression des lieux non exposés. Aucun parcours d’intervention prétendument livré.
 
 ## Comportements livrés
-Les rubriques sont visibles pour l’administrateur, les responsables client/prestataire et les contrôleurs client. Ce sont des onglets soulignés sous le nom de l’organisation, avec `aria-current="page"` sur la rubrique active. Le changement de rubrique est local à l’application, sans URL dédiée.
+Les rubriques sont visibles pour l’administrateur, les responsables client/prestataire et les contrôleurs client. Ce sont des entrées de la barre latérale à plat, sous le bloc de l’organisation active, avec `aria-current="page"` sur la rubrique active. Le changement de rubrique est local à l’application, sans URL dédiée.
 
 La création est proposée dans une organisation client à son responsable ou à l’administrateur. Les autres utilisateurs habilités consultent les sites accessibles. Un site comporte un nom, une activité (avec saisie libre pour Autre) et un fuseau horaire prérempli avec Africa/Douala. Après création, son détail s’ouvre. Les lieux proposent Bâtiment, Étage, Zone, Salle et Équipement ; le parent proposé doit appartenir à un type situé plus haut dans cette hiérarchie, ou au site directement. Le code est unique dans le site. Le motif administratif est obligatoire pour l’administrateur.
 

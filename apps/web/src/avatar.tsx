@@ -2,19 +2,19 @@ import React from 'react';
 
 /**
  * Initials avatars. Each organisation or person keeps the same soft tone, derived from its
- * identifier, so it is recognisable at a glance. A tone never carries a status or a permission:
- * green and red belong to states, and the blue accent to actions, so neither is dealt here.
+ * identifier, so it is recognisable at a glance. Tones are muted on purpose: green, amber and red
+ * belong to conformity states, so none of them is dealt here.
  * The name is always written next to the avatar.
  */
 const tones = [
-  { bg: '#e0e7ff', fg: '#3730a3' },
-  { bg: '#ede9fe', fg: '#5b21b6' },
-  { bg: '#f3e8ff', fg: '#6b21a8' },
-  { bg: '#e0f2fe', fg: '#075985' },
-  { bg: '#cffafe', fg: '#155e75' },
-  { bg: '#fef3c7', fg: '#92400e' },
-  { bg: '#f1f5f9', fg: '#334155' },
-  { bg: '#f5f5f4', fg: '#44403c' },
+  { bg: '#dfeaed', fg: '#1f4d5b' },
+  { bg: '#e3e8ef', fg: '#334155' },
+  { bg: '#ecebe6', fg: '#4a4740' },
+  { bg: '#ece4ef', fg: '#5b3a66' },
+  { bg: '#e3e6f3', fg: '#36407a' },
+  { bg: '#dcebea', fg: '#24585a' },
+  { bg: '#efe8dc', fg: '#5e4b2b' },
+  { bg: '#e9e4f1', fg: '#463a6b' },
 ] as const;
 
 function hash(value: string): number {

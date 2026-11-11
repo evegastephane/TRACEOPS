@@ -110,6 +110,51 @@
         ],
         "createdAt": "2026-11-05T07:12:47.751Z",
         "reason": "agent decision: value described in DESIGN.md prose (15px phone body and empty-state titles, 22px phone sign-in title, 10px initials in 24px avatars, 10px radius on 40px avatars and empty icons, pill loading bar, 2px tab underline)"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-transit.html"
+        ],
+        "createdAt": "2026-11-10T14:43:22.928Z",
+        "reason": "agent decision: direction-round sketch for a replacement world; DESIGN.md is replaced after the build"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-gate.html"
+        ],
+        "createdAt": "2026-11-10T14:44:29.070Z",
+        "reason": "agent decision: direction-round sketch for a replacement world; DESIGN.md is replaced after the build"
+      },
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-10T14:53:18.931Z",
+        "reason": "agent decision: direction-round sketch shown as a skeleton for the choice, never shipped; the build follows the craft floor (no side tabs)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-10T14:53:20.163Z",
+        "reason": "agent decision: direction-round sketch shown as a skeleton for the choice, never shipped; the build follows the craft floor (no side tabs)"
+      },
+      {
+        "rule": "cramped-padding",
+        "value": "*",
+        "files": [
+          ".impeccable/mocks/decision/challenger-gate.html"
+        ],
+        "createdAt": "2026-11-10T14:53:21.530Z",
+        "reason": "agent decision: direction-round sketch shown as a skeleton for the choice, never shipped; the build follows the craft floor (no side tabs)"
       }
     ]
   }

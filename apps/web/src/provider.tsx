@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { api, ApiError } from './api';
-import { Avatar } from './avatar';
 import { messageFor, type Dict, type Lang } from './i18n';
-import { AlertIcon, CheckIcon, CloseIcon, PinIcon, SitesIcon, TeamIcon } from './icons';
+import { AlertIcon, CheckIcon, CloseIcon } from './icons';
 
 export type Org = { id: string; name: string; kind: 'CLIENT' | 'PROVIDER'; roles?: string[] };
 export type Member = { id: string; membership_id: string; display_name: string; login: string; roles: string[]; active: boolean };
@@ -27,69 +26,6 @@ function useLinkedSites(orgId: string) {
     return () => { active = false; };
   }, [orgId, attempt]);
   return { sites, state, retry: () => setAttempt(n => n + 1) };
-}
-
-/* ---------------------------------------------------------------- Dashboard */
-
-export function ProviderDashboard({ org, members, membersState, assignments, assignmentsState, t, actions, onManage, retryMembers, retryAssignments }: {
-  org: Org; members: Member[]; membersState: 'loading' | 'ready' | 'error'; assignments: Assignment[]; assignmentsState: 'loading' | 'ready' | 'error';
-  t: Dict; actions: React.ReactNode; onManage: (m: Member) => void; retryMembers: () => void; retryAssignments: () => void;
-}) {
-  const { sites, state: sitesState, retry: retrySites } = useLinkedSites(org.id);
-  const agents = members.filter(m => isAgent(m) && m.active);
-  const assigned = new Set(assignments.map(a => a.membership_id));
-  const unassigned = agents.filter(m => !assigned.has(m.membership_id));
-  const places = new Set(assignments.map(a => a.zone_id));
-  const ready = membersState === 'ready' && assignmentsState === 'ready';
-  const byName = new Map(members.map(m => [m.membership_id, m]));
-  const stat = (value: number | string, label: string) => <div className="stat"><dt>{label}</dt><dd>{value}</dd></div>;
-  const dash = '–';
-
-  return <section className="pane-list provider-dashboard" aria-labelledby="dashboard-title">
-    <h2 id="dashboard-title" className="sr-only">{t.dashboard}</h2>
-    <div className="toolbar"><p className="toolbar-text" title={t.dashIntro}>{t.dashIntro}</p>{actions}</div>
-    <dl className="stats">
-      {stat(membersState === 'ready' ? agents.length : dash, t.statActive)}
-      {stat(ready ? unassigned.length : dash, t.statUnassigned)}
-      {stat(assignmentsState === 'ready' ? places.size : dash, t.statPlaces)}
-      {stat(sitesState === 'ready' ? sites.length : dash, t.statSites)}
-    </dl>
-    {membersState === 'error' && <LoadError text={t.membersLoadError} retry={retryMembers} t={t} />}
-    {assignmentsState === 'error' && <LoadError text={t.assignmentsLoadError} retry={retryAssignments} t={t} />}
-    <div className="dashboard-grid">
-      <section className="board" aria-labelledby="coverage-title">
-        <h3 id="coverage-title" className="board-title">{t.coverage}</h3>
-        {sitesState === 'loading' ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span><span className="skeleton-row" /><span className="skeleton-row" /></div>
-          : sitesState === 'error' ? <LoadError text={t.sitesLoadError} retry={retrySites} t={t} />
-          : !sites.length ? <div className="empty"><span className="empty-icon" aria-hidden="true"><SitesIcon /></span><p>{t.noLinkedSites}</p></div>
-          : <ul className="coverage">{sites.map(site => {
-              const rows = assignments.filter(a => a.site_id === site.id);
-              const zones = [...new Map(rows.map(a => [a.zone_id, a])).values()];
-              return <li key={site.id} className="coverage-site">
-                <p className="coverage-site-name"><span className="site-icon" aria-hidden="true"><SitesIcon /></span><strong>{site.name}</strong><span className="coverage-count">{zones.length}</span></p>
-                {zones.length ? <ul className="coverage-zones">{zones.map(zone => <li key={zone.zone_id}>
-                    <span className="coverage-place"><span>{placeLabel(zone)}</span><span className="zone-code">{zone.code}</span></span>
-                    <span className="coverage-agents">{rows.filter(a => a.zone_id === zone.zone_id).map(a => {
-                      const m = byName.get(a.membership_id);
-                      return m && <button key={a.membership_id} className="agent-chip" onClick={() => onManage(m)} title={m.display_name}><Avatar name={m.display_name} seed={m.id} size="sm" /><span>{m.display_name}</span></button>;
-                    })}</span>
-                  </li>)}</ul>
-                  : <p className="coverage-empty">{t.siteNoAgent}</p>}
-              </li>;
-            })}</ul>}
-      </section>
-      <section className="board" aria-labelledby="unassigned-title">
-        <h3 id="unassigned-title" className="board-title">{t.unassignedTitle}</h3>
-        {!ready ? (membersState === 'loading' || assignmentsState === 'loading') && <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span><span className="skeleton-row" /></div>
-          : !agents.length ? <div className="empty"><span className="empty-icon" aria-hidden="true"><TeamIcon /></span><p>{t.noAgents}</p></div>
-          : unassigned.length ? <ul className="people">{unassigned.map(m => <li key={m.id}>
-              <span className="member-id"><Avatar name={m.display_name} seed={m.id} /><span className="people-text"><strong>{m.display_name}</strong><code>{m.login}</code></span></span>
-              <button className="secondary small" onClick={() => onManage(m)}><PinIcon />{t.assign}</button>
-            </li>)}</ul>
-          : <p className="board-note"><CheckIcon />{t.allAssigned}</p>}
-      </section>
-    </div>
-  </section>;
 }
 
 /* ------------------------------------------------------------- Member drawer */

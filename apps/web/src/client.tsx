@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { api, ApiError } from './api';
 import { Avatar } from './avatar';
 import type { Lang } from './i18n';
-import { AlertIcon, CheckIcon, CloseIcon, LinkIcon, SearchIcon, SitesIcon } from './icons';
+import { AlertIcon, CheckIcon, CloseIcon, LinkIcon, SearchIcon } from './icons';
 
 const fr = {
   intro: 'Vos sites, leurs lieux, les prestataires rattachés et les contrôleurs habilités.',
@@ -53,46 +53,6 @@ export function useOverview(org: Org | undefined, enabled: boolean) {
     return () => { active = false; };
   }, [org?.id, enabled, attempt]);
   return { sites, state, reload: () => setAttempt(n => n + 1) };
-}
-
-export function ClientDashboard({ org, lang, teamCount, onNavigate }: { org: Org; lang: Lang; teamCount: number | null; onNavigate: (s: 'sites' | 'providers' | 'team') => void }) {
-  const t = lang === 'fr' ? fr : en;
-  const { sites, state, reload } = useOverview(org, true);
-  const providers = new Set(sites.flatMap(s => s.providers.map(p => p.id)));
-  const controllers = new Set(sites.flatMap(s => s.controllers.map(c => c.membership_id)));
-  const ready = state === 'ready', dash = '–';
-  const stat = (value: number | string, label: string) => <div className="stat"><dt>{label}</dt><dd>{value}</dd></div>;
-  return <section className="client-dashboard" aria-labelledby="client-dash-title">
-    <h2 id="client-dash-title" className="sr-only">{lang === 'fr' ? 'Tableau de bord' : 'Dashboard'}</h2>
-    <div className="toolbar"><p className="toolbar-text">{t.intro}</p>
-      <div className="toolbar-actions"><button className="secondary" onClick={() => onNavigate('sites')}><SitesIcon />{t.openSites}</button><button className="primary" onClick={() => onNavigate('providers')}><SearchIcon />{t.findProvider}</button></div></div>
-    <dl className="stats">
-      {stat(ready ? sites.length : dash, t.sites)}
-      {stat(ready ? sites.reduce((n, s) => n + s.zones, 0) : dash, t.places)}
-      {stat(ready ? providers.size : dash, t.providers)}
-      {stat(ready ? controllers.size : dash, t.controllers)}
-    </dl>
-    {state === 'error' && <div className="alert alert-error" role="alert"><AlertIcon /><div className="alert-body"><p>{t.loadError}</p><button className="secondary small" onClick={reload}>{t.retry}</button></div></div>}
-    <div className="dashboard-grid">
-      <section className="board" aria-labelledby="client-sites-title">
-        <h3 id="client-sites-title" className="board-title">{t.bySite}</h3>
-        {state === 'loading' ? <div className="skeleton" role="status"><span className="sr-only">{t.loading}</span><span className="skeleton-row" /><span className="skeleton-row" /></div>
-          : ready && !sites.length ? <div className="empty"><span className="empty-icon" aria-hidden="true"><SitesIcon /></span><p>{t.noSite}</p></div>
-          : <ul className="coverage">{sites.map(s => <li key={s.id} className="coverage-site">
-              <p className="coverage-site-name"><span className="site-icon" aria-hidden="true"><SitesIcon /></span><strong>{s.name}</strong><span className="muted">{fill(t.placesOf, { n: s.zones, r: s.rooms })}</span></p>
-              <dl className="site-facts">
-                <div><dt>{t.providers}</dt><dd>{s.providers.length ? s.providers.map(p => <span key={p.id} className="agent-chip static"><Avatar name={p.name} seed={p.id} shape="square" size="sm" /><span>{p.name}</span></span>) : <span className="muted">{t.noProvider}</span>}</dd></div>
-                <div><dt>{t.controllers}</dt><dd>{s.controllers.length ? s.controllers.map(c => <span key={c.membership_id} className="agent-chip static"><Avatar name={c.name} seed={c.membership_id} size="sm" /><span>{c.name}</span></span>) : <span className="muted">{t.noController}</span>}</dd></div>
-              </dl>
-            </li>)}</ul>}
-      </section>
-      <section className="board" aria-labelledby="interventions-title">
-        <h3 id="interventions-title" className="board-title">{t.interventions}</h3>
-        <div className="empty"><p>{t.interventionsText}</p></div>
-        {teamCount !== null && <p className="board-note">{lang === 'fr' ? `${teamCount} personne(s) dans votre équipe.` : `${teamCount} person(s) in your team.`} <button className="link-button" onClick={() => onNavigate('team')}>{lang === 'fr' ? 'Voir l’équipe' : 'View team'}</button></p>}
-      </section>
-    </div>
-  </section>;
 }
 
 type Provider = { id: string; name: string; city: string | null; phone: string | null; email: string | null; services: string | null; description: string | null; contact_name: string | null; site_ids: string[] };
