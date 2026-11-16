@@ -29,3 +29,14 @@ export const PinIcon = () => <Icon><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1
 export const CalendarIcon = () => <Icon><rect x="3.5" y="5" width="17" height="15.5" rx="2" /><path d="M3.5 10h17M8 3v4M16 3v4" /></Icon>;
 export const ClipboardIcon = () => <Icon><rect x="5" y="4.5" width="14" height="16" rx="2" /><path d="M9 4.5V3.5h6v1M8.5 11l2 2 4-4M8.5 16.5h7" /></Icon>;
 export const SettingsIcon = () => <Icon><path d="M4 7h10M18 7h2M4 17h2M10 17h10" /><circle cx="16" cy="7" r="2" /><circle cx="8" cy="17" r="2" /></Icon>;
+export const TenderIcon = () => <Icon><path d="M14 3.5H7a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5z" /><path d="M14 3.5v5h5M8.5 12.5h7M8.5 16h4.5" /></Icon>;
+export const ContractIcon = () => <Icon><rect x="4.5" y="3.5" width="12" height="15" rx="2" /><path d="M8 8h5M8 11.5h5" /><circle cx="17" cy="16" r="3" /><path d="m15.4 18.6-.6 2.4 2.2-1 2.2 1-.6-2.4" /></Icon>;
+export const PaymentIcon = () => <Icon><rect x="3" y="6.5" width="18" height="11" rx="2" /><circle cx="12" cy="12" r="2.5" /><path d="M6.5 9.5v5M17.5 9.5v5" /></Icon>;
+export const PenIcon = () => <Icon><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z" /><path d="m13.5 6.5 3 3" /></Icon>;
+export const TrashIcon = () => <Icon><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3" /></Icon>;
+export const UpIcon = () => <Icon><path d="m6 15 6-6 6 6" /></Icon>;
+export const DownIcon = () => <Icon><path d="m6 9 6 6 6-6" /></Icon>;
+export const LockIcon = () => <Icon><rect x="5" y="10.5" width="14" height="10" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /></Icon>;
+export const ScanIcon = () => <Icon><path d="M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M8 9h8M8 12h8M8 15h5" /></Icon>;
+export const DownloadIcon = () => <Icon><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14" /></Icon>;
+export const StarIcon = () => <Icon><path d="m12 4 2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.6-4.8 2.6.9-5.4-3.9-3.8 5.4-.8z" /></Icon>;

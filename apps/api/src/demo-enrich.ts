@@ -3,6 +3,8 @@ import type { PoolClient } from 'pg';
 import { Database } from './database.module.js';
 import { hashPassword, temporaryPassword } from './domain/password.js';
 import { createPassage, localInstant, passages } from './interventions/interventions.controller.js';
+import { seedProcurement } from './demo-procurement.js';
+import { seedPlanning } from './demo-planning.js';
 
 /**
  * Local-only catalogue for the demonstration database: realistic but fictional clients of every sector,
@@ -946,6 +948,12 @@ async function main() {
      await tx.query('UPDATE intervention SET status=$2 WHERE id=$1', [id, status]);
     }
    }
+
+   /* 8. Tenders, offers, retained providers, quality evaluations and payments. */
+   await seedProcurement(tx as unknown as PoolClient, actor);
+
+   /* 9. Earlier plannings imported from Gantt files, the sites' check-in QR codes and the agents' arrivals, departures and absences. */
+   await seedPlanning(tx as unknown as PoolClient, actor);
 
    await tx.query("INSERT INTO access_audit(id,actor_id,action,target_id,reason) VALUES($1,$2,'LOCAL_DEMO_INITIALIZED',$3,'Catalogue fictif : clients de tous secteurs, prestataires, sites, comptes et activité')", [randomUUID(), actor, need(orgId, 'wouri')]);
   });

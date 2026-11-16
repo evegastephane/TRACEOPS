@@ -9,6 +9,10 @@ import { AppModule } from './app.module.js';
 export async function createApplication(logger: false | undefined = undefined) {
   const app = await NestFactory.create(AppModule, { bodyParser:false, logger });
   app.use(helmet());
+  // Tender forms carry their sections, fields and values: they are larger than every other request.
+  app.use(['/api/v1/tenders', '/api/v1/tender-templates'], express.json({limit:'256kb'}));
+  // An imported Gantt planning may hold up to a thousand tasks.
+  app.use('/api/v1/plans', express.json({limit:'1mb'}));
   app.use(express.json({limit:'16kb'}));
   // Field photos arrive as raw JPEG or PNG bytes on their own route, never as JSON.
   app.use('/api/v1/interventions/:id/photos', express.raw({type:['image/jpeg','image/png'],limit:'6mb'}));

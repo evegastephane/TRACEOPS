@@ -362,6 +362,8 @@ export class AccountsService {
     const context=await this.context(user,org,true);
     if (context.kind!=='CLIENT') throw new ForbiddenException('FORBIDDEN');
     return (await this.db.query(`SELECT o.id,o.name,p.city,p.phone,p.email,p.services,p.description,p.contact_name,
+        EXISTS(SELECT 1 FROM contract c WHERE c.client_id=$1 AND c.provider_id=o.id AND c.status='ACTIVE') AS under_contract,
+        (SELECT count(*)::int FROM tender_invitation i JOIN tender t ON t.id=i.tender_id WHERE t.client_id=$1 AND i.provider_id=o.id AND t.status IN ('PUBLISHED','CLOSED')) AS open_tenders,
         COALESCE(array_agg(a.site_id) FILTER (WHERE a.site_id IS NOT NULL),'{}') AS site_ids
       FROM organization o LEFT JOIN organization_profile p ON p.organization_id=o.id
       LEFT JOIN service_agreement a ON a.provider_id=o.id AND a.client_id=$1 AND a.active AND (a.ends_at IS NULL OR a.ends_at>now())

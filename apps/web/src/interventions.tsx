@@ -36,7 +36,7 @@ const fr = {
   prTitle: 'Intitulé', prProvider: 'Prestataire destinataire', prSite: 'Site', prZones: 'Lieux concernés', prDays: 'Jours de passage', prStartDate: 'Date de début', prEndDate: 'Date de fin',
   prStartTime: 'Heure de début', prEndTime: 'Heure de fin', prTasks: 'Tâches (une par ligne)', prHelp: 'Chaque passage devient une intervention suivie séparément : affectation, compte rendu, contrôle.',
   prCreated: 'Programme créé : {n} passages planifiés.', mtCreated: 'Demande envoyée au prestataire.', mtStarts: 'Début', mtEnds: 'Fin', mtPriority: 'Urgente', mtQuote: 'Devis préalable requis',
-  mtQuoteHelp: 'Le prestataire transmet un devis ; rien n’est planifié avant votre accord.', noLinked: 'Aucun prestataire n’est rattaché à ce site.',
+  mtQuoteHelp: 'Le prestataire transmet un devis ; rien n’est planifié avant votre accord.', noLinked: 'Aucun prestataire n’est rattaché à ce site : lancez un appel d’offres ; le prestataire retenu y interviendra après avoir accepté le contrat.',
   days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'], passages: 'Passages', acceptedOf: '{a} acceptés sur {n}', setTeam: 'Affecter l’équipe à tous les passages à venir',
   teamSet: '{n} passages affectés{s}.', skipped: ', {n} ignorés (agent déjà occupé)', noProgramme: 'Aucun programme de nettoyage.', week: 'Semaine du {d}', prev: 'Semaine précédente', next: 'Semaine suivante', thisWeek: 'Cette semaine',
   noVisit: 'Aucun passage', waiting: { REQUESTED: 'le devis du prestataire', QUOTE_SUBMITTED: 'la décision du client sur le devis', QUOTE_REFUSED: 'un nouveau devis', PLANNED: 'l’affectation par le prestataire', ASSIGNED: 'le démarrage par l’agent', IN_PROGRESS: 'le compte rendu de l’agent', UNDER_REVIEW: 'le contrôle du client', REWORK: 'la reprise par l’agent', ACCEPTED: '', CANCELLED: '' } as Record<string, string>,
@@ -88,7 +88,7 @@ const en: T = {
   prTitle: 'Title', prProvider: 'Receiving provider', prSite: 'Site', prZones: 'Places', prDays: 'Passage days', prStartDate: 'Start date', prEndDate: 'End date',
   prStartTime: 'Start time', prEndTime: 'End time', prTasks: 'Tasks (one per line)', prHelp: 'Each passage becomes its own intervention: assignment, report, review.',
   prCreated: 'Programme created: {n} passages scheduled.', mtCreated: 'Request sent to the provider.', mtStarts: 'Start', mtEnds: 'End', mtPriority: 'Urgent', mtQuote: 'Prior quote required',
-  mtQuoteHelp: 'The provider sends a quote; nothing is scheduled before you approve it.', noLinked: 'No provider is linked to this site.',
+  mtQuoteHelp: 'The provider sends a quote; nothing is scheduled before you approve it.', noLinked: 'No provider is linked to this site: launch a tender; the retained provider works there once it accepts the contract.',
   days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], passages: 'Passages', acceptedOf: '{a} accepted of {n}', setTeam: 'Assign the team to every upcoming passage',
   teamSet: '{n} passages assigned{s}.', skipped: ', {n} skipped (agent already busy)', noProgramme: 'No cleaning programme.', week: 'Week of {d}', prev: 'Previous week', next: 'Next week', thisWeek: 'This week',
   noVisit: 'No passage', waiting: { REQUESTED: 'the provider’s quote', QUOTE_SUBMITTED: 'the client’s decision on the quote', QUOTE_REFUSED: 'a new quote', PLANNED: 'assignment by the provider', ASSIGNED: 'the agent to start', IN_PROGRESS: 'the agent’s report', UNDER_REVIEW: 'the client’s review', REWORK: 'rework by the agent', ACCEPTED: '', CANCELLED: '' },
@@ -121,6 +121,7 @@ const events: Record<string, [string, string]> = {
   SUBMITTED: ['Compte rendu soumis', 'Report submitted'], RESUBMITTED: ['Compte rendu soumis à nouveau', 'Report resubmitted'], REWORK_REQUESTED: ['Reprise demandée', 'Rework requested'],
   ACCEPTED: ['Prestation acceptée', 'Work accepted'], CANCELLED: ['Intervention annulée', 'Cancelled'], ANOMALY_REPORTED: ['Anomalie signalée', 'Anomaly reported'],
   ANOMALY_RESOLUTION_PROPOSED: ['Résolution proposée', 'Resolution proposed'], ANOMALY_CLOSED: ['Anomalie clôturée', 'Anomaly closed'],
+  PAYMENT_RECORDED: ['Règlement enregistré', 'Payment recorded'], ABSENCE_DECLARED: ['Absence déclarée par un agent', 'Absence declared by an agent'],
 };
 const errors: Record<string, [string, string]> = {
   ACTION_NOT_ALLOWED: ['Cette action n’est plus possible : l’intervention a changé. Rechargez la fiche.', 'This action is no longer possible: the intervention changed. Reload it.'],
@@ -444,7 +445,7 @@ const mondayOf = (d: Date) => { const x = new Date(Date.UTC(d.getUTCFullYear(), 
 const minutesIn = (iso: string, tz: string) => { const p = new Intl.DateTimeFormat('en-GB', { timeZone: tz, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).formatToParts(new Date(iso)); return Number(p.find(x => x.type === 'hour')?.value ?? 0) * 60 + Number(p.find(x => x.type === 'minute')?.value ?? 0); };
 const toneOf = (i: Item, now: number) => { const b = bandOf(i, now); return b === 'accepted' ? 'ok' : b === 'review' ? 'warn' : b === 'rework' || b === 'late' ? 'bad' : b === 'planned' ? 'info' : 'neutral'; };
 
-export function Planning({ org, lang, ctx, onOpen }: { org: Org; lang: Lang; ctx: Ctx; onOpen: (id: string) => void }) {
+export function Planning({ org, lang, ctx, onOpen, switcher }: { org: Org; lang: Lang; ctx: Ctx; onOpen: (id: string) => void; switcher?: React.ReactNode }) {
   const t = lang === 'fr' ? fr : en;
   const [monday, setMonday] = useState(() => mondayOf(new Date()));
   const from = new Date(monday.getTime() - DAY).toISOString(), to = new Date(monday.getTime() + 8 * DAY).toISOString();
@@ -471,6 +472,7 @@ export function Planning({ org, lang, ctx, onOpen }: { org: Org; lang: Lang; ctx
         <button className="secondary icon-only" aria-label={t.prev} onClick={() => setMonday(m => new Date(m.getTime() - 7 * DAY))}><BackIcon /></button>
         <button className="secondary" onClick={() => setMonday(mondayOf(new Date()))}>{t.thisWeek}</button>
         <button className="secondary icon-only" aria-label={t.next} onClick={() => setMonday(m => new Date(m.getTime() + 7 * DAY))}><ChevronIcon /></button></div>} />
+    {switcher && <div className="toolbar planning-toolbar">{switcher}</div>}
     {state === 'error' && <LoadError text={t.loadError} retry={reload} t={t} />}
     <div className="sheet timegrid" style={{ ['--hours' as string]: span } as React.CSSProperties}>
       <div className="tg-corner" aria-hidden="true" />

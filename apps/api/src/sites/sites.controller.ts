@@ -59,6 +59,8 @@ export class SitesController {
   return this.db.transaction(async tx=>{const p=(await tx.query("SELECT id FROM organization WHERE id=$1 AND active AND kind='PROVIDER'",[provider])).rows[0];if(!p)throw new BadRequestException('INVALID_PROVIDER');
    await tx.query('SELECT id FROM site WHERE id=$1 FOR UPDATE',[id]);
    if((await tx.query('SELECT 1 FROM service_agreement WHERE site_id=$1 AND provider_id=$2 AND active',[id,provider])).rowCount)throw new ConflictException('PROVIDER_ALREADY_LINKED');
+   // A provider works for a client only after a tender it accepted; the administrator's exception keeps its audited reason.
+   if(!user.admin&&!(await tx.query(`SELECT 1 FROM contract WHERE client_id=$1 AND provider_id=$2 AND status='ACTIVE'`,[site.client_id,provider])).rowCount)throw new ForbiddenException('TENDER_REQUIRED');
    const agreement=randomUUID();await tx.query('INSERT INTO service_agreement(id,client_id,site_id,provider_id,starts_at) VALUES($1,$2,$3,$4,now())',[agreement,site.client_id,id,provider]);
    await this.accounts.audit(tx,user.id,site.client_id,'PROVIDER_LINKED',agreement,user.admin?field(body,'reason',500):undefined);return{id:agreement,providerId:provider};});
  }

@@ -17,7 +17,7 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
  const db=new Pool({connectionString:url.toString()});
  const app=await createApplication(false);
  try{
-  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql','005_interventions.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
+  for(const name of ['001_identity_sites.sql','002_account_access.sql','003_audit_reason.sql','004_provider_workspace.sql','005_interventions.sql','006_procurement.sql','007_planning_attendance.sql'])await db.query(await readFile('apps/api/migrations/'+name,'utf8'));
   const adminId=randomUUID(),password='Test2345';
   await db.query('INSERT INTO app_user(id,login,password_hash,display_name,must_change_password) VALUES($1,$2,$3,$4,false)',[adminId,'owner',await hashPassword(password),'Owner']);
   await db.query('INSERT INTO platform_admin(user_id) VALUES($1)',[adminId]);
@@ -79,7 +79,9 @@ test('real PostgreSQL: admin → organizations → invitation → provider → a
   const site2=await clientBrowser('sites',{name:'Other site',sector:'office'},other);
   assert.equal((await clientBrowser('sites/'+site2.data.id+'/zones',{code:'R2',name:'Foreign parent',kind:'ROOM',parentId:floor.data.id},other)).status,400);
   assert.equal((await provider('sites',undefined,org)).data.length,0);
-  assert.equal((await clientBrowser('sites/'+site.data.id+'/providers',{providerId:org},other)).status,201);
+  // A provider works for a client only after a tender it accepted; the administrator keeps an audited exception.
+  assert.equal((await clientBrowser('sites/'+site.data.id+'/providers',{providerId:org},other)).data.message,'TENDER_REQUIRED');
+  assert.equal((await admin('sites/'+site.data.id+'/providers',{providerId:org,reason:'Contrat signé avant la plateforme'},other)).status,201);
   assert.equal((await provider('sites',undefined,org)).data.length,1);
   assert.equal((await provider('sites/'+site.data.id+'/zones',undefined,org)).data.length,2);
   // Provider workspace: company details, agent assignments, edit, withdrawal and reactivation.

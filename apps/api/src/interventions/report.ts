@@ -47,6 +47,7 @@ export const eventWords: Record<string, [string, string]> = {
   RESUBMITTED: ['Compte rendu soumis à nouveau', 'Report resubmitted'], REWORK_REQUESTED: ['Reprise demandée', 'Rework requested'], ACCEPTED: ['Prestation acceptée', 'Work accepted'],
   CANCELLED: ['Intervention annulée', 'Intervention cancelled'], ANOMALY_REPORTED: ['Anomalie signalée', 'Anomaly reported'],
   ANOMALY_RESOLUTION_PROPOSED: ['Résolution proposée', 'Resolution proposed'], ANOMALY_CLOSED: ['Anomalie clôturée', 'Anomaly closed'],
+  PAYMENT_RECORDED: ['Règlement enregistré', 'Payment recorded'],
 };
 export function renderReport(d: Detail, photos: Photo[], lang: 'fr' | 'en'): Promise<Buffer> {
   const w = words[lang], tz = d.timezone || 'Africa/Douala';

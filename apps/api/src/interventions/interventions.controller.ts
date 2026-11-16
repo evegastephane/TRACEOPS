@@ -6,6 +6,7 @@ import { AccountsModule } from '../accounts/accounts.controller.js';
 import { AccountsService, field, uuid, type Identity } from '../accounts/accounts.service.js';
 import { Database, DatabaseModule } from '../database.module.js';
 import { readablePng, renderReport } from './report.js';
+import { DEFAULT_TERMS_DAYS, recordPayable } from '../procurement/payable.js';
 
 type Status = 'REQUESTED' | 'QUOTE_SUBMITTED' | 'QUOTE_REFUSED' | 'PLANNED' | 'ASSIGNED' | 'IN_PROGRESS' | 'UNDER_REVIEW' | 'REWORK' | 'ACCEPTED' | 'CANCELLED';
 type Row = { id: string; client_id: string; provider_id: string; site_id: string; status: Status; kind: string; starts_at: Date; ends_at: Date; submitted_by: string | null; round: number; quote_required: boolean; programme_id: string | null };
@@ -365,6 +366,9 @@ export class InterventionsController {
     return this.step(req, id, 'REVIEW', async (tx, row) => {
       if (decision === 'ACCEPT') {
         await tx.query('UPDATE intervention SET accepted_at=now() WHERE id=$1', [row.id]);
+        // Accepted work under an accepted quote becomes payable, 30 days after its acceptance.
+        const quoted = (await tx.query(`SELECT q.amount_xaf,i.title FROM quote q JOIN intervention i ON i.id=q.intervention_id WHERE q.intervention_id=$1 AND q.status='ACCEPTED' ORDER BY q.created_at DESC LIMIT 1`, [row.id])).rows[0];
+        if (quoted) await recordPayable(tx, { client: row.client_id, provider: row.provider_id, intervention: row.id, label: quoted.title, amount: quoted.amount_xaf, terms: DEFAULT_TERMS_DAYS });
         return { to: 'ACCEPTED', event: 'ACCEPTED', reason };
       }
       const r = await tx.query(`UPDATE intervention_task SET status='TODO',rework=true,done_by=NULL,done_at=NULL WHERE intervention_id=$1 AND id=ANY($2)`, [row.id, tasks]);

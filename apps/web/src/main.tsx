@@ -3,23 +3,31 @@ import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/source-sans-3/wght.css';
 import '@fontsource-variable/source-code-pro/wght.css';
 import './style.css';
+import './procurement.css';
+import './planning.css';
 import { api, ApiError } from './api';
 import { Sites } from './sites';
 import { Dashboard } from './dashboard';
 import { dictionaries, messageFor, type Dict, type Lang } from './i18n';
 import { Avatar } from './avatar';
-import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, CopyIcon, CalendarIcon, ClipboardIcon, DashboardIcon, GlobeIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PlusIcon, SitesIcon, TeamIcon, UserIcon, UserPlusIcon } from './icons';
+import { AlertIcon, BackIcon, CheckIcon, CloseIcon, CompanyIcon, ContractIcon, CopyIcon, CalendarIcon, ClipboardIcon, DashboardIcon, GlobeIcon, HandshakeIcon, LinkIcon, LogIcon, LogoutIcon, PanelIcon, PaymentIcon, PlusIcon, ScanIcon, SitesIcon, TeamIcon, TenderIcon, UserIcon, UserPlusIcon } from './icons';
 import { Company, MemberPanel, isAgent, placeLabel, type Assignment, type Member, type Org } from './provider';
 import { AuditLog, Profile } from './admin';
 import { PlatformOverview } from './platform';
 import { ControllerPanel, Directory } from './client';
 import { InterventionDetail, InterventionsPage, Planning, WorkOverview, type Ctx } from './interventions';
 import { PageHead, Skeleton } from './ui';
+import { TendersPage } from './tenders';
+import { ContractsPage } from './contracts';
+import { PaymentsPage } from './payments';
+import { PlanningPage } from './planning';
+import { AgentAttendance, AttendancePage, ScanPage } from './attendance';
 import type { Step } from './metrics';
 
 type User = { id: string; login: string; display_name: string; admin: boolean; must_change_password: boolean; memberships: Org[] };
 type Secret = { kind: 'invite' | 'agent'; value: string; login?: string };
-type Section = 'overview' | 'dashboard' | 'planning' | 'interventions' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
+type Section = 'overview' | 'dashboard' | 'planning' | 'interventions' | 'tenders' | 'contracts' | 'payments' | 'attendance' | 'team' | 'sites' | 'providers' | 'company' | 'audit' | 'profile';
+type Summary = { tenders: number; contracts: number; overdue: number; dueSoon: number };
 type LoadState = 'loading' | 'ready' | 'error';
 
 const Brand = () => <a className="brand" href="/" aria-label="TRACEOPS">TRACE<span>OPS</span><span className="brand-dot" /></a>;
@@ -61,6 +69,8 @@ function App() {
   // Provider workspace: agent assignments, and the agent whose drawer is open.
   const [assignments, setAssignments] = useState<Assignment[]>([]), [assignmentsState, setAssignmentsState] = useState<LoadState>('loading');
   const [manageId, setManageId] = useState<string | null>(null);
+  // Tenders, contracts and payments: a fresh page on every menu click, the contract to open, and the counters of the menu.
+  const [navTick, setNavTick] = useState(0), [contractId, setContractId] = useState<string | null>(null), [summary, setSummary] = useState<Summary | null>(null);
   // Desktop sidebar can shrink to an icon rail; the choice is remembered on this device.
   const [collapsed, setCollapsed] = useState(() => { try { return localStorage.getItem('traceops-sidebar') === 'collapsed'; } catch { return false; } });
   useEffect(() => { try { localStorage.setItem('traceops-sidebar', collapsed ? 'collapsed' : 'open'); } catch { /* storage unavailable */ } }, [collapsed]);
@@ -68,6 +78,13 @@ function App() {
   const [mobileView, setMobileView] = useState<'orgs' | 'org'>('org');
   const detailHeading = useRef<HTMLHeadingElement>(null);
   const [token, setToken] = useState(() => new URLSearchParams(location.hash.slice(1)).get('invite') ?? '');
+  // A scanned site QR code opens the app on its check-in page, after sign-in if needed.
+  const [scan, setScan] = useState(() => new URLSearchParams(location.hash.slice(1)).get('pointage') ?? '');
+  useEffect(() => {
+    const read = () => { const p = new URLSearchParams(location.hash.slice(1)).get('pointage'); if (p) setScan(p); };
+    window.addEventListener('hashchange', read); return () => window.removeEventListener('hashchange', read);
+  }, []);
+  const [tenderPreset, setTenderPreset] = useState<string | null>(null), [tenderOpen, setTenderOpen] = useState<string | null>(null);
 
   useEffect(() => { document.documentElement.lang = lang; localStorage.setItem('traceops-language', lang); }, [lang]);
   // An opened form or secret takes the reading focus (below 1280px it replaces the list).
@@ -132,6 +149,14 @@ function App() {
     return () => { stale = true; };
   }, [orgId, manager, user?.must_change_password]);
 
+  // What waits in tenders, contracts and payments: refreshed when the organisation or the page changes.
+  useEffect(() => {
+    let stale = false;
+    if (orgId && user && !user.must_change_password) api('procurement/summary', undefined, orgId).then(r => { if (!stale) setSummary(r); }).catch(() => { if (!stale) setSummary(null); });
+    else setSummary(null);
+    return () => { stale = true; };
+  }, [orgId, user?.id, user?.must_change_password, section, navTick]);
+
   async function act(work: () => Promise<void>) {
     setBusy(true); setError('');
     try { await work(); } catch (e) { setError(e instanceof ApiError ? e.code : 'error'); } finally { setBusy(false); }
@@ -144,7 +169,7 @@ function App() {
 
   if (!user || user.must_change_password || token) {
     const title = token ? t.join : user ? t.changeTitle : t.welcome;
-    const text = token ? t.joinHelp : user ? t.changeText : t.intro;
+    const text = token ? t.joinHelp : user ? t.changeText : scan ? t.scanLogin : t.intro;
     return <div className="auth">
       <aside className="auth-side">
         <Brand />
@@ -271,13 +296,21 @@ function App() {
   </div>;
 
   // Sidebar menu: the active organisation's sections, then the platform-wide pages.
-  const go = (item: Section) => { setSection(item); setOpenId(null); setStep(null); setIntent(null); setForm(null); setSecret(null); setManageId(null); setError(''); };
+  const go = (item: Section) => { setSection(item); setOpenId(null); setStep(null); setIntent(null); setForm(null); setSecret(null); setManageId(null); setError(''); setContractId(null); setTenderPreset(null); setTenderOpen(null); setNavTick(n => n + 1); };
+  const openContract = (id: string) => { go('contracts'); setContractId(id); };
+  const openTender = (id: string) => { go('tenders'); setTenderOpen(id); };
   const openIntervention = (id: string) => { go('interventions'); setOpenId(id); };
   // Every page of the organisation is its own tab, side by side: no folded group, no sub-menu.
   const agentOnly = Boolean(org && !user.admin && org.kind === 'PROVIDER' && org.roles?.length && org.roles.every(r => r === 'FIELD_AGENT'));
   const orgItems: { id: Section; label: string; icon: React.ReactNode }[] = [
     { id: 'dashboard', label: agentOnly ? t.missionsNav : t.dashboard, icon: <DashboardIcon /> },
     ...(org ? [{ id: 'planning' as Section, label: t.planningNav, icon: <CalendarIcon /> }, { id: 'interventions' as Section, label: t.interventionsNav, icon: <ClipboardIcon /> }] : []),
+    // Tenders and payments for the managers of both sides; contracts also for the client's controllers, who evaluate the quality.
+    ...(org && (manager || user.admin) ? [{ id: 'tenders' as Section, label: t.tendersNav, icon: <TenderIcon /> }] : []),
+    ...(org && (manager || user.admin || org.roles?.includes('CLIENT_CONTROLLER')) ? [{ id: 'contracts' as Section, label: t.contractsNav, icon: <ContractIcon /> }] : []),
+    ...(org && (manager || user.admin) ? [{ id: 'payments' as Section, label: t.paymentsNav, icon: <PaymentIcon /> }] : []),
+    // Attendance: the register and the QR codes for managers and controllers; the check-in page for field agents.
+    ...(org && (manager || user.admin || org.roles?.includes('CLIENT_CONTROLLER') || agentOnly) ? [{ id: 'attendance' as Section, label: agentOnly ? t.attendanceAgentNav : t.attendanceNav, icon: <ScanIcon /> }] : []),
     ...(canSeeSections ? [{ id: 'sites' as Section, label: t.sites, icon: <SitesIcon /> }, { id: 'team' as Section, label: t.team, icon: <TeamIcon /> }] : []),
     ...(clientManager ? [{ id: 'providers' as Section, label: t.providersNav, icon: <HandshakeIcon /> }] : []),
     ...(org ? [{ id: 'company' as Section, label: t.company, icon: <CompanyIcon /> }] : []),
@@ -289,11 +322,14 @@ function App() {
     <button className="nav-item" aria-current={section === item.id ? 'page' : undefined} title={collapsed ? item.label : undefined} disabled={busy} onClick={() => go(item.id)}>
       {item.icon}<span className="nav-text">{item.label}</span>
       {item.id === 'team' && manager && <span className={membersCounted ? 'count' : 'count count-pending'} aria-hidden="true">{membersCounted ? members.length : '–'}</span>}
+      {item.id === 'tenders' && summary && summary.tenders > 0 && <span className="count count-due" title={t.tendersDue}>{summary.tenders}<span className="sr-only"> {t.tendersDue}</span></span>}
+      {item.id === 'contracts' && summary && summary.contracts > 0 && <span className="count count-due" title={t.contractsDue}>{summary.contracts}<span className="sr-only"> {t.contractsDue}</span></span>}
+      {item.id === 'payments' && summary && (summary.overdue > 0 || summary.dueSoon > 0) && <span className={summary.overdue ? 'count count-alert' : 'count count-due'} title={summary.overdue ? t.paymentsLate : t.paymentsSoon}>{summary.overdue || summary.dueSoon}<span className="sr-only"> {summary.overdue ? t.paymentsLate : t.paymentsSoon}</span></span>}
     </button>
   </li>; }
   // The administrator picks an organisation in the list below; its pages then appear here, named after it.
   const orgSection = user.admin && !['overview', 'audit', 'profile'].includes(section);
-  const ownHead = (section === 'overview' && user.admin) || (org && ['dashboard', 'planning', 'interventions'].includes(section));
+  const ownHead = (section === 'overview' && user.admin) || (org && ['dashboard', 'planning', 'interventions', 'tenders', 'contracts', 'payments', 'attendance'].includes(section)) || Boolean(scan);
   const pageTitle = section === 'overview' ? t.overviewNav : section === 'audit' ? t.auditNav : section === 'profile' ? t.profileNav : section === 'team' ? t.team
     : section === 'sites' ? t.sites : section === 'providers' ? t.providersNav : section === 'company' ? t.company : t.dashboard;
   const pageCells = section === 'team' && org && manager ? [{ label: t.team, value: membersCounted ? String(members.length) : '–' }] : [];
@@ -352,20 +388,30 @@ function App() {
         {!ownHead && <PageHead title={pageTitle} subtitle={platformPage ? (user.admin ? t.adminAccess : user.display_name) : ctx.subtitle} cells={pageCells} actions={section === 'team' ? teamActions : undefined} />}
         {errorBox}
 
-        {section === 'overview' && user.admin
+        {scan
+          ? <ScanPage key={scan} token={scan} lang={lang} onClose={() => { setScan(''); history.replaceState(null, '', location.pathname); go('attendance'); }} />
+        : section === 'overview' && user.admin
           ? <PlatformOverview lang={lang} userName={user.display_name} onOpenOrg={id => chooseOrg(id)} onOpenLog={() => go('audit')} />
         : section === 'audit' && user.admin
           ? <AuditLog lang={lang} orgs={orgs} />
         : section === 'profile'
           ? <Profile lang={lang} user={user} roleLabel={roleLabel} kindLabel={k => k === 'CLIENT' ? t.client : t.provider} busy={busy} setBusy={setBusy} onSaved={name => setUser(u => u && { ...u, display_name: name })} />
         : section === 'providers' && org && clientManager
-          ? <Directory key={orgId} org={org} lang={lang} admin={user.admin} busy={busy} setBusy={setBusy} />
+          ? <Directory key={orgId} org={org} lang={lang} admin={user.admin} busy={busy} setBusy={setBusy} onTender={id => { go('tenders'); setTenderPreset(id); }} />
         : section === 'dashboard' && org
           ? <WorkOverview key={orgId} org={org} lang={lang} admin={user.admin} ctx={ctx} onOpen={openIntervention} onNavigate={go} onStep={s => { go('interventions'); setStep(s); }} onNewRequest={() => { go('interventions'); setIntent('maintenance'); }} />
         : section === 'planning' && org
-          ? <Planning key={orgId} org={org} lang={lang} ctx={ctx} onOpen={openIntervention} />
+          ? <PlanningPage key={orgId + navTick} org={org} lang={lang} admin={user.admin} ctx={ctx} onOpen={openIntervention} onOpenContract={openContract} onOpenTender={openTender} />
         : section === 'interventions' && org
           ? openId ? <InterventionDetail key={openId} org={org} id={openId} lang={lang} onBack={() => setOpenId(null)} /> : <InterventionsPage key={orgId + (step ?? '') + (intent ?? '')} org={org} lang={lang} admin={user.admin} ctx={ctx} initialStep={step} initialForm={intent} onOpen={setOpenId} />
+        : section === 'tenders' && org
+          ? <TendersPage key={orgId + navTick + (tenderPreset ?? '') + (tenderOpen ?? '')} org={org} lang={lang} admin={user.admin} ctx={ctx} onOpenContract={openContract} presetProvider={tenderPreset} initialTenderId={tenderOpen} />
+        : section === 'contracts' && org
+          ? <ContractsPage key={orgId + navTick + (contractId ?? '')} org={org} lang={lang} admin={user.admin} ctx={ctx} initialId={contractId} />
+        : section === 'payments' && org
+          ? <PaymentsPage key={orgId + navTick} org={org} lang={lang} admin={user.admin} ctx={ctx} onOpenContract={openContract} onOpenIntervention={openIntervention} />
+        : section === 'attendance' && org
+          ? agentOnly ? <AgentAttendance key={orgId + navTick} org={org} lang={lang} ctx={ctx} onScan={setScan} /> : <AttendancePage key={orgId + navTick} org={org} lang={lang} admin={user.admin} ctx={ctx} />
         : section === 'company' && org
           ? <Company key={orgId} org={org} canEdit={manager} t={t} lang={lang} busy={busy} setBusy={setBusy} onRenamed={name => setOrgs(list => list.map(o => o.id === org.id ? { ...o, name } : o))} />
         : section === 'dashboard' ? <Dashboard org={org} admin={user.admin} lang={lang} orgCount={orgs.length} onNavigate={setSection} onCreateOrg={() => { setSection('team'); setForm('org'); setSecret(null); }} />
